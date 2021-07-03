@@ -16,9 +16,10 @@ done
 
 REPO="https://github.com/hogsmill/context-switching.git"
 APPS=(
-  'context-switching,contextSwitching,3003,Context Switching,Context Switching'
-  'requirements-game,requirement,3033,Requirements Game,Requirements Game'
-  'context-switching-guardian,contextSwitchingGuardian,3032,Context Switching,Context Switching'
+  'five-dysfunctions,fiveDysfunctions,3038,5 Dysfunctions,5 Dysfunctions'
+  'five-dysfunctions-new,fiveDysfunctionsNew,3040,5 Dysfunctions,5 Dysfunctions New'
+  'team-health-check,healthCheck,3039,Team Health Check,Team Health Check'
+  'team-health-check-new,healthCheckNew,3041,Team Health Check,Team Health Check New'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))
