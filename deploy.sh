@@ -14,7 +14,7 @@ do
   shift
 done
 
-REPO="https://github.com/hogsmill/context-switching.git"
+REPO="https://github.com/hogsmill/assessment.git"
 APPS=(
   'five-dysfunctions,fiveDysfunctions,3038,5 Dysfunctions,5 Dysfunctions'
   'five-dysfunctions-new,fiveDysfunctionsNew,3040,5 Dysfunctions,5 Dysfunctions New'
