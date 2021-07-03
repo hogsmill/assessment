@@ -1,0 +1,56 @@
+{
+  "name": "context-switching",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port 8085",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "cli-plugin-eslint": "^0.1.0",
+    "core-js": "^3.15.2",
+    "death": "^1.1.0",
+    "dotenv": "^8.6.0",
+    "highlight.js": "^11.0.1",
+    "jquery": "^3.6.0",
+    "mongodb": "^3.6.9",
+    "sass": "^1.35.1",
+    "sass-loader": "^10.1.1",
+    "socket.io": "^4.1.2",
+    "socket.io-client": "^4.1.2",
+    "uuid": "^3.4.0",
+    "uuidv4": "^6.2.10",
+    "vue": "^2.6.14",
+    "vue-js-modal": "^2.0.0-rc.6",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.12",
+    "@vue/cli-plugin-eslint": "^4.5.12",
+    "@vue/cli-service": "^4.5.12",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.30.0",
+    "eslint-plugin-vue": "^7.12.1",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

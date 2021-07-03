@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script src="https://kit.fontawesome.com/50eff791d6.js" crossorigin="anonymous"></script>
+    <title>Context Switching | Agile Simulations</title>
+    <script>
+      let title = 'Context Switching (Local)'
+      if (document.location.pathname.match(/context-switching/)) {
+        title = 'Context Switching'
+      } else if (document.location.pathname.match(/requirements-game/)) {
+        title = 'BA Shouting'
+      }
+      document.getElementsByTagName('title')[0].innerHTML = title + ' | Agile Simulations'
+  </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
