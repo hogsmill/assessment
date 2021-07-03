@@ -46,6 +46,10 @@ bus.$on('sendLoadTeams', (data) => { socket.emit('sendLoadTeams', data) })
 
 bus.$on('sendAddTeam', (data) => { socket.emit('sendAddTeam', data) })
 
+bus.$on('sendUpdateTeamName', (data) => { socket.emit('sendUpdateTeamName', data) })
+
+bus.$on('sendToggleAssessment', (data) => { socket.emit('sendToggleAssessment', data) })
+
 bus.$on('sendDeleteTeam', (data) => { socket.emit('sendDeleteTeam', data) })
 
 // Receive

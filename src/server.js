@@ -105,7 +105,11 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendLoadTeams', () => { dbStore.loadTeams(db, io, debugOn) })
 
     socket.on('sendAddTeam', (data) => { dbStore.addTeam(db, io, data, debugOn) })
-    
+
+    socket.on('sendUpdateTeamName', (data) => { dbStore.updateTeamName(db, io, data, debugOn) })
+
+    socket.on('sendToggleAssessment', (data) => { dbStore.toggleAssessment(db, io, data, debugOn) })
+
     socket.on('sendDeleteTeam', (data) => { dbStore.deleteTeam(db, io, data, debugOn) })
 
   })

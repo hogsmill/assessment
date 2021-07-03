@@ -1,5 +1,5 @@
 <template>
-  <table class="facilitator-table">
+  <table class="facilitator-table teams-table">
     <tr>
       <td colspan="2">
         <h4>Team</h4>
@@ -18,15 +18,46 @@
     <tr v-if="showTeam">
       <td>
         <table>
-          <tr v-for="(team, index) in teams" :key="index">
-            <td>
-              <i v-if="team.protected" class="fas fa-trash-alt" title="Unable to delete system team" />
-              <i v-if="!team.protected" class="fas fa-trash-alt enabled" :title="'Delete ' + team.name" @click="deleteTeam(team)" />
-            </td>
-            <td>
-              {{ team.name }}
-            </td>
-          </tr>
+          <thead>
+            <tr>
+              <th>
+                Actions
+              </th>
+              <th>
+                Team
+              </th>
+              <th>
+                5 Dysfunctions
+              </th>
+              <th>
+                Team Health Check
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(team, index) in teams" :key="index">
+              <td>
+                <div class="actions">
+                  <i v-if="team.protected" class="fas fa-trash-alt" title="Unable to delete system team" />
+                  <i v-if="!team.protected" class="fas fa-trash-alt enabled" :title="'Delete ' + team.name" @click="deleteTeam(team)" />
+                  <i v-if="editingTeam != team.id" class="fas fa-edit" @click="setEditingTeam(team)" />
+                  <i v-if="editingTeam == team.id" class="fas fa-save" @click="saveTeamName(team)" />
+                </div>
+              </td>
+              <td>
+                <div class="team-name">
+                  <span v-if="editingTeam != team.id">{{ team.name }}</span>
+                  <input v-if="editingTeam == team.id" type="text" :id="'team-name-editing-' + team.id" :value="team.name">
+                </div>
+              </td>
+              <td class="center">
+                <input type="checkbox" :checked="team.assessments.fiveDysfunctions" @click="toggleAssessment(team.id, 'fiveDysfunctions')">
+              </td>
+              <td class="center">
+                <input type="checkbox" :checked="team.assessments.teamHealthCheck" @click="toggleAssessment(team.id, 'teamHealthCheck')">
+              </td>
+            </tr>
+          </tbody>
         </table>
       </td>
     </tr>
@@ -39,7 +70,8 @@ import bus from '../../socket.js'
 export default {
   data() {
     return {
-      showTeam: false
+      showTeam: false,
+      editingTeam: null
     }
   },
   computed: {
@@ -69,7 +101,48 @@ export default {
       if (confirm('Delete ' + team.name)) {
         bus.$emit('sendDeleteTeam', {id: team.id})
       }
+    },
+    setEditingTeam(team) {
+      this.editingTeam = team.id
+    },
+    saveTeamName() {
+      const name = document.getElementById('team-name-editing-' + this.editingTeam).value
+      bus.$emit('sendUpdateTeamName', {id: this.editingTeam, name: name})
+      this.editingTeam = null
+    },
+    toggleAssessment(id, assessment) {
+      bus.$emit('sendToggleAssessment', {id: id, assessment: assessment})
     }
   }
 }
 </script>
+
+<style lang="scss">
+  .teams-table {
+    width: 100%;
+
+    th {
+      text-align: center;
+      padding: 2px 6px;
+    }
+
+    td {
+      &.center {
+        text-align: center;
+      }
+
+      .actions {
+        width: 100px;
+        text-align: center;
+
+        .fas {
+          margin: 2px 2px;
+        }
+      }
+
+      .team-name {
+        width: 200px;
+      }
+    }
+  }
+</style>
