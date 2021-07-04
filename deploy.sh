@@ -19,7 +19,7 @@ APPS=(
   'five-dysfunctions,fiveDysfunctions,fiveDysfunctionsQuestions,3038,5 Dysfunctions,5 Dysfunctions'
   'five-dysfunctions-new,fiveDysfunctionsNew,fiveDysfunctionsNewQuestions,3040,5 Dysfunctions,5 Dysfunctions New'
   'team-health-check,healthCheck,healthCheckQuestions,3039,Team Health Check,Team Health Check'
-  'team-health-check-new,healthCheckNew,healthCheckNewQuestions,3041,Team Health Check,Team Health Check New'
+  'team-health-check-new,healthCheckNew,healthCheckQuestionsNew,3041,Team Health Check,Team Health Check New'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))
