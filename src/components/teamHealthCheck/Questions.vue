@@ -7,13 +7,13 @@
         </div>
         <div class="question">
           <h3>
-            {{ question.title }}
+            {{ question.question.title }}
           </h3>
           <div>
-            {{ question.good }}
+            {{ question.question.good }}
           </div>
           <div>
-            {{ question.bad }}
+            {{ question.question.bad }}
           </div>
           <div class="buttons">
             <button class="btn btn-info" :class="{ 'selected': question.answer == 'red'}" @click="answer(question.id, 'red')">
