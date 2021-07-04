@@ -19,8 +19,8 @@ export const store = new Vuex.Store({
     localStorageStatus: true,
     currentTab: 'game',
     walkThrough: false,
-    host: false,
     gameName: '',
+    state: 'intro',
     teams: [],
     questions: []
   },
@@ -61,6 +61,9 @@ export const store = new Vuex.Store({
     getGameName: (state) => {
       return state.gameName
     },
+    getGameState: (state) => {
+      return state.state
+    },
     getTeams: (state) => {
       return state.teams
     },
@@ -98,6 +101,9 @@ export const store = new Vuex.Store({
     updateCurrentTab: (state, payload) => {
       state.currentTab = payload
     },
+    updateState: (state, payload) => {
+      state.state = payload
+    },
     updateTeams: (state, payload) => {
       state.teams = payload
     },
@@ -132,6 +138,9 @@ export const store = new Vuex.Store({
     },
     updateCurrentTab: ({ commit }, payload) => {
       commit('updateCurrentTab', payload)
+    },
+    updateState: ({ commit }, payload) => {
+      commit('updateState', payload)
     },
     updateTeams: ({ commit }, payload) => {
       commit('updateTeams', payload)

@@ -16,14 +16,14 @@
             {{ question.question.bad }}
           </div>
           <div class="buttons">
-            <button class="btn btn-info" :class="{ 'selected': question.answer == 'red'}" @click="answer(question.id, 'red')">
-              Red
+            <button class="btn btn-info red" :class="{ 'selected': question.answer == 'red'}" @click="answer(question.id, 'red')">
+              <i class="far fa-frown" />
             </button>
-            <button class="btn btn-info" :class="{ 'selected': question.answer == 'amber'}" @click="answer(question.id, 'amber')">
-              Amber
+            <button class="btn btn-info amber" :class="{ 'selected': question.answer == 'amber'}" @click="answer(question.id, 'amber')">
+              <i class="far fa-meh" />
             </button>
-            <button class="btn btn-info" :class="{ 'selected': question.answer == 'green'}" @click="answer(question.id, 'green')">
-              Green
+            <button class="btn btn-info green" :class="{ 'selected': question.answer == 'green'}" @click="answer(question.id, 'green')">
+              <i class="far fa-smile-beam" />
             </button>
           </div>
         </div>
@@ -81,6 +81,11 @@ export default {
         }
       }
 
+      .far {
+        font-size: xxx-large;
+        color: #fff;
+      }
+
       .prev, .next {
         margin: auto auto;
         width: 100px;
@@ -99,15 +104,28 @@ export default {
           margin: 24px;
 
           button {
+            color: #fff;
             margin: 4px 8px;
             width: 100px;
+            border: 4px solid #fff;
+
+            &.red {
+              background-color: red;
+            }
+
+            &.amber {
+              background-color: orange;
+            }
+
+            &.green {
+              background-color: darkgreen;
+            }
 
             &.selected {
-              background-color: green;
-              border-color: darkgreen;
+              border-color: #888;
 
-              &:hover {
-                color: #fff;
+              .far {
+                color: #888;
               }
             }
           }

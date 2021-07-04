@@ -1,14 +1,23 @@
 <template>
   <div>
-    Intro {{ appType }}
+    <h3>
+      It's important to take the pulse of teams regularly... 
+    </h3>
+    <div>
+      <button class="btn btn-info" @click="setState('questions')">
+        Start
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import bus from '../../socket.js'
+
 export default {
-  computed: {
-    appType() {
-      return this.$store.getters.appType
+  methods: {
+    setState(state) {
+      this.$store.dispatch('updateState', 'questions')
     }
   }
 }

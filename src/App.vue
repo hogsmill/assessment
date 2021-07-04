@@ -14,12 +14,12 @@
         <i class="fas fa-undo" @click="restart()" />
       </h1>
       <div v-if="appType == '5 Dysfunctions'" class="container">
-        <Intro5Dysfunctions />
-        <Questions5Dysfunctions />
+        <Intro5Dysfunctions v-if="state == 'intro'" />
+        <Questions5Dysfunctions v-if="state == 'questions'" />
       </div>
       <div v-if="appType == 'Team Health Check'" class="container">
-        <IntroTeamHealthCheck />
-        <QuestionsTeamHealthCheck />
+        <IntroTeamHealthCheck v-if="state == 'intro'" />
+        <QuestionsTeamHealthCheck v-if="state == 'questions'" />
       </div>
     </div>
   </div>
@@ -74,6 +74,9 @@ export default {
     },
     gameName() {
       return this.$store.getters.getGameName
+    },
+    state() {
+      return this.$store.getters.getGameState
     }
   },
   created() {
@@ -108,7 +111,6 @@ export default {
     })
 
     bus.$on('loadQuestions', (data) => {
-      console.log(data)
       this.$store.dispatch('updateQuestions', data)
     })
   },
