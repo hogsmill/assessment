@@ -3,32 +3,27 @@
     <h2>{{ appType }} - <span v-if="stealth">(Stealth)</span> Facilitator View</h2>
     <Connections />
     <Teams />
+    <FiveDysfunctions />
   </div>
 </template>
 
 <script>
 import Connections from './facilitator/Connections.vue'
 import Teams from './facilitator/Teams.vue'
+import FiveDysfunctions from './facilitator/FiveDysfunctions.vue'
 
 export default {
   components: {
     Connections,
-    Teams
+    Teams,
+    FiveDysfunctions
   },
   computed: {
     appType() {
       return this.$store.getters.appType
     },
-    hostId() {
-      return this.$store.getters.getHostId
-    },
     stealth() {
       return this.$store.getters.getStealth
-    }
-  },
-  methods: {
-    isDev() {
-      return window.location.href.match('localhost')
     }
   }
 }

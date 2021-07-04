@@ -13,8 +13,13 @@
         Game: {{ gameName }}
         <i class="fas fa-undo" @click="restart()" />
       </h1>
-      <div class="container">
-        <Intro />
+      <div v-if="appType == '5 Dysfunctions'" class="container">
+        <Intro5Dysfunctions/>
+        <Questions5Dysfunctions/>
+      </div>
+      <div v-if="appType == 'Team Health Check'" class="container">
+        <IntroTeamHealthCheck />
+        <QuestionsTeamHealthCheck />
       </div>
     </div>
   </div>
@@ -36,7 +41,12 @@ import ConnectionError from './components/error/ConnectionError.vue'
 
 import FacilitatorView from './components/FacilitatorView.vue'
 import GameName from './components/GameName.vue'
-import Intro from './components/game/Intro.vue'
+
+import Intro5Dysfunctions from './components/fiveDysfunctions/Intro.vue'
+import Questions5Dysfunctions from './components/fiveDysfunctions/Questions.vue'
+
+import IntroTeamHealthCheck from './components/teamHealthCheck/Intro.vue'
+import QuestionsTeamHealthCheck from './components/teamHealthCheck/Questions.vue'
 
 export default {
   name: 'App',
@@ -47,7 +57,10 @@ export default {
     ConnectionError,
     FacilitatorView,
     GameName,
-    Intro
+    Intro5Dysfunctions,
+    Questions5Dysfunctions,
+    IntroTeamHealthCheck,
+    QuestionsTeamHealthCheck
   },
   computed: {
     admin() {
@@ -73,6 +86,8 @@ export default {
     const appType = appTypeFuns.get('5 Dysfunctions')
     this.$store.dispatch('updateAppType', appType)
 
+    bus.$emit('sendCheckSystem', {appType: appType})
+
     bus.$emit('sendLoadTeams')
 
     if (location.hostname == 'localhost' && params.isParam('host')) {
@@ -92,6 +107,10 @@ export default {
       this.$store.dispatch('updateTeams', data)
     })
 
+    bus.$on('loadQuestions', (data) => {
+      console.log(data)
+      this.$store.dispatch('updateQuestions', data)
+    })
   },
   methods: {
     show () {

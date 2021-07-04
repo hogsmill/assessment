@@ -10,6 +10,7 @@ const prod = os.hostname() == 'agilesimulations' ? true : false
 const logFile = prod ? process.argv[4] : 'server.log'
 const port = prod ? process.env.VUE_APP_PORT : 3038
 const gameCollection =  prod ? process.env.VUE_APP_COLLECTION : 'fiveDysfunctions'
+const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysfunctionsQuestions'
 
 ON_DEATH(function(signal, err) {
   let logStr = new Date()
@@ -79,8 +80,10 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
   db = client.db('db')
 
   db.createCollection(gameCollection, function(error, collection) {})
+  db.createCollection(questionCollection, function(error, collection) {})
 
   db.gameCollection = db.collection(gameCollection)
+  db.questionCollection = db.collection(questionCollection)
 
   io.on('connection', (socket) => {
     const connection = socket.handshake.headers.host
@@ -102,15 +105,21 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
     // Facilitator
 
+    socket.on('sendCheckSystem', (data) => { dbStore.checkSystem(db, io, data, debugOn) })
+
     socket.on('sendLoadTeams', () => { dbStore.loadTeams(db, io, debugOn) })
 
     socket.on('sendAddTeam', (data) => { dbStore.addTeam(db, io, data, debugOn) })
 
     socket.on('sendUpdateTeamName', (data) => { dbStore.updateTeamName(db, io, data, debugOn) })
 
-    socket.on('sendToggleAssessment', (data) => { dbStore.toggleAssessment(db, io, data, debugOn) })
-
     socket.on('sendDeleteTeam', (data) => { dbStore.deleteTeam(db, io, data, debugOn) })
+
+    socket.on('sendAddQuestion', (data) => { dbStore.addQuestion(db, io, data, debugOn) })
+    
+    socket.on('sendUpdateQuestion', (data) => { dbStore.updateQuestion(db, io, data, debugOn) })
+
+    socket.on('sendDeleteQuestion', (data) => { dbStore.deleteQuestion(db, io, data, debugOn) })
 
   })
 })

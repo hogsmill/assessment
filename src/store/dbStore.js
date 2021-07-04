@@ -1,17 +1,25 @@
 
-
 const { v4: uuidv4 } = require('uuid')
+
+const fiveDysfunctionsFuns = require('./lib/fiveDysfunctions.js')
+const teamHealthCheckFuns = require('./lib/teamHealthCheck.js')
 
 function newTeam(data) {
   return  {
     id: uuidv4(),
     name: data.name,
-    assessments: {
-      fiveDysfunctions: false,
-      teamHealthCheck: false
-    },
     created: new Date().toISOString(),
     lastaccess: new Date().toISOString()
+  }
+}
+
+function newQuestion(data) {
+  return {
+    id: uuidv4(),
+    order: data.order,
+    question: data.question,
+    protected: data.protected,
+    include: true
   }
 }
 
@@ -22,7 +30,48 @@ function _loadTeams(db, io) {
   })
 }
 
+function _loadQuestions(db, io) {
+  db.questionCollection.find().toArray( function(err, res) {
+    if (err) throw err
+    io.emit('loadQuestions', res)
+  })
+}
+
 module.exports = {
+
+  checkSystem: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('checkSystem', data) }
+
+    db.questionCollection.find().toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        _loadQuestions(db, io)
+      } else {
+        let questions = []
+        switch(data.appType) {
+          case '5 Dysfunctions':
+            questions = fiveDysfunctionsFuns.get()
+            break
+          case 'Team Health Check':
+            questions = teamHealthCheckFuns.get()
+            break
+        }
+        for (let i = 0, n = 1; i < questions.length; i++, n++) {
+          data.question = questions[i]
+          data.order = n
+          data.protected = true
+          const question = newQuestion(data)
+          db.questionCollection.insertOne(question, function(err, res) {
+            if (err) throw err
+            if (i == questions.length - 1) {
+              _loadQuestions(db, io)
+            }
+          })
+        }
+      }
+    })
+  },
 
   loadTeams: function(db, io, debugOn) {
 
@@ -52,22 +101,6 @@ module.exports = {
     })
   },
 
-  toggleAssessment: function(db, io, data, debugOn) {
-
-    if (debugOn) { console.log('toggleAssessment', data) }
-
-    db.gameCollection.findOne({id: data.id}, function(err, res) {
-      if (err) throw err
-      if (res) {
-        res.assessments[data.assessment] = !res.assessments[data.assessment]
-      }
-      db.gameCollection.updateOne({id: data.id}, {$set: {assessments: res.assessments}}, function(err, res) {
-        if (err) throw err
-        _loadTeams(db, io)
-      })
-    })
-  },
-
   deleteTeam: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('deleteTeam', data) }
@@ -76,6 +109,62 @@ module.exports = {
       if (err) throw err
       _loadTeams(db, io)
     })
-  }
+  },
 
+  addQuestion: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('addQuestion', data) }
+
+    db.questionCollection.find().toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        data.order = res.length + 1
+        const question = newQuestion(data)
+        db.questionCollection.insertOne(question, function(err, res) {
+          if (err) throw err
+          _loadQuestions(db, io)
+        })
+      }
+    })
+  },
+
+  updateQuestion: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('updateQuestion', data) }
+
+    db.questionCollection.updateOne({id: data.id}, {$set: {question: data.question}}, function(err, res) {
+      if (err) throw err
+      _loadQuestions(db, io)
+    })
+  },
+
+  deleteQuestion: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('deleteQuestion', data) }
+
+    db.questionCollection.findOne({id: data.id}, function(err, delRes) {
+      if (err) throw err
+      const delOrder = delRes.order
+      db.questionCollection.find().toArray(function(err, res) {
+        if (err) throw err
+        if (res.length) {
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].order >= delOrder) {
+              db.questionCollection.updateOne({id: res[i].id}, {$set: {order: res[i].order - 1}}, function(err, res) {
+                if (err) throw err
+              })
+            }
+            if (res[i].id == data.id) {
+              db.questionCollection.deleteOne({id: data.id}, function(err, res) {
+                if (err) throw err
+              })
+            }
+            if (i == res.length -1) {
+              _loadQuestions(db, io)
+            }
+          }
+        }
+      })
+    })
+  }
 }

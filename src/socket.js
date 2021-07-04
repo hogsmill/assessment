@@ -40,6 +40,8 @@ socket.on('updateConnections', (data) => { bus.$emit('updateConnections', data) 
 
 // Send
 
+bus.$on('sendCheckSystem', (data) => { socket.emit('sendCheckSystem', data) })
+
 bus.$on('sendLoadTeams', (data) => { socket.emit('sendLoadTeams', data) })
 
 // Facilitator
@@ -48,12 +50,18 @@ bus.$on('sendAddTeam', (data) => { socket.emit('sendAddTeam', data) })
 
 bus.$on('sendUpdateTeamName', (data) => { socket.emit('sendUpdateTeamName', data) })
 
-bus.$on('sendToggleAssessment', (data) => { socket.emit('sendToggleAssessment', data) })
-
 bus.$on('sendDeleteTeam', (data) => { socket.emit('sendDeleteTeam', data) })
+
+bus.$on('sendAddQuestion', (data) => { socket.emit('sendAddQuestion', data) })
+
+bus.$on('sendUpdateQuestion', (data) => { socket.emit('sendUpdateQuestion', data) })
+
+bus.$on('sendDeleteQuestion', (data) => { socket.emit('sendDeleteQuestion', data) })
 
 // Receive
 
 socket.on('loadTeams', (data) => { bus.$emit('loadTeams', data) })
+
+socket.on('loadQuestions', (data) => { bus.$emit('loadQuestions', data) })
 
 export default bus

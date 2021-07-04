@@ -21,7 +21,8 @@ export const store = new Vuex.Store({
     walkThrough: false,
     host: false,
     gameName: '',
-    teams: []
+    teams: [],
+    questions: []
   },
   getters: {
     thisGame: (state) => {
@@ -63,6 +64,11 @@ export const store = new Vuex.Store({
     getTeams: (state) => {
       return state.teams
     },
+    getQuestions: (state) => {
+      return state.questions.sort((a, b) => {
+        return a.order - b.order
+      })
+    },
     getConnections: (state) => {
       return state.connections
     },
@@ -95,6 +101,9 @@ export const store = new Vuex.Store({
     updateTeams: (state, payload) => {
       state.teams = payload
     },
+    updateQuestions: (state, payload) => {
+      state.questions = payload
+    },
     updateWalkThrough: (state, payload) => {
       state.walkThrough = payload
     },
@@ -124,11 +133,11 @@ export const store = new Vuex.Store({
     updateCurrentTab: ({ commit }, payload) => {
       commit('updateCurrentTab', payload)
     },
-    updateTeams: (state, payload) => {
-      state.teams = payload
-    },
     updateTeams: ({ commit }, payload) => {
       commit('updateTeams', payload)
+    },
+    updateQuestions: ({ commit }, payload) => {
+      commit('updateQuestions', payload)
     },
     updateWalkThrough: ({ commit }, payload) => {
       commit('updateWalkThrough', payload)

@@ -1,0 +1,148 @@
+<template>
+  <table class="facilitator-table questions-table">
+    <tr>
+      <td colspan="2">
+        <h4>5 Dysfunctions</h4>
+        <i v-if="showFiveDysfunctions" @click="setShowFiveDysfunctions(false)" title="collapse" class="fas fa-caret-up toggle" />
+        <i v-if="!showFiveDysfunctions" @click="setShowFiveDysfunctions(true)" title="expand" class="fas fa-caret-down toggle" />
+      </td>
+    </tr>
+    <tr v-if="showFiveDysfunctions">
+      <td>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                Actions
+              </th>
+              <th>
+                Order
+              </th>
+              <th>
+                Question
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(question, index) in questions" :key="index">
+              <td>
+                <div class="actions">
+                  <i v-if="question.protected" class="fas fa-trash-alt" title="Unable to delete system question" />
+                  <i v-if="!question.protected" class="fas fa-trash-alt enabled" :title="'Delete ' + question.order" @click="deleteQuestion(question)" />
+                  <i v-if="editingQuestion != question.id" class="fas fa-edit" @click="setEditingQuestion(question)" />
+                  <i v-if="editingQuestion == question.id" class="fas fa-save" @click="saveQuestion(question)" />
+                  <i v-if="question.order > 1" class="fas fa-arrow-up" title="Move question up" />
+                  <i v-if="question.order < questions.length" class="fas fa-arrow-down" title="Move question down" />
+                </div>
+              </td>
+              <td>
+                {{ question.order }}
+              </td>
+              <td>
+                <div class="question">
+                  <span v-if="editingQuestion != question.id">{{ question.question }}</span>
+                  <input v-if="editingQuestion == question.id" type="text" :id="'question-editing-' + question.id" :value="question.question">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button class="btn btn-sm btn-secondary smaller-font" @click="addQuestion()">
+                  Add New
+                </button>
+              </td>
+              <td>
+                <input type="text" id="new-question">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
+</template>
+
+<script>
+import bus from '../../socket.js'
+
+export default {
+  data() {
+    return {
+      showFiveDysfunctions: false,
+      editingQuestion: null
+    }
+  },
+  computed: {
+    questions() {
+      return this.$store.getters.getQuestions
+    }
+  },
+  created() {
+    bus.$on('openEditPane', (data) => {
+      if (data != 'showFiveDysfunctions') {
+        this.showFiveDysfunctions = false
+      }
+    })
+  },
+  methods: {
+    setShowFiveDysfunctions(val) {
+      this.showFiveDysfunctions = val
+      if (val) {
+        bus.$emit('openEditPane', 'showFiveDysfunctions')
+      }
+    },
+    addQuestion() {
+      const question = document.getElementById('new-question').value
+      bus.$emit('sendAddQuestion', {question: question})
+    },
+    deleteQuestion(question) {
+      if (confirm('Delete question ' + question.order)) {
+        bus.$emit('sendDeleteQuestion', {id: question.id})
+      }
+    },
+    setEditingQuestion(question) {
+      this.editingQuestion = question.id
+    },
+    saveQuestion() {
+      const question = document.getElementById('question-editing-' + this.editingQuestion).value
+      bus.$emit('sendUpdateQuestion', {id: this.editingQuestion, question: question})
+      this.editingQuestion = null
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+  .questions-table {
+    width: 100%;
+    margin: 0 auto;
+
+    th {
+      text-align: center;
+      padding: 2px 6px;
+    }
+
+    td {
+      &.center {
+        text-align: center;
+      }
+
+      .actions {
+        width: 120px;
+        text-align: center;
+
+        .fas {
+          margin: 2px 2px;
+        }
+      }
+
+      .question {
+        width: 600px;
+
+        input {
+          width: 590px;
+        }
+      }
+    }
+  }
+</style>

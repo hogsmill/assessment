@@ -2,7 +2,7 @@
   <table class="facilitator-table teams-table">
     <tr>
       <td colspan="2">
-        <h4>Team</h4>
+        <h4>Teams</h4>
         <i v-if="showTeam" @click="setShowTeam(false)" title="collapse" class="fas fa-caret-up toggle" />
         <i v-if="!showTeam" @click="setShowTeam(true)" title="expand" class="fas fa-caret-down toggle" />
       </td>
@@ -26,12 +26,6 @@
               <th>
                 Team
               </th>
-              <th>
-                5 Dysfunctions
-              </th>
-              <th>
-                Team Health Check
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -49,12 +43,6 @@
                   <span v-if="editingTeam != team.id">{{ team.name }}</span>
                   <input v-if="editingTeam == team.id" type="text" :id="'team-name-editing-' + team.id" :value="team.name">
                 </div>
-              </td>
-              <td class="center">
-                <input type="checkbox" :checked="team.assessments.fiveDysfunctions" @click="toggleAssessment(team.id, 'fiveDysfunctions')">
-              </td>
-              <td class="center">
-                <input type="checkbox" :checked="team.assessments.teamHealthCheck" @click="toggleAssessment(team.id, 'teamHealthCheck')">
               </td>
             </tr>
           </tbody>
@@ -109,9 +97,6 @@ export default {
       const name = document.getElementById('team-name-editing-' + this.editingTeam).value
       bus.$emit('sendUpdateTeamName', {id: this.editingTeam, name: name})
       this.editingTeam = null
-    },
-    toggleAssessment(id, assessment) {
-      bus.$emit('sendToggleAssessment', {id: id, assessment: assessment})
     }
   }
 }
