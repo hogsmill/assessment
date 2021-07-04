@@ -16,10 +16,10 @@ done
 
 REPO="https://github.com/hogsmill/assessment.git"
 APPS=(
-  'five-dysfunctions,fiveDysfunctions,3038,5 Dysfunctions,5 Dysfunctions'
-  'five-dysfunctions-new,fiveDysfunctionsNew,3040,5 Dysfunctions,5 Dysfunctions New'
-  'team-health-check,healthCheck,3039,Team Health Check,Team Health Check'
-  'team-health-check-new,healthCheckNew,3041,Team Health Check,Team Health Check New'
+  'five-dysfunctions,fiveDysfunctions,fiveDysfunctionsQuestions,3038,5 Dysfunctions,5 Dysfunctions'
+  'five-dysfunctions-new,fiveDysfunctionsNew,fiveDysfunctionsNewQuestions,3040,5 Dysfunctions,5 Dysfunctions New'
+  'team-health-check,healthCheck,healthCheckQuestions,3039,Team Health Check,Team Health Check'
+  'team-health-check-new,healthCheckNew,healthCheckNewQuestions,3041,Team Health Check,Team Health Check New'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))
@@ -28,15 +28,16 @@ do
 
   APP=`echo $REC | cut -d, -f1`
   COLLECTION=`echo $REC | cut -d, -f2`
-  PORT=`echo $REC | cut -d, -f3`
-  APPTYPE=`echo $REC | cut -d, -f4`
-  APPNAME=`echo $REC | cut -d, -f5`
+  QUESTIONCOLLECTION=`echo $REC | cut -d, -f3`
+  PORT=`echo $REC | cut -d, -f4`
+  APPTYPE=`echo $REC | cut -d, -f5`
+  APPNAME=`echo $REC | cut -d, -f6`
 
   echo "------------------------------------------------"
   if [ -z "$APPNAME" ]; then
-    echo "Installing $APPTYPE:$APP ($COLLECTION, $PORT)"
+    echo "Installing $APPTYPE:$APP ($COLLECTION, $QUESTIONCOLLECTION, $PORT)"
   else
-    echo "Installing $APPTYPE:$APP ($COLLECTION, $PORT, $APPNAME)"
+    echo "Installing $APPTYPE:$APP ($COLLECTION, $QUESTIONCOLLECTION, $PORT, $APPNAME)"
   fi
   echo "------------------------------------------------"
 
@@ -48,6 +49,7 @@ do
   echo "VUE_APP_PORT=$PORT" > $ENVFILE
   echo "VUE_APP_TYPE=$APPTYPE" >> $ENVFILE
   echo "VUE_APP_COLLECTION=$COLLECTION" >> $ENVFILE
+  echo "VUE_APP_QUESTION_COLLECTION=$QUESTIONCOLLECTION" >> $ENVFILE
   if [ ! -z "$APPNAME" ]; then
     echo "VUE_APP_NAME=$APPNAME" >> $ENVFILE
   fi
