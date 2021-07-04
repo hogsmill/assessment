@@ -103,11 +103,14 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
       emit('updateConnections', {connections: connections, maxConnections: maxConnections})
     })
 
-    // Facilitator
 
     socket.on('sendCheckSystem', (data) => { dbStore.checkSystem(db, io, data, debugOn) })
 
     socket.on('sendLoadTeams', () => { dbStore.loadTeams(db, io, debugOn) })
+
+    socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
+
+    // Facilitator
 
     socket.on('sendAddTeam', (data) => { dbStore.addTeam(db, io, data, debugOn) })
 
@@ -116,8 +119,14 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendDeleteTeam', (data) => { dbStore.deleteTeam(db, io, data, debugOn) })
 
     socket.on('sendAddQuestion', (data) => { dbStore.addQuestion(db, io, data, debugOn) })
-    
+
     socket.on('sendUpdateQuestion', (data) => { dbStore.updateQuestion(db, io, data, debugOn) })
+
+    socket.on('sendUpdateQuestionTitle', (data) => { data.field = 'title'; dbStore.updateQuestion(db, io, data, debugOn) })
+
+    socket.on('sendUpdateQuestionGood', (data) => { data.field = 'good'; dbStore.updateQuestion(db, io, data, debugOn) })
+
+    socket.on('sendUpdateQuestionBad', (data) => { data.field = 'bad'; dbStore.updateQuestion(db, io, data, debugOn) })
 
     socket.on('sendDeleteQuestion', (data) => { dbStore.deleteQuestion(db, io, data, debugOn) })
 

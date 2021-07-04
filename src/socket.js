@@ -44,6 +44,8 @@ bus.$on('sendCheckSystem', (data) => { socket.emit('sendCheckSystem', data) })
 
 bus.$on('sendLoadTeams', (data) => { socket.emit('sendLoadTeams', data) })
 
+bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
+
 // Facilitator
 
 bus.$on('sendAddTeam', (data) => { socket.emit('sendAddTeam', data) })
@@ -55,6 +57,12 @@ bus.$on('sendDeleteTeam', (data) => { socket.emit('sendDeleteTeam', data) })
 bus.$on('sendAddQuestion', (data) => { socket.emit('sendAddQuestion', data) })
 
 bus.$on('sendUpdateQuestion', (data) => { socket.emit('sendUpdateQuestion', data) })
+
+bus.$on('sendUpdateQuestionTitle', (data) => { socket.emit('sendUpdateQuestionTitle', data) })
+
+bus.$on('sendUpdateQuestionGood', (data) => { socket.emit('sendUpdateQuestionGood', data) })
+
+bus.$on('sendUpdateQuestionBad', (data) => { socket.emit('sendUpdateQuestionBad', data) })
 
 bus.$on('sendDeleteQuestion', (data) => { socket.emit('sendDeleteQuestion', data) })
 

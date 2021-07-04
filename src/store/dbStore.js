@@ -80,6 +80,16 @@ module.exports = {
     _loadTeams(db, io)
   },
 
+  setAnswer: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('setAnswer', data) }
+
+    db.questionCollection.updateOne({id: data.id}, {$set: {answer: data.answer}}, function(err, res) {
+      if (err) throw err
+      _loadQuestions(db, io)
+    })
+  },
+
   addTeam: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('addTeam', data) }
@@ -132,10 +142,24 @@ module.exports = {
 
     if (debugOn) { console.log('updateQuestion', data) }
 
-    db.questionCollection.updateOne({id: data.id}, {$set: {question: data.question}}, function(err, res) {
-      if (err) throw err
-      _loadQuestions(db, io)
-    })
+    if (data.field) {
+      db.questionCollection.findOne({id: data.id}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const question = res.question
+          question[data.field] = data.value
+          db.questionCollection.updateOne({id: data.id}, {$set: {question: question}}, function(err, res) {
+            if (err) throw err
+            _loadQuestions(db, io)
+          })
+        }
+      })
+    } else {
+      db.questionCollection.updateOne({id: data.id}, {$set: {question: data.question}}, function(err, res) {
+        if (err) throw err
+        _loadQuestions(db, io)
+      })
+    }
   },
 
   deleteQuestion: function(db, io, data, debugOn) {

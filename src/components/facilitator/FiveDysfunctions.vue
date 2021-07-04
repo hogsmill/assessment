@@ -13,10 +13,10 @@
           <thead>
             <tr>
               <th>
-                Actions
+                Order
               </th>
               <th>
-                Order
+                Actions
               </th>
               <th>
                 Question
@@ -26,6 +26,9 @@
           <tbody>
             <tr v-for="(question, index) in questions" :key="index">
               <td>
+                {{ question.order }}
+              </td>
+              <td>
                 <div class="actions">
                   <i v-if="question.protected" class="fas fa-trash-alt" title="Unable to delete system question" />
                   <i v-if="!question.protected" class="fas fa-trash-alt enabled" :title="'Delete ' + question.order" @click="deleteQuestion(question)" />
@@ -34,9 +37,6 @@
                   <i v-if="question.order > 1" class="fas fa-arrow-up" title="Move question up" />
                   <i v-if="question.order < questions.length" class="fas fa-arrow-down" title="Move question down" />
                 </div>
-              </td>
-              <td>
-                {{ question.order }}
               </td>
               <td>
                 <div class="question">

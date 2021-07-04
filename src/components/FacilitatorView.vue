@@ -3,7 +3,8 @@
     <h2>{{ appType }} - <span v-if="stealth">(Stealth)</span> Facilitator View</h2>
     <Connections />
     <Teams />
-    <FiveDysfunctions />
+    <FiveDysfunctions v-if="appType == '5 Dysfunctions'" />
+    <TeamHealthCheck v-if="appType == 'Team Health Check'" />
   </div>
 </template>
 
@@ -11,12 +12,14 @@
 import Connections from './facilitator/Connections.vue'
 import Teams from './facilitator/Teams.vue'
 import FiveDysfunctions from './facilitator/FiveDysfunctions.vue'
+import TeamHealthCheck from './facilitator/TeamHealthCheck.vue'
 
 export default {
   components: {
     Connections,
     Teams,
-    FiveDysfunctions
+    FiveDysfunctions,
+    TeamHealthCheck
   },
   computed: {
     appType() {

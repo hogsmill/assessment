@@ -14,8 +14,8 @@
         <i class="fas fa-undo" @click="restart()" />
       </h1>
       <div v-if="appType == '5 Dysfunctions'" class="container">
-        <Intro5Dysfunctions/>
-        <Questions5Dysfunctions/>
+        <Intro5Dysfunctions />
+        <Questions5Dysfunctions />
       </div>
       <div v-if="appType == 'Team Health Check'" class="container">
         <IntroTeamHealthCheck />
