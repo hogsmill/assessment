@@ -9,10 +9,10 @@
           <h3>
             {{ question.question.title }}
           </h3>
-          <div>
+          <div class="good">
             {{ question.question.good }}
           </div>
-          <div>
+          <div class="bad">
             {{ question.question.bad }}
           </div>
           <div class="buttons">
@@ -90,6 +90,10 @@ export default {
         margin: auto auto;
         width: 500px;
         display: inline-block;
+
+        .good, .bad {
+          margin: 24px 2px;
+        }
 
         .buttons {
           margin: 24px;
