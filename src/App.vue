@@ -138,7 +138,10 @@ export default {
       bus.$emit('sendSetContext', {gameName: this.gameName, context: context})
     },
     restart() {
-      bus.$emit('sendRestart')
+      if (confirm('Restart this assessment')) {
+        bus.$emit('sendRestart')
+        this.$store.dispatch('updateState', 'intro')
+      }
     }
   }
 }

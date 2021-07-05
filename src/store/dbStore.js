@@ -138,13 +138,13 @@ module.exports = {
 
     if (debugOn) { console.log('restart') }
 
-    db.questionCollection.find().toArray(function(err, res) {
+    db.questionCollection.find().toArray(function(err, qRes) {
       if (err) throw err
-      if (res.length) {
-        for (let i = 0; i < res.length; i++) {
-          db.questionCollection.updateOne({'_id': res._id}, {$set: {answer: null}}, function(err, res) {
+      if (qRes.length) {
+        for (let i = 0; i < qRes.length; i++) {
+          db.questionCollection.updateOne({'_id': qRes[i]._id}, {$set: {answer: null}}, function(err, res) {
             if (err) throw err
-            if (i == res.length -1) {
+            if (i == qRes.length - 1) {
               _loadQuestions(db, io)
             }
           })
