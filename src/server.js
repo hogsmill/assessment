@@ -114,6 +114,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
 
+    socket.on('sendRestart', () => { dbStore.restart(db, io, debugOn) })
+
     // Facilitator
 
     socket.on('sendUpdateServerScope', (data) => { dbStore.updateServerScope(db, io, data, debugOn) })

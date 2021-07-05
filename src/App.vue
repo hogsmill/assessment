@@ -138,7 +138,7 @@ export default {
       bus.$emit('sendSetContext', {gameName: this.gameName, context: context})
     },
     restart() {
-      console.log('restarting')
+      bus.$emit('sendRestart')
     }
   }
 }

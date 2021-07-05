@@ -48,6 +48,8 @@ bus.$on('sendLoadTeams', (data) => { socket.emit('sendLoadTeams', data) })
 
 bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
 
+bus.$on('sendRestart', () => { socket.emit('sendRestart') })
+
 // Facilitator
 
 bus.$on('sendUpdateServerScope', (data) => { socket.emit('sendUpdateServerScope', data) })

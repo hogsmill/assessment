@@ -134,6 +134,25 @@ module.exports = {
     })
   },
 
+  restart: function(db, io, debugOn) {
+
+    if (debugOn) { console.log('restart') }
+
+    db.questionCollection.find().toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        for (let i = 0; i < res.length; i++) {
+          db.questionCollection.updateOne({'_id': res._id}, {$set: {answer: null}}, function(err, res) {
+            if (err) throw err
+            if (i == res.length -1) {
+              _loadQuestions(db, io)
+            }
+          })
+        }
+      }
+    })
+  },
+
   addTeam: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('addTeam', data) }
