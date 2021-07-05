@@ -9,6 +9,7 @@ const os = require('os')
 const prod = os.hostname() == 'agilesimulations' ? true : false
 const logFile = prod ? process.argv[4] : 'server.log'
 const port = prod ? process.env.VUE_APP_PORT : 3038
+const serverCollection =  prod ? process.env.VUE_APP_SERVER_COLLECTION : 'fiveDysfunctionsServer'
 const gameCollection =  prod ? process.env.VUE_APP_COLLECTION : 'fiveDysfunctions'
 const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysfunctionsQuestions'
 
@@ -79,9 +80,11 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
   if (err) throw err
   db = client.db('db')
 
+  db.createCollection(serverCollection, function(error, collection) {})
   db.createCollection(gameCollection, function(error, collection) {})
   db.createCollection(questionCollection, function(error, collection) {})
 
+  db.serverCollection = db.collection(serverCollection)
   db.gameCollection = db.collection(gameCollection)
   db.questionCollection = db.collection(questionCollection)
 
@@ -103,6 +106,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
       emit('updateConnections', {connections: connections, maxConnections: maxConnections})
     })
 
+    socket.on('sendCheckServer', () => { dbStore.checkServer(db, io, debugOn) })
 
     socket.on('sendCheckSystem', (data) => { dbStore.checkSystem(db, io, data, debugOn) })
 
@@ -111,6 +115,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
 
     // Facilitator
+
+    socket.on('sendUpdateServerScope', (data) => { dbStore.updateServerScope(db, io, data, debugOn) })
 
     socket.on('sendAddTeam', (data) => { dbStore.addTeam(db, io, data, debugOn) })
 

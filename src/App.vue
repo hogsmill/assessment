@@ -3,14 +3,14 @@
     <Header />
     <ClearStorage />
     <ConnectionError />
-    <GameName />
+    <GameName v-if="server.scope == 'organisation'" />
     <WalkThroughView />
     <div v-if="currentTab == 'facilitator'">
       <FacilitatorView />
     </div>
     <div v-if="currentTab == 'game'" class="main">
       <h1>
-        Game: {{ gameName }}
+        {{ appType }}
         <i class="fas fa-undo" @click="restart()" />
       </h1>
       <div v-if="appType == '5 Dysfunctions'" class="container">
@@ -77,6 +77,9 @@ export default {
     },
     state() {
       return this.$store.getters.getGameState
+    },
+    server() {
+      return this.$store.getters.getServer
     }
   },
   created() {
@@ -90,6 +93,7 @@ export default {
     this.$store.dispatch('updateAppType', appType)
 
     bus.$emit('sendCheckSystem', {appType: appType})
+    bus.$emit('sendCheckServer')
 
     bus.$emit('sendLoadTeams')
 
@@ -104,6 +108,10 @@ export default {
     bus.$on('updateConnections', (data) => {
       this.$store.dispatch('updateConnectionError', null)
       this.$store.dispatch('updateConnections', data)
+    })
+
+    bus.$on('loadServer', (data) => {
+      this.$store.dispatch('updateServer', data)
     })
 
     bus.$on('loadTeams', (data) => {

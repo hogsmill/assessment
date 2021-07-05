@@ -4,6 +4,15 @@ const { v4: uuidv4 } = require('uuid')
 const fiveDysfunctionsFuns = require('./lib/fiveDysfunctions.js')
 const teamHealthCheckFuns = require('./lib/teamHealthCheck.js')
 
+function newServer(data) {
+  return  {
+    id: uuidv4(),
+    scope: 'individual',
+    created: new Date().toISOString(),
+    lastaccess: new Date().toISOString()
+  }
+}
+
 function newTeam(data) {
   return  {
     id: uuidv4(),
@@ -23,6 +32,13 @@ function newQuestion(data) {
   }
 }
 
+function _loadServer(db, io) {
+  db.serverCollection.findOne({}, function(err, res) {
+    if (err) throw err
+    io.emit('loadServer', res)
+  })
+}
+
 function _loadTeams(db, io) {
   db.gameCollection.find().toArray( function(err, res) {
     if (err) throw err
@@ -38,6 +54,34 @@ function _loadQuestions(db, io) {
 }
 
 module.exports = {
+
+  checkServer: function(db, io, debugOn) {
+
+    if (debugOn) { console.log('checkServer') }
+
+    db.serverCollection.findOne({}, function(err, res) {
+      if (err) throw err
+      if (res) {
+        _loadServer(db, io)
+      } else {
+        const server = newServer()
+        db.serverCollection.insertOne(server, function(err, res) {
+          if (err) throw err
+          _loadServer(db, io)
+        })
+      }
+    })
+  },
+
+  updateServerScope: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('updateServerScope', data) }
+
+    db.serverCollection.updateOne({}, {$set: {scope: data.scope}}, function(err, res) {
+      if (err) throw err
+      _loadServer(db, io)
+    })
+  },
 
   checkSystem: function(db, io, data, debugOn) {
 
