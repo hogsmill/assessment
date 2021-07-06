@@ -91,12 +91,37 @@
             </tr>
             <tr>
               <td colspan="2">
-                <button class="btn btn-sm btn-secondary smaller-font" @click="addQuestion()">
-                  Add New
-                </button>
-              </td>
-              <td>
-                <input type="text" id="new-question">
+                <table>
+                  <tr>
+                    <td rowspan="3">
+                      <button class="btn btn-sm btn-secondary smaller-font" @click="addQuestion()">
+                        Add New
+                      </button>
+                    </td>
+                    <td>
+                      Title
+                    </td>
+                    <td>
+                      <input type="text" id="new-question-title">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Good
+                    </td>
+                    <td>
+                      <input type="text" id="new-question-good">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Bad
+                    </td>
+                    <td>
+                      <input type="text" id="new-question-bad">
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </tbody>

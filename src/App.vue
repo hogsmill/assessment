@@ -13,14 +13,9 @@
         {{ appType }}
         <i class="fas fa-undo" @click="restart()" />
       </h1>
-      <div v-if="appType == '5 Dysfunctions'" class="container">
-        <Intro5Dysfunctions v-if="state == 'intro'" />
-        <Questions5Dysfunctions v-if="state == 'questions'" />
-      </div>
-      <div v-if="appType == 'Team Health Check'" class="container">
-        <IntroTeamHealthCheck v-if="state == 'intro'" />
-        <QuestionsTeamHealthCheck v-if="state == 'questions'" />
-      </div>
+      <Intro v-if="state == 'intro'" />
+      <Questions v-if="state == 'questions'" />
+      <Results v-if="state == 'results'" />
     </div>
   </div>
 </template>
@@ -33,6 +28,7 @@ import io from 'socket.io-client'
 import ls from './lib/localStorage.js'
 import params from './lib/params.js'
 import appTypeFuns from './lib/appType.js'
+import session from './lib/session.js'
 
 import Header from './components/Header.vue'
 import ClearStorage from './components/ClearStorage.vue'
@@ -42,11 +38,9 @@ import ConnectionError from './components/error/ConnectionError.vue'
 import FacilitatorView from './components/FacilitatorView.vue'
 import GameName from './components/GameName.vue'
 
-import Intro5Dysfunctions from './components/fiveDysfunctions/Intro.vue'
-import Questions5Dysfunctions from './components/fiveDysfunctions/Questions.vue'
-
-import IntroTeamHealthCheck from './components/teamHealthCheck/Intro.vue'
-import QuestionsTeamHealthCheck from './components/teamHealthCheck/Questions.vue'
+import Intro from './components/assessment/Intro.vue'
+import Questions from './components/assessment/Questions.vue'
+import Results from './components/assessment/Results.vue'
 
 export default {
   name: 'App',
@@ -57,14 +51,16 @@ export default {
     ConnectionError,
     FacilitatorView,
     GameName,
-    Intro5Dysfunctions,
-    Questions5Dysfunctions,
-    IntroTeamHealthCheck,
-    QuestionsTeamHealthCheck
+    Intro,
+    Questions,
+    Results
   },
   computed: {
     admin() {
       return this.$store.getters.getAdmin
+    },
+    lsSuffix() {
+      return this.$store.getters.lsSuffix
     },
     appType() {
       return this.$store.getters.appType
@@ -91,6 +87,8 @@ export default {
 
     const appType = appTypeFuns.get('5 Dysfunctions')
     this.$store.dispatch('updateAppType', appType)
+
+    session.store(this.$store, this.lsSuffix)
 
     bus.$emit('sendCheckSystem', {appType: appType})
     bus.$emit('sendCheckServer')
@@ -139,6 +137,7 @@ export default {
     },
     restart() {
       if (confirm('Restart this assessment')) {
+        session.clear(this.$store, this.lsSuffix)
         bus.$emit('sendRestart')
         this.$store.dispatch('updateState', 'intro')
       }

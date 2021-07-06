@@ -46,13 +46,15 @@ bus.$on('sendCheckSystem', (data) => { socket.emit('sendCheckSystem', data) })
 
 bus.$on('sendLoadTeams', (data) => { socket.emit('sendLoadTeams', data) })
 
+bus.$on('sendCreateAssessment', (data) => { socket.emit('sendCreateAssessment', data) })
+
 bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
 
 bus.$on('sendRestart', () => { socket.emit('sendRestart') })
 
 // Facilitator
 
-bus.$on('sendUpdateServerScope', (data) => { socket.emit('sendUpdateServerScope', data) })
+bus.$on('sendUpdateServer', (data) => { socket.emit('sendUpdateServer', data) })
 
 bus.$on('sendAddTeam', (data) => { socket.emit('sendAddTeam', data) })
 

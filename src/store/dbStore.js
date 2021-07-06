@@ -73,11 +73,13 @@ module.exports = {
     })
   },
 
-  updateServerScope: function(db, io, data, debugOn) {
+  updateServer: function(db, io, data, debugOn) {
 
-    if (debugOn) { console.log('updateServerScope', data) }
+    if (debugOn) { console.log('updateServer', data) }
 
-    db.serverCollection.updateOne({}, {$set: {scope: data.scope}}, function(err, res) {
+    const update = {}
+    update[data.field] = data.value
+    db.serverCollection.updateOne({}, {$set: update}, function(err, res) {
       if (err) throw err
       _loadServer(db, io)
     })
@@ -122,6 +124,16 @@ module.exports = {
     if (debugOn) { console.log('loadTeams') }
 
     _loadTeams(db, io)
+  },
+
+  createAssessment: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('createAssessment', data) }
+
+    data.questions = []
+    db.assessmentsCollection.insertOne(data, function(err, res) {
+      if (err) throw err
+    })
   },
 
   setAnswer: function(db, io, data, debugOn) {

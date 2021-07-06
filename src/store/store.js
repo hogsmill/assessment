@@ -22,6 +22,11 @@ export const store = new Vuex.Store({
     server: {},
     gameName: '',
     state: 'intro',
+    assessment: null,
+    team: null,
+    month: null,
+    quarter: null,
+    year: null,
     teams: [],
     questions: []
   },
@@ -76,6 +81,21 @@ export const store = new Vuex.Store({
         return a.order - b.order
       })
     },
+    getTeam: (state) => {
+      return state.team
+    },
+    getMonth: (state) => {
+      return state.month
+    },
+    getQuarter: (state) => {
+      return state.quarter
+    },
+    getYear: (state) => {
+      return state.year
+    },
+    getAssessment: (state) => {
+      return state.assessment
+    },
     getConnections: (state) => {
       return state.connections
     },
@@ -117,6 +137,21 @@ export const store = new Vuex.Store({
     updateQuestions: (state, payload) => {
       state.questions = payload
     },
+    updateTeam: (state, payload) => {
+      state.team = payload
+    },
+    updateMonth: (state, payload) => {
+      state.month = payload
+    },
+    updateQuarter: (state, payload) => {
+      state.quarter = payload
+    },
+    updateYear: (state, payload) => {
+      state.year = payload
+    },
+    updateAssessment: (state, payload) => {
+      state.assessment = payload
+    },
     updateWalkThrough: (state, payload) => {
       state.walkThrough = payload
     },
@@ -157,6 +192,21 @@ export const store = new Vuex.Store({
     },
     updateQuestions: ({ commit }, payload) => {
       commit('updateQuestions', payload)
+    },
+    updateTeam: ({ commit }, payload) => {
+      commit('updateTeam', payload)
+    },
+    updateMonth: ({ commit }, payload) => {
+      commit('updateMonth', payload)
+    },
+    updateQuarter: ({ commit }, payload) => {
+      commit('updateQuarter', payload)
+    },
+    updateYear: ({ commit }, payload) => {
+      commit('updateYear', payload)
+    },
+    updateAssessment: ({ commit }, payload) => {
+      commit('updateAssessment', payload)
     },
     updateWalkThrough: ({ commit }, payload) => {
       commit('updateWalkThrough', payload)

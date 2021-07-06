@@ -8,7 +8,7 @@
       </td>
     </tr>
     <tr v-if="showServer">
-      <td rowspan="2">
+      <td>
         Scope
       </td>
       <td>
@@ -21,6 +21,24 @@
           </option>
           <option value="organisation">
             Organisation (Internal team assessments)
+          </option>
+        </select>
+      </td>
+    </tr>
+    <tr v-if="showServer && server.scope == 'organisation'">
+      <td>
+        Frequency
+      </td>
+      <td>
+        <select id="server-frequency-select" :value="server.frequency" @change="setFrequency()">
+          <option value="">
+            One-Off
+          </option>
+          <option value="monthly">
+            Monthly
+          </option>
+          <option value="quarterly">
+            Quarterly
           </option>
         </select>
       </td>
@@ -48,7 +66,11 @@ export default {
     },
     setScope() {
       const scope = document.getElementById('server-scope-select').value
-      bus.$emit('sendUpdateServerScope', {scope: scope})
+      bus.$emit('sendUpdateServer', {field: 'scope', value: scope})
+    },
+    setFrequency() {
+      const frequency = document.getElementById('server-frequency-select').value
+      bus.$emit('sendUpdateServer', {field: 'frequency', value: frequency})
     }
   }
 }

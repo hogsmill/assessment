@@ -4,6 +4,7 @@
     <Connections />
     <Server />
     <Teams />
+    <Members />
     <FiveDysfunctions v-if="appType == '5 Dysfunctions'" />
     <TeamHealthCheck v-if="appType == 'Team Health Check'" />
   </div>
@@ -13,6 +14,7 @@
 import Connections from './facilitator/Connections.vue'
 import Server from './facilitator/Server.vue'
 import Teams from './facilitator/Teams.vue'
+import Members from './facilitator/Members.vue'
 import FiveDysfunctions from './facilitator/FiveDysfunctions.vue'
 import TeamHealthCheck from './facilitator/TeamHealthCheck.vue'
 
@@ -21,6 +23,7 @@ export default {
     Connections,
     Server,
     Teams,
+    Members,
     FiveDysfunctions,
     TeamHealthCheck
   },

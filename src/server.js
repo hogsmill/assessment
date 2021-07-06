@@ -12,6 +12,7 @@ const port = prod ? process.env.VUE_APP_PORT : 3038
 const serverCollection =  prod ? process.env.VUE_APP_SERVER_COLLECTION : 'fiveDysfunctionsServer'
 const gameCollection =  prod ? process.env.VUE_APP_COLLECTION : 'fiveDysfunctions'
 const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysfunctionsQuestions'
+const assessmentsCollection =  prod ? process.env.VUE_APP_ASSESSMENTS_COLLECTION : 'fiveDysfunctionsAssessments'
 
 ON_DEATH(function(signal, err) {
   let logStr = new Date()
@@ -83,10 +84,12 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
   db.createCollection(serverCollection, function(error, collection) {})
   db.createCollection(gameCollection, function(error, collection) {})
   db.createCollection(questionCollection, function(error, collection) {})
+  db.createCollection(assessmentsCollection, function(error, collection) {})
 
   db.serverCollection = db.collection(serverCollection)
   db.gameCollection = db.collection(gameCollection)
   db.questionCollection = db.collection(questionCollection)
+  db.assessmentsCollection = db.collection(assessmentsCollection)
 
   io.on('connection', (socket) => {
     const connection = socket.handshake.headers.host
@@ -112,13 +115,15 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
     socket.on('sendLoadTeams', () => { dbStore.loadTeams(db, io, debugOn) })
 
+    socket.on('sendCreateAssessment', (data) => { dbStore.createAssessment(db, io, data, debugOn) })
+
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
 
     socket.on('sendRestart', () => { dbStore.restart(db, io, debugOn) })
 
     // Facilitator
 
-    socket.on('sendUpdateServerScope', (data) => { dbStore.updateServerScope(db, io, data, debugOn) })
+    socket.on('sendUpdateServer', (data) => { dbStore.updateServer(db, io, data, debugOn) })
 
     socket.on('sendAddTeam', (data) => { dbStore.addTeam(db, io, data, debugOn) })
 
