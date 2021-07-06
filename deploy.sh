@@ -16,10 +16,10 @@ done
 
 REPO="https://github.com/hogsmill/assessment.git"
 APPS=(
-  'five-dysfunctions,fiveDysfunctionsServer,fiveDysfunctions,fiveDysfunctionsQuestions,3038,5 Dysfunctions,5 Dysfunctions'
-  'five-dysfunctions-new,fiveDysfunctionsNewServer,fiveDysfunctionsNew,fiveDysfunctionsNewQuestions,3040,5 Dysfunctions,5 Dysfunctions New'
-  'team-health-check,healthCheckServer,healthCheck,healthCheckQuestions,3039,Team Health Check,Team Health Check'
-  'team-health-check-new,healthCheckNewServer,healthCheckNew,healthCheckQuestionsNew,3041,Team Health Check,Team Health Check New'
+  'five-dysfunctions,fiveDysfunctionsServer,fiveDysfunctions,fiveDysfunctionsQuestions,fiveDysfunctionsAssessments,3038,5 Dysfunctions,5 Dysfunctions'
+  'five-dysfunctions-new,fiveDysfunctionsNewServer,fiveDysfunctionsNew,fiveDysfunctionsNewQuestions,fiveDysfunctionsNewAssessments,3040,5 Dysfunctions,5 Dysfunctions New'
+  'team-health-check,healthCheckServer,healthCheck,healthCheckQuestions,healthCheckAssessments,3039,Team Health Check,Team Health Check'
+  'team-health-check-new,healthCheckNewServer,healthCheckNew,healthCheckQuestionsNew,healthCheckNewAssessments,3041,Team Health Check,Team Health Check New'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))
@@ -30,15 +30,16 @@ do
   SERVERCOLLECTION=`echo $REC | cut -d, -f2`
   COLLECTION=`echo $REC | cut -d, -f3`
   QUESTIONCOLLECTION=`echo $REC | cut -d, -f4`
-  PORT=`echo $REC | cut -d, -f5`
-  APPTYPE=`echo $REC | cut -d, -f6`
-  APPNAME=`echo $REC | cut -d, -f7`
+  ASSESSMENTSCOLLECTION=`echo $REC | cut -d, -f5`
+  PORT=`echo $REC | cut -d, -f6`
+  APPTYPE=`echo $REC | cut -d, -f7`
+  APPNAME=`echo $REC | cut -d, -f8`
 
   echo "------------------------------------------------"
   if [ -z "$APPNAME" ]; then
-    echo "Installing $APPTYPE:$APP ($SERVERCOLLECTION, $COLLECTION, $QUESTIONCOLLECTION, $PORT)"
+    echo "Installing $APPTYPE:$APP ($SERVERCOLLECTION, $COLLECTION, $QUESTIONCOLLECTION, $ASSESSMENTSCOLLECTION, $PORT)"
   else
-    echo "Installing $APPTYPE:$APP ($SERVERCOLLECTION, $COLLECTION, $QUESTIONCOLLECTION, $PORT, $APPNAME)"
+    echo "Installing $APPTYPE:$APP ($SERVERCOLLECTION, $COLLECTION, $QUESTIONCOLLECTION, $ASSESSMENTSCOLLECTION, $PORT, $APPNAME)"
   fi
   echo "------------------------------------------------"
 
@@ -52,6 +53,7 @@ do
   echo "VUE_APP_SERVER_COLLECTION=$SERVERCOLLECTION" >> $ENVFILE
   echo "VUE_APP_COLLECTION=$COLLECTION" >> $ENVFILE
   echo "VUE_APP_QUESTION_COLLECTION=$QUESTIONCOLLECTION" >> $ENVFILE
+  echo "VUE_APP_ASSESSMENTS_COLLECTION=$ASSESSMENTSCOLLECTION" >> $ENVFILE
   if [ ! -z "$APPNAME" ]; then
     echo "VUE_APP_NAME=$APPNAME" >> $ENVFILE
   fi
