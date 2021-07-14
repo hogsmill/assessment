@@ -14,7 +14,9 @@ do
   shift
 done
 
-echo "*** Do a git pull and deploy -f if you've updated deploy.sh! ***"
+echo "----------------------------------------------------------------"
+echo "*** Note: Do a git pull and deploy -f if you've updated deploy.sh! ***"
+echo "----------------------------------------------------------------"
 
 REPO="https://github.com/hogsmill/assessment.git"
 APPS=(
