@@ -14,6 +14,8 @@ do
   shift
 done
 
+echo "*** Do a git pull and deploy -f if you've updated deploy.sh! ***"
+
 REPO="https://github.com/hogsmill/assessment.git"
 APPS=(
   'five-dysfunctions,fiveDysfunctionsServer,fiveDysfunctionsTeams,fiveDysfunctionsQuestions,fiveDysfunctionsAssessments,3038,5 Dysfunctions,5 Dysfunctions'
