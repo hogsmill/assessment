@@ -1,6 +1,6 @@
 <template>
   <div class="questions">
-    <div v-for="(question, index) in questions" :key="index" class="question-block">
+    <div v-for="(question, index) in assessment.questions" :key="index" class="question-block">
       <div v-if="question.order == order">
         <div class="prev">
           <i v-if="order > 1" class="fas fa-arrow-circle-left" title="Previous question" @click="prev()" />
@@ -8,8 +8,8 @@
         <Question5Dysfunctions v-if="appType == '5 Dysfunctions'" :question="question" />
         <QuestionTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
         <div class="next">
-          <i v-if="order < questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
-          <i v-if="true || order == questions.length" class="fas fa-poll-h" title="Go to Results" @click="setState('results')" />
+          <i v-if="order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
+          <i v-if="true || order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="setState('results')" />
         </div>
       </div>
     </div>
@@ -36,8 +36,8 @@ export default {
     appType() {
       return this.$store.getters.appType
     },
-    questions() {
-      return this.$store.getters.getQuestions
+    assessment() {
+      return this.$store.getters.getAssessment
     }
   },
   methods: {

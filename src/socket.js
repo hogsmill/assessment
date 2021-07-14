@@ -54,6 +54,8 @@ bus.$on('sendLoadAssessment', (data) => { socket.emit('sendLoadAssessment', data
 
 bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
 
+bus.$on('sendGetResults', (data) => { socket.emit('sendGetResults', data) })
+
 bus.$on('sendRestart', () => { socket.emit('sendRestart') })
 
 // Facilitator
@@ -82,6 +84,10 @@ bus.$on('sendUpdateQuestionGood', (data) => { socket.emit('sendUpdateQuestionGoo
 
 bus.$on('sendUpdateQuestionBad', (data) => { socket.emit('sendUpdateQuestionBad', data) })
 
+bus.$on('sendUpdateQuestionQuestion', (data) => { socket.emit('sendUpdateQuestionQuestion', data) })
+
+bus.$on('sendUpdateQuestionDysfunction', (data) => { socket.emit('sendUpdateQuestionDysfunction', data) })
+
 bus.$on('sendDeleteQuestion', (data) => { socket.emit('sendDeleteQuestion', data) })
 
 // Receive
@@ -93,5 +99,7 @@ socket.on('loadTeams', (data) => { bus.$emit('loadTeams', data) })
 socket.on('loadQuestions', (data) => { bus.$emit('loadQuestions', data) })
 
 socket.on('loadAssessment', (data) => { bus.$emit('loadAssessment', data) })
+
+socket.on('loadResults', (data) => { bus.$emit('loadResults', data) })
 
 export default bus

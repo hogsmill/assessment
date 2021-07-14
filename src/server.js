@@ -123,6 +123,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
 
+    socket.on('sendGetResults', (data) => { dbStore.getResults(db, io, data, debugOn) })
+
     socket.on('sendRestart', () => { dbStore.restart(db, io, debugOn) })
 
     // Facilitator
@@ -150,6 +152,10 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendUpdateQuestionGood', (data) => { data.field = 'good'; dbStore.updateQuestion(db, io, data, debugOn) })
 
     socket.on('sendUpdateQuestionBad', (data) => { data.field = 'bad'; dbStore.updateQuestion(db, io, data, debugOn) })
+
+    socket.on('sendUpdateQuestionQuestion', (data) => { data.field = 'question'; dbStore.updateQuestion(db, io, data, debugOn) })
+
+    socket.on('sendUpdateQuestionDysfunction', (data) => { data.field = 'dysfunction'; dbStore.updateQuestion(db, io, data, debugOn) })
 
     socket.on('sendDeleteQuestion', (data) => { dbStore.deleteQuestion(db, io, data, debugOn) })
 

@@ -1,7 +1,7 @@
 <template>
   <div class="five-dysfunctions-question">
     <div>
-      {{ question.question }}
+      {{ question.question.question }}
     </div>
     <div class="buttons">
       <button class="btn btn-info" :class="{ 'selected': question.answer == 'always'}" @click="answer(question.id, 'always')">
@@ -24,9 +24,17 @@ export default {
   props: [
     'question'
   ],
+  computed: {
+    assessmentId() {
+      return this.$store.getters.getAssessmentId
+    }
+  },
+  created() {
+    console.log(this.question)
+  },
   methods: {
     answer(id, answer) {
-      bus.$emit('sendSetAnswer', {id: id, answer: answer})
+      bus.$emit('sendSetAnswer', {id: this.assessmentId, questionId: id, answer: answer})
     }
   }
 }

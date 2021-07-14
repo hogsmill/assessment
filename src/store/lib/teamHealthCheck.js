@@ -54,7 +54,7 @@ const questions = [
 
 module.exports = {
 
-  get: function() {
+  questions: function() {
     return questions
   }
 

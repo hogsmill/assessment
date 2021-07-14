@@ -29,7 +29,9 @@ export const store = new Vuex.Store({
     quarter: null,
     year: null,
     teams: [],
-    questions: []
+    questions: [],
+    dysfunctions: [],
+    results: {}
   },
   getters: {
     thisGame: (state) => {
@@ -94,6 +96,12 @@ export const store = new Vuex.Store({
         return a.order - b.order
       })
     },
+    getDysfunctions: (state) => {
+      return state.dysfunctions
+    },
+    getResults: (state) => {
+      return state.results
+    },
     getTeam: (state) => {
       return state.team
     },
@@ -153,6 +161,12 @@ export const store = new Vuex.Store({
     updateQuestions: (state, payload) => {
       state.questions = payload
     },
+    updateDysfunctions: (state, payload) => {
+      state.dysfunctions = payload
+    },
+    updateResults: (state, payload) => {
+      state.results = payload
+    },
     updateTeam: (state, payload) => {
       state.team = payload
     },
@@ -211,6 +225,12 @@ export const store = new Vuex.Store({
     },
     updateQuestions: ({ commit }, payload) => {
       commit('updateQuestions', payload)
+    },
+    updateDysfunctions: ({ commit }, payload) => {
+      commit('updateDysfunctions', payload)
+    },
+    updateResults: ({ commit }, payload) => {
+      commit('updateResults', payload)
     },
     updateTeam: ({ commit }, payload) => {
       commit('updateTeam', payload)

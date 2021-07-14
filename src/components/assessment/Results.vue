@@ -7,14 +7,22 @@
       <i v-if="server.scope == 'organisation'" class="fas fa-industry" title="Organisation results" />
     </h3>
     <Details v-if="server.scope == 'individual'" />
-    <div v-for="(question, index) in questions" class="results" :key="index">
-      <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :question="question" />
-      <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
+    <div v-if="appType == '5 Dysfunctions'">
+      <div v-for="(dysfunction, index) in Object.keys(results)" class="results" :key="index">
+        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :dysfunction="dysfunction" :value="results[dysfunction]" />
+      </div>
+    </div>
+    <div v-if="appType == 'Team Health Check'">
+      <div v-for="(question, index) in questions" class="results" :key="index">
+        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import bus from '../../socket.js'
+
 import mailFuns from '../../lib/mail.js'
 
 import fiveDysfunctions from '../../lib/fiveDysfunctions.js'
@@ -37,12 +45,29 @@ export default {
     questions() {
       return this.$store.getters.getQuestions
     },
+    dysfunctions() {
+      return this.$store.getters.getDysfunctions
+    },
     server() {
       return this.$store.getters.getServer
     },
     assessment() {
       return this.$store.getters.getAssessment
+    },
+    assessmentId() {
+      return this.$store.getters.getAssessmentId
+    },
+    results() {
+      console.log(this.$store.getters.getResults)
+      return this.$store.getters.getResults
     }
+  },
+  created() {
+    bus.$emit('sendGetResults', {appType: this.appType, id: this.assessmentId})
+
+    bus.$on('loadResults', (data) => {
+      this.$store.dispatch('updateResults', data)
+    })
   },
   methods: {
     mailResults() {

@@ -131,10 +131,10 @@ module.exports = {
         let questions = []
         switch(data.appType) {
           case '5 Dysfunctions':
-            questions = fiveDysfunctionsFuns.get()
+            questions = fiveDysfunctionsFuns.questions()
             break
           case 'Team Health Check':
-            questions = teamHealthCheckFuns.get()
+            questions = teamHealthCheckFuns.questions()
             break
         }
         for (let i = 0, n = 1; i < questions.length; i++, n++) {
@@ -164,10 +164,13 @@ module.exports = {
 
     if (debugOn) { console.log('createAssessment', data) }
 
-    data.questions = []
-    db.assessmentsCollection.insertOne(data, function(err, res) {
+    db.questionCollection.find().toArray(function(err, res) {
       if (err) throw err
-      _loadAssessment(db, io, data.id)
+      data.questions = res
+      db.assessmentsCollection.insertOne(data, function(err, res) {
+        if (err) throw err
+        _loadAssessment(db, io, data.id)
+      })
     })
   },
 
@@ -182,12 +185,43 @@ module.exports = {
 
     if (debugOn) { console.log('setAnswer', data) }
 
-    db.questionCollection.updateOne({id: data.id}, {$set: {answer: data.answer}}, function(err, res) {
+    db.assessmentsCollection.findOne({id: data.id}, function(err, res) {
       if (err) throw err
-      _loadQuestions(db, io)
+      const questions = []
+      for (let i = 0; i < res.questions.length; i++) {
+        const question = res.questions[i]
+        if (question.id == data.questionId) {
+          question.answer = data.answer
+        }
+        questions.push(question)
+      }
+      db.assessmentsCollection.updateOne({id: data.id}, {$set: {questions: questions}}, function(err, res) {
+        if (err) throw err
+        _loadAssessment(db, io, data.id)
+      })
     })
   },
 
+  getResults: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('getResults', data) }
+
+    db.assessmentsCollection.findOne({id: data.id}, function(err, res) {
+      if (err) throw err
+      let results = []
+      switch(data.appType) {
+        case '5 Dysfunctions':
+          results = fiveDysfunctionsFuns.results(res)
+          break
+        case 'Team Health Check':
+          results = teamHealthCheckFuns.results(res)
+          break
+      }
+      console.log('here', results)
+      io.emit('loadResults', results)
+    })
+  },
+  
   restart: function(db, io, debugOn) {
 
     if (debugOn) { console.log('restart') }
@@ -327,6 +361,7 @@ module.exports = {
         if (res) {
           const question = res.question
           question[data.field] = data.value
+          console.log(question)
           db.questionCollection.updateOne({id: data.id}, {$set: {question: question}}, function(err, res) {
             if (err) throw err
             _loadQuestions(db, io)

@@ -21,6 +21,9 @@
               <th>
                 Question
               </th>
+              <th>
+                DysFunction
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -40,9 +43,13 @@
               </td>
               <td>
                 <div class="question">
-                  <span v-if="editingQuestion != question.id">{{ question.question }}</span>
-                  <input v-if="editingQuestion == question.id" type="text" :id="'question-editing-' + question.id" :value="question.question">
+                  <span v-if="editingQuestion != question.id">{{ question.question.question }}</span>
+                  <input v-if="editingQuestion == question.id" type="text" :id="'question-editing-' + question.id" :value="question.question.question">
                 </div>
+              </td>
+              <td>
+                <span v-if="editingQuestion != question.id">{{ question.question.dysfunction }}</span>
+                <Dysfunctions v-if="editingQuestion == question.id" :id="question.id" />
               </td>
             </tr>
             <tr>
@@ -51,7 +58,7 @@
                   Add New
                 </button>
               </td>
-              <td>
+              <td colspan="2">
                 <input type="text" id="new-question">
               </td>
             </tr>
@@ -65,7 +72,12 @@
 <script>
 import bus from '../../socket.js'
 
+import Dysfunctions from './fiveDysfunctions/Dysfunctions.vue'
+
 export default {
+  components: {
+    Dysfunctions
+  },
   data() {
     return {
       showFiveDysfunctions: false,
@@ -105,7 +117,9 @@ export default {
     },
     saveQuestion() {
       const question = document.getElementById('question-editing-' + this.editingQuestion).value
-      bus.$emit('sendUpdateQuestion', {id: this.editingQuestion, question: question})
+      const dysfunction = document.getElementById('dysfunction-' + this.editingQuestion).value
+      bus.$emit('sendUpdateQuestionQuestion', {id: this.editingQuestion, value: question})
+      bus.$emit('sendUpdateQuestionDysfunction', {id: this.editingQuestion, value: dysfunction})
       this.editingQuestion = null
     }
   }

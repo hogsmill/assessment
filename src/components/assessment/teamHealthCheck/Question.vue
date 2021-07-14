@@ -30,9 +30,14 @@ export default {
   props: [
     'question'
   ],
+  computed: {
+    assessmentId() {
+      return this.$store.getters.getAssessmentId
+    }
+  },
   methods: {
     answer(id, answer) {
-      bus.$emit('sendSetAnswer', {id: id, answer: answer})
+      bus.$emit('sendSetAnswer', {id: this.assessmentId, questionId: id, answer: answer})
     }
   }
 }
