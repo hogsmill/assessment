@@ -10,7 +10,7 @@ const prod = os.hostname() == 'agilesimulations' ? true : false
 const logFile = prod ? process.argv[4] : 'server.log'
 const port = prod ? process.env.VUE_APP_PORT : 3038
 const serverCollection =  prod ? process.env.VUE_APP_SERVER_COLLECTION : 'fiveDysfunctionsServer'
-const teamsCollection =  prod ? process.env.VUE_APP_TEAM_COLLECTION : 'fiveDysfunctionsTeams'
+const teamsCollection =  prod ? process.env.VUE_APP_TEAMS_COLLECTION : 'fiveDysfunctionsTeams'
 const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysfunctionsQuestions'
 const assessmentsCollection =  prod ? process.env.VUE_APP_ASSESSMENTS_COLLECTION : 'fiveDysfunctionsAssessments'
 
@@ -112,7 +112,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendCheckServer', () => { dbStore.checkServer(db, io, debugOn) })
 
     socket.on('sendCheckSystem', (data) => { dbStore.checkSystem(db, io, data, debugOn) })
-    
+
     socket.on('sendClearQuestions', (data) => { dbStore.clearQuestions(db, io, data, debugOn) })
 
     socket.on('sendLoadTeams', () => { dbStore.loadTeams(db, io, debugOn) })
