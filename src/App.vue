@@ -3,9 +3,7 @@
     <Header />
     <ClearStorage />
     <ConnectionError />
-    <!--
     <WalkThroughView v-if="server.scope == 'individual'" />
-    -->
     <div v-if="currentTab == 'facilitator'">
       <FacilitatorView />
     </div>

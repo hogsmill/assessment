@@ -175,7 +175,8 @@ export default {
 
 <style lang="scss">
   .explain {
-    display: inline-block;
+    display: none;
+    /* display: inline-block; */
     margin: 2px 6px;
   }
 
