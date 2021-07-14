@@ -9,7 +9,7 @@
           Name
         </td>
         <td>
-          <input type="text" id="details-name">
+          <input type="text" id="details-name" :value="assessment.name">
         </td>
       </tr>
       <tr>
@@ -17,7 +17,7 @@
           Organisation
         </td>
         <td>
-          <input type="text" id="details-organisation">
+          <input type="text" id="details-organisation" :value="assessment.organisation">
         </td>
       </tr>
       <tr>
@@ -25,12 +25,23 @@
           Email
         </td>
         <td>
-          <input type="text" id="details-email">
+          <input type="text" id="details-email" :value="assessment.email">
         </td>
       </tr>
     </table>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    assessment() {
+      console.log(this.$store.getters.getAssessment)
+      return this.$store.getters.getAssessment
+    }
+  }
+}
+</script>
 
 <style lang="scss">
   .details {

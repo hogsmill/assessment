@@ -1,7 +1,7 @@
 <template>
   <div class="setup">
     <table>
-      <tr>
+      <tr v-if="server.multipleTeams">
         <td>
           Team
         </td>

@@ -62,7 +62,15 @@ export default {
       return setUp
     },
     setState(state) {
-      session.create(this.$store, bus, this.lsSuffix, this.team, this.month, this.quarter, this.year)
+      let name = ''
+      let organisation = ''
+      let email = ''
+      if (this.server.scope == 'individual') {
+        name = document.getElementById('details-name').value
+        organisation = document.getElementById('details-organisation').value
+        email = document.getElementById('details-email').value
+      }
+      session.create(this.$store, bus, this.server, this.lsSuffix, this.team, this.month, this.quarter, this.year, name, organisation, email)
       this.$store.dispatch('updateState', 'questions')
     }
   }

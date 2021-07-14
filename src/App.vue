@@ -3,8 +3,7 @@
     <Header />
     <ClearStorage />
     <ConnectionError />
-    <GameName v-if="server.scope == 'organisation'" />
-    <WalkThroughView />
+    <WalkThroughView v-if="server.scope == 'individual'"/>
     <div v-if="currentTab == 'facilitator'">
       <FacilitatorView />
     </div>
@@ -36,7 +35,6 @@ import WalkThroughView from './components/about/WalkThroughView.vue'
 import ConnectionError from './components/error/ConnectionError.vue'
 
 import FacilitatorView from './components/FacilitatorView.vue'
-import GameName from './components/GameName.vue'
 
 import Intro from './components/assessment/Intro.vue'
 import Questions from './components/assessment/Questions.vue'
@@ -50,7 +48,6 @@ export default {
     WalkThroughView,
     ConnectionError,
     FacilitatorView,
-    GameName,
     Intro,
     Questions,
     Results
@@ -76,6 +73,9 @@ export default {
     },
     server() {
       return this.$store.getters.getServer
+    },
+    assessmentId() {
+      return this.$store.getters.getAssessmentId
     }
   },
   created() {
@@ -88,7 +88,7 @@ export default {
     const appType = appTypeFuns.get('5 Dysfunctions')
     this.$store.dispatch('updateAppType', appType)
 
-    session.store(this.$store, this.lsSuffix)
+    session.store(this.$store, bus, this.lsSuffix)
 
     bus.$emit('sendCheckSystem', {appType: appType})
     bus.$emit('sendCheckServer')
@@ -118,6 +118,12 @@ export default {
 
     bus.$on('loadQuestions', (data) => {
       this.$store.dispatch('updateQuestions', data)
+    })
+
+    bus.$on('loadAssessment', (data) => {
+      if (data && data.id == this.assessmentId) {
+        this.$store.dispatch('updateAssessment', data)
+      }
     })
   },
   methods: {

@@ -44,9 +44,13 @@ bus.$on('sendCheckServer', (data) => { socket.emit('sendCheckServer', data) })
 
 bus.$on('sendCheckSystem', (data) => { socket.emit('sendCheckSystem', data) })
 
+bus.$on('sendClearQuestions', (data) => { socket.emit('sendClearQuestions', data) })
+
 bus.$on('sendLoadTeams', (data) => { socket.emit('sendLoadTeams', data) })
 
 bus.$on('sendCreateAssessment', (data) => { socket.emit('sendCreateAssessment', data) })
+
+bus.$on('sendLoadAssessment', (data) => { socket.emit('sendLoadAssessment', data) })
 
 bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
 
@@ -61,6 +65,12 @@ bus.$on('sendAddTeam', (data) => { socket.emit('sendAddTeam', data) })
 bus.$on('sendUpdateTeamName', (data) => { socket.emit('sendUpdateTeamName', data) })
 
 bus.$on('sendDeleteTeam', (data) => { socket.emit('sendDeleteTeam', data) })
+
+bus.$on('sendAddMember', (data) => { socket.emit('sendAddMember', data) })
+
+bus.$on('sendUpdateMemberName', (data) => { socket.emit('sendUpdateMemberName', data) })
+
+bus.$on('sendDeleteMember', (data) => { socket.emit('sendDeleteMember', data) })
 
 bus.$on('sendAddQuestion', (data) => { socket.emit('sendAddQuestion', data) })
 
@@ -81,5 +91,7 @@ socket.on('loadServer', (data) => { bus.$emit('loadServer', data) })
 socket.on('loadTeams', (data) => { bus.$emit('loadTeams', data) })
 
 socket.on('loadQuestions', (data) => { bus.$emit('loadQuestions', data) })
+
+socket.on('loadAssessment', (data) => { bus.$emit('loadAssessment', data) })
 
 export default bus

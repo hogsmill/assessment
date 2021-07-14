@@ -10,7 +10,7 @@ const prod = os.hostname() == 'agilesimulations' ? true : false
 const logFile = prod ? process.argv[4] : 'server.log'
 const port = prod ? process.env.VUE_APP_PORT : 3038
 const serverCollection =  prod ? process.env.VUE_APP_SERVER_COLLECTION : 'fiveDysfunctionsServer'
-const gameCollection =  prod ? process.env.VUE_APP_COLLECTION : 'fiveDysfunctions'
+const teamsCollection =  prod ? process.env.VUE_APP_TEAM_COLLECTION : 'fiveDysfunctionsTeams'
 const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysfunctionsQuestions'
 const assessmentsCollection =  prod ? process.env.VUE_APP_ASSESSMENTS_COLLECTION : 'fiveDysfunctionsAssessments'
 
@@ -82,12 +82,12 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
   db = client.db('db')
 
   db.createCollection(serverCollection, function(error, collection) {})
-  db.createCollection(gameCollection, function(error, collection) {})
+  db.createCollection(teamsCollection, function(error, collection) {})
   db.createCollection(questionCollection, function(error, collection) {})
   db.createCollection(assessmentsCollection, function(error, collection) {})
 
   db.serverCollection = db.collection(serverCollection)
-  db.gameCollection = db.collection(gameCollection)
+  db.teamsCollection = db.collection(teamsCollection)
   db.questionCollection = db.collection(questionCollection)
   db.assessmentsCollection = db.collection(assessmentsCollection)
 
@@ -112,10 +112,14 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendCheckServer', () => { dbStore.checkServer(db, io, debugOn) })
 
     socket.on('sendCheckSystem', (data) => { dbStore.checkSystem(db, io, data, debugOn) })
+    
+    socket.on('sendClearQuestions', (data) => { dbStore.clearQuestions(db, io, data, debugOn) })
 
     socket.on('sendLoadTeams', () => { dbStore.loadTeams(db, io, debugOn) })
 
     socket.on('sendCreateAssessment', (data) => { dbStore.createAssessment(db, io, data, debugOn) })
+
+    socket.on('sendLoadAssessment', (data) => { dbStore.loadAssessment(db, io, data, debugOn) })
 
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
 
@@ -130,6 +134,12 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendUpdateTeamName', (data) => { dbStore.updateTeamName(db, io, data, debugOn) })
 
     socket.on('sendDeleteTeam', (data) => { dbStore.deleteTeam(db, io, data, debugOn) })
+
+    socket.on('sendAddMember', (data) => { dbStore.addMember(db, io, data, debugOn) })
+
+    socket.on('sendUpdateMemberName', (data) => { dbStore.updateMemberName(db, io, data, debugOn) })
+
+    socket.on('sendDeleteMember', (data) => { dbStore.deleteMember(db, io, data, debugOn) })
 
     socket.on('sendAddQuestion', (data) => { dbStore.addQuestion(db, io, data, debugOn) })
 

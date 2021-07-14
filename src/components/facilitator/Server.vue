@@ -9,6 +9,16 @@
     </tr>
     <tr v-if="showServer">
       <td>
+        Reset (Delete) Questions
+      </td>
+      <td>
+        <button class="btn btn-info btn-sm" @click="clearQuestions()">
+          Clear
+        </button>
+      </td>
+    </tr>
+    <tr v-if="showServer">
+      <td>
         Scope
       </td>
       <td>
@@ -23,6 +33,14 @@
             Organisation (Internal team assessments)
           </option>
         </select>
+      </td>
+    </tr>
+    <tr v-if="showServer && server.scope == 'organisation'">
+      <td>
+        Multiple Teams?
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.multipleTeams" @click="toggleMultipleTeams()">
       </td>
     </tr>
     <tr v-if="showServer && server.scope == 'organisation'">
@@ -57,16 +75,23 @@ export default {
   },
   computed: {
     server() {
-    return this.$store.getters.getServer
+      return this.$store.getters.getServer
     }
   },
   methods: {
     setShowServer(val) {
       this.showServer = val
     },
+    clearQuestions() {
+      bus.$emit('sendClearQuestions')
+    },
     setScope() {
       const scope = document.getElementById('server-scope-select').value
       bus.$emit('sendUpdateServer', {field: 'scope', value: scope})
+    },
+    toggleMultipleTeams() {
+      const multiple = !this.server.multipleTeams
+      bus.$emit('sendUpdateServer', {field: 'multipleTeams', value: multiple})
     },
     setFrequency() {
       const frequency = document.getElementById('server-frequency-select').value

@@ -22,7 +22,8 @@ export const store = new Vuex.Store({
     server: {},
     gameName: '',
     state: 'intro',
-    assessment: null,
+    assessmentId: null,
+    assessment: {},
     team: null,
     month: null,
     quarter: null,
@@ -73,8 +74,20 @@ export const store = new Vuex.Store({
     getGameState: (state) => {
       return state.state
     },
+    getNoTeam: (state) => {
+      const team = state.teams.find((t) => {
+        return t.name == '_No Team_'
+      })
+      return team ? team : {}
+    },
     getTeams: (state) => {
-      return state.teams
+      const teams = []
+      for (let i = 0; i < state.teams.length; i++) {
+        if (state.teams[i].name != '_No Team_') {
+          teams.push(state.teams[i])
+        }
+      }
+      return teams
     },
     getQuestions: (state) => {
       return state.questions.sort((a, b) => {
@@ -92,6 +105,9 @@ export const store = new Vuex.Store({
     },
     getYear: (state) => {
       return state.year
+    },
+    getAssessmentId: (state) => {
+      return state.assessmentId
     },
     getAssessment: (state) => {
       return state.assessment
@@ -149,6 +165,9 @@ export const store = new Vuex.Store({
     updateYear: (state, payload) => {
       state.year = payload
     },
+    updateAssessmentId: (state, payload) => {
+      state.assessmentId = payload
+    },
     updateAssessment: (state, payload) => {
       state.assessment = payload
     },
@@ -204,6 +223,9 @@ export const store = new Vuex.Store({
     },
     updateYear: ({ commit }, payload) => {
       commit('updateYear', payload)
+    },
+    updateAssessmentId: ({ commit }, payload) => {
+      commit('updateAssessmentId', payload)
     },
     updateAssessment: ({ commit }, payload) => {
       commit('updateAssessment', payload)

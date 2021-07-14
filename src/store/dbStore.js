@@ -8,8 +8,7 @@ function newServer(data) {
   return  {
     id: uuidv4(),
     scope: 'individual',
-    created: new Date().toISOString(),
-    lastaccess: new Date().toISOString()
+    multipleTeams: false
   }
 }
 
@@ -17,8 +16,14 @@ function newTeam(data) {
   return  {
     id: uuidv4(),
     name: data.name,
-    created: new Date().toISOString(),
-    lastaccess: new Date().toISOString()
+    members: []
+  }
+}
+
+function newMember(data) {
+  return  {
+    id: uuidv4(),
+    name: data.name
   }
 }
 
@@ -40,16 +45,23 @@ function _loadServer(db, io) {
 }
 
 function _loadTeams(db, io) {
-  db.gameCollection.find().toArray( function(err, res) {
+  db.teamsCollection.find().toArray(function(err, res) {
     if (err) throw err
     io.emit('loadTeams', res)
   })
 }
 
 function _loadQuestions(db, io) {
-  db.questionCollection.find().toArray( function(err, res) {
+  db.questionCollection.find().toArray(function(err, res) {
     if (err) throw err
     io.emit('loadQuestions', res)
+  })
+}
+
+function _loadAssessment(db, io, id) {
+  db.assessmentsCollection.findOne({id: id}, function(err, res) {
+    if (err) throw err
+    io.emit('loadAssessment', res)
   })
 }
 
@@ -71,6 +83,19 @@ module.exports = {
         })
       }
     })
+    const noTeam = '_No Team_'
+    db.teamsCollection.findOne({name: noTeam}, function(err, res) {
+      if (err) throw err
+      if (res) {
+        _loadTeams(db, io)
+      } else {
+        const team = newTeam({name: noTeam})
+        db.teamsCollection.insertOne(team, function(err, res) {
+          if (err) throw err
+          _loadTeams(db, io)
+        })
+      }
+    })
   },
 
   updateServer: function(db, io, data, debugOn) {
@@ -82,6 +107,15 @@ module.exports = {
     db.serverCollection.updateOne({}, {$set: update}, function(err, res) {
       if (err) throw err
       _loadServer(db, io)
+    })
+  },
+
+  clearQuestions: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('resetSystem', data) }
+
+    db.questionCollection.drop(function(err, ) {
+      if (err) throw err
     })
   },
 
@@ -133,7 +167,15 @@ module.exports = {
     data.questions = []
     db.assessmentsCollection.insertOne(data, function(err, res) {
       if (err) throw err
+      _loadAssessment(db, io, data.id)
     })
+  },
+
+  loadAssessment: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('createAssessment', data) }
+
+    _loadAssessment(db, io, data.id)
   },
 
   setAnswer: function(db, io, data, debugOn) {
@@ -170,7 +212,7 @@ module.exports = {
     if (debugOn) { console.log('addTeam', data) }
 
     const team = newTeam(data)
-    db.gameCollection.insertOne(team, function(err, res) {
+    db.teamsCollection.insertOne(team, function(err, res) {
       if (err) throw err
       _loadTeams(db, io)
     })
@@ -180,7 +222,7 @@ module.exports = {
 
     if (debugOn) { console.log('updateTeamName', data) }
 
-    db.gameCollection.updateOne({id: data.id}, {$set: {name: data.name}}, function(err, res) {
+    db.teamsCollection.updateOne({id: data.id}, {$set: {name: data.name}}, function(err, res) {
       if (err) throw err
       _loadTeams(db, io)
     })
@@ -190,9 +232,71 @@ module.exports = {
 
     if (debugOn) { console.log('deleteTeam', data) }
 
-    db.gameCollection.deleteOne({id: data.id}, function(err, res) {
+    db.teamsCollection.deleteOne({id: data.id}, function(err, res) {
       if (err) throw err
       _loadTeams(db, io)
+    })
+  },
+
+  addMember: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('addMember', data) }
+
+    const member = newMember(data)
+    db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
+      if (err) throw err
+      if (res) {
+        const members = res.members
+        members.push(member)
+        db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
+          if (err) throw err
+          _loadTeams(db, io)
+        })
+      }
+    })
+  },
+
+  updateMemberName: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('updateMemberName', data) }
+
+    db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
+      if (err) throw err
+      if (res) {
+        const members = []
+        for (let i = 0; i < res.members.length; i++) {
+          const member = res.members[i]
+          if (member.id == data.id) {
+            member.name = data.name
+          }
+          members.push(res.members[i])
+        }
+        db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
+          if (err) throw err
+          _loadTeams(db, io)
+        })
+      }
+    })
+  },
+
+  deleteMember: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('deleteMember', data) }
+
+    db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
+      if (err) throw err
+      if (res) {
+        const members = []
+        for (let i = 0; i < res.members.length; i++) {
+          if (res.members[i].id != data.id) {
+            members.push(res.members[i])
+          }
+        }
+        db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
+          if (err) throw err
+          _loadTeams(db, io)
+        })
+      }
     })
   },
 

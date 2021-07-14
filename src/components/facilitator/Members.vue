@@ -3,19 +3,31 @@
     <tr>
       <td colspan="2">
         <h4>Members</h4>
-        <i v-if="showTeam" @click="setShowTeam(false)" title="collapse" class="fas fa-caret-up toggle" />
-        <i v-if="!showTeam" @click="setShowTeam(true)" title="expand" class="fas fa-caret-down toggle" />
+        <i v-if="showMembers" @click="setShowMember(false)" title="collapse" class="fas fa-caret-up toggle" />
+        <i v-if="!showMembers" @click="setShowMember(true)" title="expand" class="fas fa-caret-down toggle" />
       </td>
     </tr>
-    <tr v-if="showTeam">
+    <tr v-if="showMembers && server.multipleTeams">
       <td>
-        <input type="text" id="new-team">
-        <button class="btn btn-sm btn-secondary smaller-font" @click="addTeam()">
+        Team: <select id="team-select" @change="setTeam()">
+          <option value="">
+            -- Select --
+          </option>
+          <option v-for="(t, index) in teams" :key="index" :value="t.id">
+            {{ t.name }}
+          </option>
+        </select>
+      </td>
+    </tr>
+    <tr v-if="showMembers">
+      <td>
+        <input type="text" id="new-member">
+        <button class="btn btn-sm btn-secondary smaller-font" :disabled="server.multipleTeams && !selectedTeam" @click="addMember()">
           Add New
         </button>
       </td>
     </tr>
-    <tr v-if="showTeam">
+    <tr v-if="showMembers">
       <td>
         <table>
           <thead>
@@ -24,24 +36,23 @@
                 Actions
               </th>
               <th>
-                Team
+                Member
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(team, index) in members" :key="index">
+            <tr v-for="(member, index) in members" :key="index">
               <td>
                 <div class="actions">
-                  <i v-if="team.protected" class="fas fa-trash-alt" title="Unable to delete system team" />
-                  <i v-if="!team.protected" class="fas fa-trash-alt enabled" :title="'Delete ' + team.name" @click="deleteTeam(team)" />
-                  <i v-if="editingTeam != team.id" class="fas fa-edit" @click="setEditingTeam(team)" />
-                  <i v-if="editingTeam == team.id" class="fas fa-save" @click="saveTeamName(team)" />
+                  <i class="fas fa-trash-alt enabled" :title="'Delete ' + member.name" @click="deleteMember(member)" />
+                  <i v-if="editingMember != member.id" class="fas fa-edit" @click="setEditingMember(member)" />
+                  <i v-if="editingMember == member.id" class="fas fa-save" @click="saveMemberName()" />
                 </div>
               </td>
               <td>
-                <div class="team-name">
-                  <span v-if="editingTeam != team.id">{{ team.name }}</span>
-                  <input v-if="editingTeam == team.id" type="text" :id="'team-name-editing-' + team.id" :value="team.name">
+                <div class="member-name">
+                  <span v-if="editingMember != member.id">{{ member.name }}</span>
+                  <input v-if="editingMember == member.id" type="text" :id="'member-name-editing-' + member.id" :value="member.name">
                 </div>
               </td>
             </tr>
@@ -58,45 +69,76 @@ import bus from '../../socket.js'
 export default {
   data() {
     return {
-      showTeam: false,
-      editingTeam: null
+      showMembers: false,
+      members: [],
+      selectedTeam: null,
+      editingMember: null
     }
   },
   computed: {
-    members() {
-      return this.$store.getters.getMembers
+    server() {
+      return this.$store.getters.getServer
+    },
+    noTeam() {
+      return this.$store.getters.getNoTeam
+    },
+    teams() {
+      return this.$store.getters.getTeams
     }
   },
   created() {
-    bus.$on('openEditPane', (data) => {
-      if (data != 'showTeam') {
-        this.showTeam = false
+    bus.$on('loadTeams', (data) => {
+      if (this.selectedTeam) {
+        this.setTeam(this.selectedTeam)
       }
     })
+
+    bus.$on('loadServer', (data) => {
+      this.setNoTeam()
+    })
+
+    this.setNoTeam()
   },
   methods: {
-    setShowTeam(val) {
-      this.showTeam = val
-      if (val) {
-        bus.$emit('openEditPane', 'showTeam')
+    setShowMember(val) {
+      this.showMembers = val
+    },
+    setNoTeam() {
+      if (!this.server.multipleTeams) {
+        this.selectedTeam = this.noTeam.id
+        this.members = this.noTeam.members
+      } else {
+        this.selectedTeam = null
+        this.members = []
       }
     },
-    addTeam() {
-      const name = document.getElementById('new-team').value
-      bus.$emit('sendAddTeam', {name: name})
-    },
-    deleteTeam(team) {
-      if (confirm('Delete ' + team.name)) {
-        bus.$emit('sendDeleteTeam', {id: team.id})
+    setTeam(teamId) {
+      if (teamId) {
+        this.selectedTeam = teamId
+      } else {
+        this.selectedTeam = document.getElementById('team-select').value
+        const team = this.teams.find((t) => {
+          return t.id == this.selectedTeam
+        })
+        this.members = team ? team.members : []
       }
     },
-    setEditingTeam(team) {
-      this.editingTeam = team.id
+    addMember() {
+      const name = document.getElementById('new-member').value
+      bus.$emit('sendAddMember', {teamId: this.selectedTeam, name: name})
     },
-    saveTeamName() {
-      const name = document.getElementById('team-name-editing-' + this.editingTeam).value
-      bus.$emit('sendUpdateTeamName', {id: this.editingTeam, name: name})
-      this.editingTeam = null
+    deleteMember(member) {
+      if (confirm('Delete ' + member.name)) {
+        bus.$emit('sendDeleteMember', {teamId: this.selectedTeam, id: member.id})
+      }
+    },
+    setEditingMember(member) {
+      this.editingMember = member.id
+    },
+    saveMemberName() {
+      const name = document.getElementById('member-name-editing-' + this.editingMember).value
+      bus.$emit('sendUpdateMemberName', {teamId: this.selectedTeam, id: this.editingMember, name: name})
+      this.editingMember = null
     }
   }
 }
@@ -125,7 +167,7 @@ export default {
         }
       }
 
-      .team-name {
+      .member-name {
         width: 200px;
       }
     }
