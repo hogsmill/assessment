@@ -9,7 +9,7 @@
         <QuestionTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
         <div class="next">
           <i v-if="order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
-          <i v-if="true || order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="setState('results')" />
+          <i v-if="order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="setState('results')" />
         </div>
       </div>
     </div>
