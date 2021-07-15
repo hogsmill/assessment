@@ -217,11 +217,10 @@ module.exports = {
           results = teamHealthCheckFuns.results(res)
           break
       }
-      console.log('here', results)
       io.emit('loadResults', results)
     })
   },
-  
+
   restart: function(db, io, debugOn) {
 
     if (debugOn) { console.log('restart') }
@@ -361,7 +360,6 @@ module.exports = {
         if (res) {
           const question = res.question
           question[data.field] = data.value
-          console.log(question)
           db.questionCollection.updateOne({id: data.id}, {$set: {question: question}}, function(err, res) {
             if (err) throw err
             _loadQuestions(db, io)

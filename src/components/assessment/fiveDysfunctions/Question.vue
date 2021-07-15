@@ -29,9 +29,6 @@ export default {
       return this.$store.getters.getAssessmentId
     }
   },
-  created() {
-    console.log(this.question)
-  },
   methods: {
     answer(id, answer) {
       bus.$emit('sendSetAnswer', {id: this.assessmentId, questionId: id, answer: answer})

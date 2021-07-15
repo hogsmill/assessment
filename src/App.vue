@@ -99,8 +99,8 @@ export default {
       this.$store.dispatch('updateAdmin', true)
     }
 
-    if (params.getParam('game')) {
-      this.$store.dispatch('updateGameName', params.getParam('game'))
+    if (params.getParam('walkThrough')) {
+      this.$store.dispatch('updateWalkThrough', true)
     }
 
     bus.$on('updateConnections', (data) => {
@@ -127,20 +127,6 @@ export default {
     })
   },
   methods: {
-    show () {
-      this.$modal.show('set-game-name')
-    },
-    hide () {
-      this.$modal.hide('set-game-name')
-    },
-    saveGameName: function() {
-      const gameName = document.getElementById('game-name').value
-      this.$store.dispatch('updateGameName', gameName)
-      this.hide()
-    },
-    setContext(context) {
-      bus.$emit('sendSetContext', {gameName: this.gameName, context: context})
-    },
     restart() {
       if (confirm('Restart this assessment')) {
         session.clear(this.$store, this.lsSuffix)
@@ -153,17 +139,11 @@ export default {
 </script>
 
 <style lang="scss">
-  .context {
-    text-align: center;
-    margin-bottom: 24px;
+  .main {
+    max-width: 800px;
+    margin: 0 auto;
   }
 
-  .fa-brain {
-    margin-right: 36px;
-    color: darksalmon;
-    display: inline-block;
-    text-shadow: 1px 1px 1px #888;
-  }
   .fa-undo {
     font-size: smaller;
     color: #888;
@@ -171,17 +151,5 @@ export default {
     &:hover {
       color: #444;
     }
-  }
-
-  .plates {
-    margin: 36px auto 0 auto;
-    height: 450px;
-    width: 800px;
-    max-width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: top;
-    background-image: url("./assets/img/plates.png");
   }
 </style>

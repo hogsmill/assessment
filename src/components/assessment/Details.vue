@@ -36,7 +36,6 @@
 export default {
   computed: {
     assessment() {
-      console.log(this.$store.getters.getAssessment)
       return this.$store.getters.getAssessment
     }
   }

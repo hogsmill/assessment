@@ -58,7 +58,6 @@ export default {
       return this.$store.getters.getAssessmentId
     },
     results() {
-      console.log(this.$store.getters.getResults)
       return this.$store.getters.getResults
     }
   },
@@ -81,9 +80,8 @@ export default {
       switch(this.appType) {
         case '5 Dysfunctions':
           title = fiveDysfunctions.emailTitle(name, organisation, this.assessment)
-          comments = fiveDysfunctions.emailContent(name, organisation, this.assessment)
+          comments = fiveDysfunctions.emailContent(name, organisation, this.results)
       }
-      console.log(email, title, comments)
       mailFuns.post({
         action: title,
         email: encodeURIComponent(email),
@@ -101,6 +99,11 @@ export default {
     .fas, .far {
       margin-left: 4px;
       color: #888;
+
+      &:hover {
+        color: #444;
+        cursor: pointer;
+      }
 
       &.selected {
         color: #444;
