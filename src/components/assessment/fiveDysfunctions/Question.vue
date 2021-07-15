@@ -1,7 +1,9 @@
 <template>
   <div class="five-dysfunctions-question">
-    <div>
-      {{ question.question.question }}
+    <div class="question-holder">
+      <div class="question">
+        {{ question.question.question }}
+      </div>
     </div>
     <div class="buttons">
       <button class="btn btn-info" :class="{ 'selected': question.answer == 'always'}" @click="answer(question.id, 'always')">
@@ -42,6 +44,12 @@ export default {
     margin: auto auto;
     width: 500px;
     display: inline-block;
+
+    .question-holder {
+      height: 120px;
+      display: table-cell;
+      vertical-align: middle;
+    }
 
     .buttons {
       margin: 24px;

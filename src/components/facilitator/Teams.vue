@@ -3,11 +3,11 @@
     <tr>
       <td colspan="2">
         <h4>Teams</h4>
-        <i v-if="showTeam" @click="setShowTeam(false)" title="collapse" class="fas fa-caret-up toggle" />
-        <i v-if="!showTeam" @click="setShowTeam(true)" title="expand" class="fas fa-caret-down toggle" />
+        <i v-if="showTeams" @click="setshowTeams(false)" title="collapse" class="fas fa-caret-up toggle" />
+        <i v-if="!showTeams" @click="setshowTeams(true)" title="expand" class="fas fa-caret-down toggle" />
       </td>
     </tr>
-    <tr v-if="showTeam">
+    <tr v-if="showTeams">
       <td>
         <input type="text" id="new-team">
         <button class="btn btn-sm btn-secondary smaller-font" @click="addTeam()">
@@ -15,7 +15,7 @@
         </button>
       </td>
     </tr>
-    <tr v-if="showTeam">
+    <tr v-if="showTeams">
       <td>
         <table>
           <thead>
@@ -58,7 +58,7 @@ import bus from '../../socket.js'
 export default {
   data() {
     return {
-      showTeam: false,
+      showTeams: false,
       editingTeam: null
     }
   },
@@ -69,16 +69,16 @@ export default {
   },
   created() {
     bus.$on('openEditPane', (data) => {
-      if (data != 'showTeam') {
-        this.showTeam = false
+      if (data != 'showTeams') {
+        this.showTeams = false
       }
     })
   },
   methods: {
-    setShowTeam(val) {
-      this.showTeam = val
+    setshowTeams(val) {
+      this.showTeams = val
       if (val) {
-        bus.$emit('openEditPane', 'showTeam')
+        bus.$emit('openEditPane', 'showTeams')
       }
     },
     addTeam() {

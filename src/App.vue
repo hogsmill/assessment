@@ -10,6 +10,7 @@
     <div v-if="currentTab == 'game'" class="main">
       <h1>
         {{ appType }}
+        <span v-if="server.scope == 'organisation' && !server.multipleTeams"> for {{ team.name }}</span>
         <i class="fas fa-undo" @click="restart()" />
       </h1>
       <Intro v-if="state == 'intro'" />
@@ -21,8 +22,6 @@
 
 <script>
 import bus from './socket.js'
-
-import io from 'socket.io-client'
 
 import ls from './lib/localStorage.js'
 import params from './lib/params.js'
@@ -76,6 +75,9 @@ export default {
     },
     assessmentId() {
       return this.$store.getters.getAssessmentId
+    },
+    team() {
+      return this.$store.getters.getTeam
     }
   },
   created() {
@@ -147,6 +149,7 @@ export default {
   .fa-undo {
     font-size: smaller;
     color: #888;
+    margin-left: 12px;
 
     &:hover {
       color: #444;

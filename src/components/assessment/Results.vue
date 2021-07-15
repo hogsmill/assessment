@@ -2,10 +2,12 @@
   <div>
     <h3>
       Results
-      <i v-if="server.scope == 'individual'" class="far fa-envelope" title="Email results" @click="mailResults()" />
-      <i v-if="server.scope == 'organisation'" class="fas fa-users selected" title="Team results" />
-      <i v-if="server.scope == 'organisation'" class="fas fa-industry" title="Organisation results" />
     </h3>
+    <div class="controls">
+      <i v-if="server.scope == 'individual'" class="far fa-envelope" title="Email results" @click="mailResults()" />
+      <i v-if="server.scope == 'organisation' && server.multipleTeams" class="fas fa-users selected" title="Team results" />
+      <i v-if="server.scope == 'organisation' && server.multipleTeams" class="fas fa-industry" title="Organisation results" />
+    </div>
     <Details v-if="server.scope == 'individual'" />
     <div v-if="appType == '5 Dysfunctions'">
       <div v-for="(dysfunction, index) in Object.keys(results)" class="results" :key="index">
@@ -60,6 +62,9 @@ export default {
     },
     results() {
       return this.$store.getters.getResults
+    },
+    team() {
+      return this.$store.getters.getTeam
     }
   },
   created() {
@@ -68,6 +73,8 @@ export default {
     bus.$on('loadResults', (data) => {
       this.$store.dispatch('updateResults', data)
     })
+
+    console.log(this.server)
   },
   methods: {
     explanation() {
@@ -99,8 +106,12 @@ export default {
 </script>
 
 <style lang="scss">
-  h3 {
+  .controls {
+
+    padding-bottom: 24px;
+
     .fas, .far {
+      font-size: xx-large;
       margin-left: 4px;
       color: #bbb;
 

@@ -29,6 +29,7 @@ export const store = new Vuex.Store({
     quarter: null,
     year: null,
     teams: [],
+    team: {},
     questions: [],
     dysfunctions: [],
     results: {}
@@ -90,6 +91,9 @@ export const store = new Vuex.Store({
         }
       }
       return teams
+    },
+    getTeam: (state) => {
+      return state.team
     },
     getQuestions: (state) => {
       return state.questions.sort((a, b) => {
@@ -157,6 +161,7 @@ export const store = new Vuex.Store({
     },
     updateTeams: (state, payload) => {
       state.teams = payload
+      state.team = state.teams.length > 0 ? state.teams[0] : {}
     },
     updateQuestions: (state, payload) => {
       state.questions = payload

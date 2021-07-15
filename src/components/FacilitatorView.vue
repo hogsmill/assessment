@@ -1,9 +1,10 @@
 <template>
   <div class="container about">
-    <h2>{{ appType }} - <span v-if="stealth">(Stealth)</span> Facilitator View</h2>
+    <h2>{{ appType }} - Facilitator View</h2>
     <Connections />
     <Server />
-    <Teams />
+    <Teams v-if="server.multipleTeams" />
+    <Team v-if="!server.multipleTeams" />
     <Members />
     <FiveDysfunctions v-if="appType == '5 Dysfunctions'" />
     <TeamHealthCheck v-if="appType == 'Team Health Check'" />
@@ -14,6 +15,7 @@
 import Connections from './facilitator/Connections.vue'
 import Server from './facilitator/Server.vue'
 import Teams from './facilitator/Teams.vue'
+import Team from './facilitator/Team.vue'
 import Members from './facilitator/Members.vue'
 import FiveDysfunctions from './facilitator/FiveDysfunctions.vue'
 import TeamHealthCheck from './facilitator/TeamHealthCheck.vue'
@@ -23,6 +25,7 @@ export default {
     Connections,
     Server,
     Teams,
+    Team,
     Members,
     FiveDysfunctions,
     TeamHealthCheck
@@ -31,8 +34,8 @@ export default {
     appType() {
       return this.$store.getters.appType
     },
-    stealth() {
-      return this.$store.getters.getStealth
+    server() {
+      return this.$store.getters.getServer
     }
   }
 }
