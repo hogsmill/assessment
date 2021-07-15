@@ -7,6 +7,7 @@
       <div :class="dysfunctionClass(value)" :title="dysfunctionTitle(value)">
         {{ value }} / 9
       </div>
+      <i>{{ dysfunctionTitle(value) }}</i>
     </div>
   </div>
 </template>
@@ -51,12 +52,13 @@ export default {
       vertical-align: middle;
 
       &.result-dysfunction {
-        width: 40%;
+        width: 46%;
       }
       &.result-value {
         margin: 3px;
         color: #fff;
-        width: 20%;
+        width: 53%;
+        text-align: left;
 
         div {
           padding: 6px;
@@ -71,6 +73,11 @@ export default {
           &.address {
             background-color: red;
           }
+        }
+
+        i {
+          margin-left: 6px;
+          color: #bbb;
         }
       }
     }

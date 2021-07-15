@@ -11,6 +11,7 @@
       <div v-for="(dysfunction, index) in Object.keys(results)" class="results" :key="index">
         <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :dysfunction="dysfunction" :value="results[dysfunction]" />
       </div>
+      <div class="explanation" v-html="explanation()" />
     </div>
     <div v-if="appType == 'Team Health Check'">
       <div v-for="(question, index) in questions" class="results" :key="index">
@@ -69,6 +70,9 @@ export default {
     })
   },
   methods: {
+    explanation() {
+      return fiveDysfunctions.explanation().replace(/\n/g, '<br>')
+    },
     mailResults() {
       const name = document.getElementById('details-name').value
       const organisation = document.getElementById('details-organisation').value
@@ -98,7 +102,7 @@ export default {
   h3 {
     .fas, .far {
       margin-left: 4px;
-      color: #888;
+      color: #bbb;
 
       &:hover {
         color: #444;
@@ -114,5 +118,18 @@ export default {
   .results {
     max-width: 75%;
     margin: 0 auto;
+    font-size: larger;
+  }
+
+  .explanation {
+    margin-top: 48px;
+    padding: 12px;
+    text-align: left;
+    border: 4px solid red;
+    border-radius: 12px;
+
+    h3 {
+      text-align: center;
+    }
   }
 </style>
