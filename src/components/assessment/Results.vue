@@ -48,17 +48,11 @@ export default {
     questions() {
       return this.$store.getters.getQuestions
     },
-    dysfunctions() {
-      return this.$store.getters.getDysfunctions
-    },
     server() {
       return this.$store.getters.getServer
     },
     assessment() {
       return this.$store.getters.getAssessment
-    },
-    assessmentId() {
-      return this.$store.getters.getAssessmentId
     },
     results() {
       return this.$store.getters.getResults
@@ -68,13 +62,12 @@ export default {
     }
   },
   created() {
-    bus.$emit('sendGetResults', {appType: this.appType, id: this.assessmentId})
+    bus.$emit('sendGetResults', {assessment: this.assessment})
 
     bus.$on('loadResults', (data) => {
+      console.log('results', data)
       this.$store.dispatch('updateResults', data)
     })
-
-    console.log(this.server)
   },
   methods: {
     explanation() {
@@ -127,7 +120,7 @@ export default {
   }
 
   .results {
-    max-width: 75%;
+    max-width: 90%;
     margin: 0 auto;
     font-size: larger;
   }

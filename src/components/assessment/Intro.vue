@@ -4,19 +4,25 @@
     <IntroTeamHealthCheck v-if="appType == 'Team Health Check'" />
     <Details v-if="server.scope == 'individual'" />
     <SetUp v-if="server.scope == 'organisation'" />
-    <div>
-      <button class="btn btn-info" @click="setState('questions')" :disabled="!setUp()">
-        <span v-if="!assessment">Start</span>
-        <span v-if="assessment">Continue</span>
+    <div v-if="server.scope == 'organisation'">
+      <button class="btn btn-info" @click="startAssessmentOrganisation()" :disabled="!setUp()">
+        <span>Start</span>
+      </button>
+    </div>
+    <div v-if="server.scope == 'individual'">
+      <button class="btn btn-info" @click="startAssessmentIndividual()" :disabled="!setUp()">
+        <span>Start</span>
       </button>
     </div>
   </div>
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid'
+
 import bus from '../../socket.js'
 
-import session from '../../lib/session.js'
+import ls from '../../lib/localStorage.js'
 
 import Intro5Dysfunctions from './fiveDysfunctions/Intro.vue'
 import IntroTeamHealthCheck from './teamHealthCheck/Intro.vue'
@@ -39,21 +45,6 @@ export default {
     },
     appType() {
       return this.$store.getters.appType
-    },
-    team() {
-      return this.$store.getters.getTeam
-    },
-    month() {
-      return this.$store.getters.getMonth
-    },
-    quarter() {
-      return this.$store.getters.getQuarter
-    },
-    year() {
-      return this.$store.getters.getYear
-    },
-    assessment() {
-      return this.$store.getters.getAssessment
     }
   },
   methods: {
@@ -61,17 +52,29 @@ export default {
       const setUp = true
       return setUp
     },
-    setState(state) {
-      let name = ''
-      let organisation = ''
-      let email = ''
-      if (this.server.scope == 'individual') {
-        name = document.getElementById('details-name').value
-        organisation = document.getElementById('details-organisation').value
-        email = document.getElementById('details-email').value
-      }
-      session.create(this.$store, bus, this.server, this.lsSuffix, this.team, this.month, this.quarter, this.year, name, organisation, email)
+    startAssessmentOrganisation() {
+      const assessment = JSON.parse(localStorage.getItem('assessment-' + this.lsSuffix))
+      bus.$emit('sendLoadAssessment', assessment)
       this.$store.dispatch('updateState', 'questions')
+    },
+    startAssessmentIndividual() {
+      const name = document.getElementById('details-name').value
+      const organisation = document.getElementById('details-organisation').value
+      const email = document.getElementById('details-email').value
+      if (!name || !organisation || ! email) {
+        alert('Please complete all fields')
+      } else {
+        const assessment = {
+          id: uuidv4(),
+          name: name,
+          organisation: organisation,
+          email: email
+        }
+        ls.storeAssessment(assessment, this.lsSuffix)
+        this.$store.dispatch('updateAssessment', assessment)
+        bus.$emit('sendLoadAssessment', assessment)
+        this.$store.dispatch('updateState', 'questions')
+      }
     }
   }
 }

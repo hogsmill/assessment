@@ -3,20 +3,32 @@
     <h3>
       {{ question.question.title }}
     </h3>
-    <div class="good">
-      {{ question.question.good }}
-    </div>
-    <div class="bad">
-      {{ question.question.bad }}
-    </div>
+    <table>
+      <tr>
+        <td>
+         <div class="traffic-light green" />
+        </td>
+        <td>
+          {{ question.question.good }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+         <div class="traffic-light red" />
+        </td>
+        <td>
+          {{ question.question.bad }}
+        </td>
+      </tr>
+    </table>
     <div class="buttons">
-      <button class="btn btn-info red" :class="{ 'selected': question.answer == 'red'}" @click="answer(question.id, 'red')">
+      <button class="btn btn-info red" :class="{ 'selected': question.answer == 'red'}" @click="answer('red')">
         <i class="far fa-frown" />
       </button>
-      <button class="btn btn-info amber" :class="{ 'selected': question.answer == 'amber'}" @click="answer(question.id, 'amber')">
+      <button class="btn btn-info amber" :class="{ 'selected': question.answer == 'amber'}" @click="answer('amber')">
         <i class="far fa-meh" />
       </button>
-      <button class="btn btn-info green" :class="{ 'selected': question.answer == 'green'}" @click="answer(question.id, 'green')">
+      <button class="btn btn-info green" :class="{ 'selected': question.answer == 'green'}" @click="answer('green')">
         <i class="far fa-smile-beam" />
       </button>
     </div>
@@ -31,13 +43,13 @@ export default {
     'question'
   ],
   computed: {
-    assessmentId() {
-      return this.$store.getters.getAssessmentId
+    assessment() {
+      return this.$store.getters.getAssessment
     }
   },
   methods: {
-    answer(id, answer) {
-      bus.$emit('sendSetAnswer', {id: this.assessmentId, questionId: id, answer: answer})
+    answer(answer) {
+      bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answer})
     }
   }
 }
@@ -46,11 +58,24 @@ export default {
 <style lang="scss">
   .team-health-check-question {
     margin: auto auto;
-    width: 500px;
+    width: 600px;
     display: inline-block;
 
-    .good, .bad {
-      margin: 24px 2px;
+    .traffic-light {
+      height: 150px;
+      width: 100px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position-x: center;
+      margin: 12px;
+
+      &.red {
+        background-image: url("../../../assets/img/red-light.png");
+      }
+
+      &.green {
+        background-image: url("../../../assets/img/green-light.png");
+      }
     }
 
     .buttons {

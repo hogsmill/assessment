@@ -8,7 +8,8 @@ function newServer(data) {
   return  {
     id: uuidv4(),
     scope: 'individual',
-    multipleTeams: false
+    multipleTeams: false,
+    autoNextQuestion: false
   }
 }
 
@@ -58,11 +59,50 @@ function _loadQuestions(db, io) {
   })
 }
 
-function _loadAssessment(db, io, id) {
-  db.assessmentsCollection.findOne({id: id}, function(err, res) {
+function _loadAssessment(db, io, query) {
+
+  db.assessmentsCollection.findOne(query, function(err, res) {
     if (err) throw err
+    delete res._id
     io.emit('loadAssessment', res)
   })
+}
+
+function _query(data) {
+  const query = {}
+  if (data.id) {
+    query.id = data.id
+  }
+  if (data.month) {
+    query.month = data.month
+  }
+  if (data.quarter) {
+    query.quarter = data.quarter
+  }
+  if (data.year) {
+    query.year = data.year
+  }
+  if (data.organisation) {
+    query.organisation = data.organisation
+  }
+  if (data.name) {
+    query.name = data.name
+  }
+  if (data.email) {
+    query.email = data.email
+  }
+  if (data.team) {
+    query.team = {
+      id: data.team.id
+    }
+  }
+  if (data.member) {
+    query.member = {
+      id: data.member.id
+    }
+  }
+
+  return query
 }
 
 module.exports = {
@@ -160,32 +200,35 @@ module.exports = {
     _loadTeams(db, io)
   },
 
-  createAssessment: function(db, io, data, debugOn) {
-
-    if (debugOn) { console.log('createAssessment', data) }
-
-    db.questionCollection.find().toArray(function(err, res) {
-      if (err) throw err
-      data.questions = res
-      db.assessmentsCollection.insertOne(data, function(err, res) {
-        if (err) throw err
-        _loadAssessment(db, io, data.id)
-      })
-    })
-  },
-
   loadAssessment: function(db, io, data, debugOn) {
 
-    if (debugOn) { console.log('createAssessment', data) }
+    if (debugOn) { console.log('loadAssessment', data) }
 
-    _loadAssessment(db, io, data.id)
+    let query = _query(data)
+    db.assessmentsCollection.findOne(query, function(err, res) {
+      if (err) throw err
+      if (res) {
+        _loadAssessment(db, io, query)
+      } else {
+        db.questionCollection.find().toArray(function(err, questions) {
+          if (err) throw err
+          query.questions = questions
+          db.assessmentsCollection.insertOne(query, function(err, res) {
+            if (err) throw err
+            query = _query(data)
+            _loadAssessment(db, io, query)
+          })
+        })
+      }
+    })
   },
 
   setAnswer: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('setAnswer', data) }
 
-    db.assessmentsCollection.findOne({id: data.id}, function(err, res) {
+    const query = _query(data.assessment)
+    db.assessmentsCollection.findOne(query, function(err, res) {
       if (err) throw err
       const questions = []
       for (let i = 0; i < res.questions.length; i++) {
@@ -195,9 +238,9 @@ module.exports = {
         }
         questions.push(question)
       }
-      db.assessmentsCollection.updateOne({id: data.id}, {$set: {questions: questions}}, function(err, res) {
+      db.assessmentsCollection.updateOne({'_id': res._id}, {$set: {questions: questions}}, function(err, res) {
         if (err) throw err
-        _loadAssessment(db, io, data.id)
+        _loadAssessment(db, io, query)
       })
     })
   },
@@ -206,7 +249,8 @@ module.exports = {
 
     if (debugOn) { console.log('getResults', data) }
 
-    db.assessmentsCollection.findOne({id: data.id}, function(err, res) {
+    const query = _query(data.assessment)
+    db.assessmentsCollection.findOne(query, function(err, res) {
       if (err) throw err
       let results = []
       switch(data.appType) {

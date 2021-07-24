@@ -22,14 +22,8 @@ export const store = new Vuex.Store({
     server: {},
     gameName: '',
     state: 'intro',
-    assessmentId: null,
-    assessment: {},
-    team: null,
-    month: null,
-    quarter: null,
-    year: null,
     teams: [],
-    team: {},
+    assessment: {},
     questions: [],
     dysfunctions: [],
     results: {}
@@ -92,9 +86,6 @@ export const store = new Vuex.Store({
       }
       return teams
     },
-    getTeam: (state) => {
-      return state.team
-    },
     getQuestions: (state) => {
       return state.questions.sort((a, b) => {
         return a.order - b.order
@@ -106,20 +97,20 @@ export const store = new Vuex.Store({
     getResults: (state) => {
       return state.results
     },
+    getMyName: (state) => {
+      return state.assessment.myName
+    },
     getTeam: (state) => {
       return state.team
     },
     getMonth: (state) => {
-      return state.month
+      return state.assessment.month
     },
     getQuarter: (state) => {
-      return state.quarter
+      return state.assessment.quarter
     },
     getYear: (state) => {
-      return state.year
-    },
-    getAssessmentId: (state) => {
-      return state.assessmentId
+      return state.assessment.year
     },
     getAssessment: (state) => {
       return state.assessment
@@ -173,19 +164,10 @@ export const store = new Vuex.Store({
       state.results = payload
     },
     updateTeam: (state, payload) => {
-      state.team = payload
-    },
-    updateMonth: (state, payload) => {
-      state.month = payload
-    },
-    updateQuarter: (state, payload) => {
-      state.quarter = payload
-    },
-    updateYear: (state, payload) => {
-      state.year = payload
-    },
-    updateAssessmentId: (state, payload) => {
-      state.assessmentId = payload
+      const team = state.teams.find((t) => {
+        return t.id == payload
+      })
+      state.team = team ? team : {}
     },
     updateAssessment: (state, payload) => {
       state.assessment = payload
@@ -237,6 +219,9 @@ export const store = new Vuex.Store({
     updateResults: ({ commit }, payload) => {
       commit('updateResults', payload)
     },
+    updateMyName: ({ commit }, payload) => {
+      commit('updateMyName', payload)
+    },
     updateTeam: ({ commit }, payload) => {
       commit('updateTeam', payload)
     },
@@ -248,9 +233,6 @@ export const store = new Vuex.Store({
     },
     updateYear: ({ commit }, payload) => {
       commit('updateYear', payload)
-    },
-    updateAssessmentId: ({ commit }, payload) => {
-      commit('updateAssessmentId', payload)
     },
     updateAssessment: ({ commit }, payload) => {
       commit('updateAssessment', payload)

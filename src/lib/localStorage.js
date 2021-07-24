@@ -27,7 +27,17 @@ const LocalStorage = {
         localStorage.removeItem(localStorage.key(i))
       }
     }
+  },
+
+  storeAssessment: function(assessment, suffix) {
+    localStorage.setItem('assessment-' + suffix, JSON.stringify(assessment))
+  },
+
+  getAssessment: function(suffix) {
+    const assessment = localStorage.getItem('assessment-' + suffix)
+    return assessment ? JSON.parse(assessment) : null
   }
+
 
 }
 

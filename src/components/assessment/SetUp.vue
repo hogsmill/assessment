@@ -7,11 +7,26 @@
         </td>
         <td>
           <select id="setup-select-team" @change="selectTeam()">
+            <option value="">
+              -- Select --
+            </option>
+            <option v-for="(t, tindex) in teams" :key="tindex" :selected="assessment.team && t.id == assessment.team.id" :value="t.id">
+              {{ t.name }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr v-if="server.frequency">
+        <td>
+          Team Member
+        </td>
+        <td>
+          <select id="setup-select-myname" @change="selectMember()">
             <option>
               -- Select --
             </option>
-            <option v-for="(t, tindex) in teams" :key="tindex" :selected="t.id == team" :value="t.id">
-              {{ t.name }}
+            <option v-for="(m, mindex) in members" :key="mindex" :value="m.id">
+              {{ m.name }}
             </option>
           </select>
         </td>
@@ -64,13 +79,27 @@
 </template>
 
 <script>
+import ls from '../../lib/localStorage'
+
 export default {
+  data() {
+    return {
+      lsData: {},
+      members: []
+    }
+  },
   computed: {
+    lsSuffix() {
+      return this.$store.getters.lsSuffix
+    },
     server() {
       return this.$store.getters.getServer
     },
     teams() {
       return this.$store.getters.getTeams
+    },
+    myName() {
+      return this.$store.getters.getMyName
     },
     team() {
       return this.$store.getters.getTeam
@@ -84,23 +113,43 @@ export default {
     year() {
       return this.$store.getters.getYear
     },
+    assessment() {
+      return this.$store.getters.getAssessment
+    },
   },
   methods: {
+    updateAssessment(key, value) {
+      const assessment = this.assessment
+      assessment[key] = value
+      ls.storeAssessment(assessment, this.lsSuffix)
+      this.$store.dispatch('updateAssessment', assessment)
+    },
     selectTeam() {
-      const team = document.getElementById('setup-select-team').value
-      this.$store.dispatch('updateTeam', team)
+      const teamId = document.getElementById('setup-select-team').value
+      const team = this.teams.find((t) => {
+        return t.id == teamId
+      })
+      this.updateAssessment('team', team)
+      this.members = team ? team.members : []
+    },
+    selectMember() {
+      const memberId = document.getElementById('setup-select-myname').value
+      const member = this.assessment.team.members.find((m) => {
+        return m.id = memberId
+      })
+      this.updateAssessment('member', member)
     },
     selectMonth() {
       const month = document.getElementById('setup-select-month').value
-      this.$store.dispatch('updateMonth', month)
+      this.updateAssessment('month', month)
     },
     selectQuarter() {
       const quarter = document.getElementById('setup-select-quarter').value
-      this.$store.dispatch('updateQuarter', quarter)
+      this.updateAssessment('quarter', quarter)
     },
     selectYear() {
       const year = document.getElementById('setup-select-year').value
-      this.$store.dispatch('updateYear', year)
+      this.updateAssessment('year', year)
     },
   }
 }

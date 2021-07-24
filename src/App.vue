@@ -3,7 +3,6 @@
     <Header />
     <ClearStorage />
     <ConnectionError />
-    <WalkThroughView v-if="server.scope == 'individual'" />
     <div v-if="currentTab == 'facilitator'">
       <FacilitatorView />
     </div>
@@ -26,11 +25,10 @@ import bus from './socket.js'
 import ls from './lib/localStorage.js'
 import params from './lib/params.js'
 import appTypeFuns from './lib/appType.js'
-import session from './lib/session.js'
+import assessmentFuns from './lib/assessment.js'
 
 import Header from './components/Header.vue'
 import ClearStorage from './components/ClearStorage.vue'
-import WalkThroughView from './components/about/WalkThroughView.vue'
 import ConnectionError from './components/error/ConnectionError.vue'
 
 import FacilitatorView from './components/FacilitatorView.vue'
@@ -44,7 +42,6 @@ export default {
   components: {
     Header,
     ClearStorage,
-    WalkThroughView,
     ConnectionError,
     FacilitatorView,
     Intro,
@@ -73,8 +70,8 @@ export default {
     server() {
       return this.$store.getters.getServer
     },
-    assessmentId() {
-      return this.$store.getters.getAssessmentId
+    assessment() {
+      return this.$store.getters.getAssessment
     },
     team() {
       return this.$store.getters.getTeam
@@ -90,8 +87,6 @@ export default {
     const appType = appTypeFuns.get('5 Dysfunctions')
     this.$store.dispatch('updateAppType', appType)
 
-    session.store(this.$store, bus, this.lsSuffix)
-
     bus.$emit('sendCheckSystem', {appType: appType})
     bus.$emit('sendCheckServer')
 
@@ -104,6 +99,11 @@ export default {
     if (params.getParam('walkThrough')) {
       this.$store.dispatch('updateWalkThrough', true)
     }
+
+    //const assessment = ls.getAssessment(this.lsSuffix)
+    //if (assessment) {
+    //  bus.$emit('sendLoadAssessment', assessment)
+    //}
 
     bus.$on('updateConnections', (data) => {
       this.$store.dispatch('updateConnectionError', null)
@@ -123,7 +123,8 @@ export default {
     })
 
     bus.$on('loadAssessment', (data) => {
-      if (data && data.id == this.assessmentId) {
+      console.log('loadAssessment', data)
+      if (assessmentFuns.isThisAssessment(data, this.assessment)) {
         this.$store.dispatch('updateAssessment', data)
       }
     })
@@ -131,7 +132,6 @@ export default {
   methods: {
     restart() {
       if (confirm('Restart this assessment')) {
-        session.clear(this.$store, this.lsSuffix)
         bus.$emit('sendRestart')
         this.$store.dispatch('updateState', 'intro')
       }

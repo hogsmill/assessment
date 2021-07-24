@@ -6,13 +6,13 @@
       </div>
     </div>
     <div class="buttons">
-      <button class="btn btn-info" :class="{ 'selected': question.answer == 'always'}" @click="answer(question.id, 'always')">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == 'always'}" @click="answer('always')">
         Always
       </button>
-      <button class="btn btn-info" :class="{ 'selected': question.answer == 'sometimes'}" @click="answer(question.id, 'sometimes')">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == 'sometimes'}" @click="answer('sometimes')">
         Sometimes
       </button>
-      <button class="btn btn-info" :class="{ 'selected': question.answer == 'never'}" @click="answer(question.id, 'never')">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == 'never'}" @click="answer('never')">
         Never
       </button>
     </div>
@@ -27,13 +27,13 @@ export default {
     'question'
   ],
   computed: {
-    assessmentId() {
-      return this.$store.getters.getAssessmentId
+    assessment() {
+      return this.$store.getters.getAssessment
     }
   },
   methods: {
-    answer(id, answer) {
-      bus.$emit('sendSetAnswer', {id: this.assessmentId, questionId: id, answer: answer})
+    answer(answer) {
+      bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answer})
     }
   }
 }

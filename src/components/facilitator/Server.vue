@@ -19,6 +19,14 @@
     </tr>
     <tr v-if="showServer">
       <td>
+        Got to next question in click?
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.autoNextQuestion" @click="setAutoNextQuestion()">
+      </td>
+    </tr>
+    <tr v-if="showServer">
+      <td>
         Scope
       </td>
       <td>
@@ -88,6 +96,10 @@ export default {
     setScope() {
       const scope = document.getElementById('server-scope-select').value
       bus.$emit('sendUpdateServer', {field: 'scope', value: scope})
+    },
+    setAutoNextQuestion() {
+      const auto = !this.server.autoNextQuestion
+      bus.$emit('sendUpdateServer', {field: 'autoNextQuestion', value: auto})
     },
     toggleMultipleTeams() {
       const multiple = !this.server.multipleTeams
