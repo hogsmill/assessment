@@ -100,10 +100,11 @@ export default {
       this.$store.dispatch('updateWalkThrough', true)
     }
 
-    //const assessment = ls.getAssessment(this.lsSuffix)
-    //if (assessment) {
-    //  bus.$emit('sendLoadAssessment', assessment)
-    //}
+    const assessment = ls.getAssessment(this.lsSuffix)
+    if (assessment) {
+      this.$store.dispatch('updateAssessment', assessment)
+      bus.$emit('sendLoadAssessment', assessment)
+    }
 
     bus.$on('updateConnections', (data) => {
       this.$store.dispatch('updateConnectionError', null)

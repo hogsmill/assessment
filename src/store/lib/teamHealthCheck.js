@@ -56,6 +56,10 @@ module.exports = {
 
   questions: function() {
     return questions
+  },
+
+  results: function(assessment) {
+    return assessment.questions
   }
 
 }

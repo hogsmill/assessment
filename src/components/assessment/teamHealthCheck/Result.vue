@@ -1,7 +1,7 @@
 <template>
   <div class="result">
     <div class="question">
-      {{ question.question.title }}
+      {{ question.question.title }} {{ question }}
     </div>
     <div class="answer">
       <div class="answer-holder" :class="question.answer">

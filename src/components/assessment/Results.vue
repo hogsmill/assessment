@@ -3,21 +3,97 @@
     <h3>
       Results
     </h3>
-    <div class="controls">
-      <i v-if="server.scope == 'individual'" class="far fa-envelope" title="Email results" @click="mailResults()" />
-      <i v-if="server.scope == 'organisation' && server.multipleTeams" class="fas fa-users selected" title="Team results" />
-      <i v-if="server.scope == 'organisation' && server.multipleTeams" class="fas fa-industry" title="Organisation results" />
+    <div v-if="server.scope == 'individual'" class="controls">
+      <i class="far fa-envelope" title="Email results" @click="mailResults()" />
+    </div>
+    <div v-if="server.scope == 'organisation'" class="controls">
+      <table>
+        <tr>
+          <td class="show first">
+            Results
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.member == 'individual' }">
+              <i class="fas fa-user" title="My results" @click="setScope('member', 'individual')" />
+              <br>
+              <span>
+                Me
+              </span>
+            </div>
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.member == 'team' }">
+              <i v-if="server.multipleTeams" class="fas fa-users" title="Team results" @click="setScope('member', 'team')" />
+              <br>
+              <span>
+                My Team
+              </span>
+            </div>
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.member == 'organisation' }">
+              <i v-if="server.multipleTeams" class="fas fa-industry" title="Organisation results" @click="setScope('member', 'organisation')" />
+              <br>
+              <span>
+                Org
+              </span>
+            </div>
+          </td>
+          <td class="show">
+            Dates
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.date == 'single' }">
+              <i class="fas fa-calendar-day" @click="setScope('date', 'single')" />
+              <br>
+              <span>
+                This
+              </span>
+            </div>
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.date == 'all' }">
+              <i class="fas fa-calendar-alt" @click="setScope('date', 'all')" />
+              <br>
+              <span>
+                All
+              </span>
+            </div>
+          </td>
+          <td class="show">
+            Format
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.format == 'table' }">
+              <i class="fas fa-file-alt" @click="setScope('format', 'table')" />
+              <br>
+              <span>
+                Table
+              </span>
+            </div>
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.format == 'graph' }">
+              <i class="fas fa-chart-line" @click="setScope('format', 'graph')" />
+              <br>
+              <span>
+                Graph
+              </span>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
     <Details v-if="server.scope == 'individual'" />
     <div v-if="appType == '5 Dysfunctions'">
-      <div v-for="(dysfunction, index) in Object.keys(results)" class="results" :key="index">
-        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :dysfunction="dysfunction" :value="results[dysfunction]" />
+      <div v-for="(result, index) in results" class="results" :key="index">
+        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :dysfunction="dysfunction" />
       </div>
       <div class="explanation" v-html="explanation()" />
     </div>
     <div v-if="appType == 'Team Health Check'">
-      <div v-for="(question, index) in questions" class="results" :key="index">
-        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
+      <div v-for="(result, index) in results" class="results" :key="index">
+        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :result="result" />
       </div>
     </div>
   </div>
@@ -41,12 +117,18 @@ export default {
     Result5Dysfunctions,
     ResultTeamHealthCheck
   },
+  data() {
+    return {
+      scope: {
+        member: 'individual',
+        date: 'single',
+        format: 'table'
+      }
+    }
+  },
   computed: {
     appType() {
       return this.$store.getters.appType
-    },
-    questions() {
-      return this.$store.getters.getQuestions
     },
     server() {
       return this.$store.getters.getServer
@@ -56,13 +138,10 @@ export default {
     },
     results() {
       return this.$store.getters.getResults
-    },
-    team() {
-      return this.$store.getters.getTeam
     }
   },
   created() {
-    bus.$emit('sendGetResults', {assessment: this.assessment})
+    bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
 
     bus.$on('loadResults', (data) => {
       console.log('results', data)
@@ -70,6 +149,9 @@ export default {
     })
   },
   methods: {
+    setScope(scope, value) {
+      this.scope[scope] = value
+    },
     explanation() {
       return fiveDysfunctions.explanation().replace(/\n/g, '<br>')
     },
@@ -101,6 +183,44 @@ export default {
 <style lang="scss">
   .controls {
 
+    table {
+      margin: 0 auto;
+
+      td {
+        padding: 6px;
+
+        &.show {
+          font-size: larger;
+          font-weight: 600;
+          padding-left: 24px;
+
+          &.first {
+            padding-left: 0;
+          }
+        }
+
+        div {
+          padding: 6px;
+          width: 68px;
+
+          span {
+            font-size: smaller;
+            font-style: italic;
+          }
+
+          &.selected {
+            background-color: #888;
+            color: #fff;
+            border-radius: 6px;
+
+            .fas, .far {
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+
     padding-bottom: 24px;
 
     .fas, .far {
@@ -111,10 +231,6 @@ export default {
       &:hover {
         color: #444;
         cursor: pointer;
-      }
-
-      &.selected {
-        color: #444;
       }
     }
   }

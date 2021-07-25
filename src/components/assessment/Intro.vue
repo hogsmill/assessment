@@ -6,12 +6,16 @@
     <SetUp v-if="server.scope == 'organisation'" />
     <div v-if="server.scope == 'organisation'">
       <button class="btn btn-info" @click="startAssessmentOrganisation()" :disabled="!setUp()">
-        <span>Start</span>
+        <span>
+          Start
+        </span>
       </button>
     </div>
     <div v-if="server.scope == 'individual'">
       <button class="btn btn-info" @click="startAssessmentIndividual()" :disabled="!setUp()">
-        <span>Start</span>
+        <span>
+          Start
+        </span>
       </button>
     </div>
   </div>

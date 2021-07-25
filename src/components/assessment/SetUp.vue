@@ -25,7 +25,7 @@
             <option>
               -- Select --
             </option>
-            <option v-for="(m, mindex) in members" :key="mindex" :value="m.id">
+            <option v-for="(m, mindex) in members" :key="mindex" :selected="assessment.member && m.id == assessment.member.id" :value="m.id">
               {{ m.name }}
             </option>
           </select>
@@ -40,7 +40,7 @@
             <option>
               -- Select --
             </option>
-            <option v-for="m in 12" :key="m" :selected="m == month">
+            <option v-for="m in 12" :key="m" :selected="assessment.month && m == assessment.month" :value="m">
               {{ m }}
             </option>
           </select>
@@ -53,7 +53,7 @@
             <option>
               -- Select --
             </option>
-            <option v-for="q in 4" :key="q" :selected="q == quarter">
+            <option v-for="q in 4" :key="q" :selected="assessment.quarter && q == assessment.quarter" :vale="q">
               Q{{ q }}
             </option>
           </select>
@@ -68,7 +68,7 @@
             <option>
               -- Select --
             </option>
-            <option v-for="y in 10" :key="y" :selected="y == year">
+            <option v-for="y in 10" :key="y" :selected="assessment.year && y == assessment.year">
               {{ y + 2020 }}
             </option>
           </select>
@@ -97,21 +97,6 @@ export default {
     },
     teams() {
       return this.$store.getters.getTeams
-    },
-    myName() {
-      return this.$store.getters.getMyName
-    },
-    team() {
-      return this.$store.getters.getTeam
-    },
-    month() {
-      return this.$store.getters.getMonth
-    },
-    quarter() {
-      return this.$store.getters.getQuarter
-    },
-    year() {
-      return this.$store.getters.getYear
     },
     assessment() {
       return this.$store.getters.getAssessment

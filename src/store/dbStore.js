@@ -101,7 +101,21 @@ function _query(data) {
       id: data.member.id
     }
   }
+  return query
+}
 
+function _resultsQuery(data) {
+  let query = {}
+  if (scope.member == 'individual' && scope.date == 'single') {
+    query = _query(data)
+  } else if scope.member == 'team' && scope.date == 'single') {
+    query = _query(data)
+    delete query.member
+  } else if scope.member == 'organisation' && scope.date == 'single') {
+    query = _query(data)
+    delete query.member
+    delete query.team
+  }
   return query
 }
 
@@ -249,7 +263,7 @@ module.exports = {
 
     if (debugOn) { console.log('getResults', data) }
 
-    const query = _query(data.assessment)
+    let query = _resultsQuery(data.assessment)
     db.assessmentsCollection.findOne(query, function(err, res) {
       if (err) throw err
       let results = []
