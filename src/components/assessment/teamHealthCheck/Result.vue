@@ -1,11 +1,17 @@
 <template>
   <div class="result">
     <div class="question">
-      {{ question.question.title }} {{ question }}
+      {{ result.question }}
     </div>
     <div class="answer">
-      <div class="answer-holder" :class="question.answer">
-        <i class="far" :class="answerClass(question.answer)" />
+      <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
+        <div class="answer-holder" :class="answerHolderClass(result.results[res])">
+          <i v-if="typeof(result.results[res]) == 'string'" class="far" :class="answerClass(result.results[res])" />
+          <span v-if="typeof(result.results[res]) == 'number'">{{ result.results[res] }}</span>
+        </div>
+        <!--
+        <i class="fas" :class="trendClass()" />
+        -->
       </div>
     </div>
   </div>
@@ -14,9 +20,22 @@
 <script>
 export default {
   props: [
-    'question'
+    'result'
   ],
   methods: {
+    answerHolderClass(answer) {
+      let answerHolderClass = answer
+      if (typeof(answer) == 'number') {
+        if (answer < 33) {
+          answerHolderClass = 'red'
+        } else if (answer < 66) {
+          answerHolderClass = 'amber'
+        } else {
+          answerHolderClass = 'green'
+        }
+      }
+      return answerHolderClass
+    },
     answerClass(answer) {
       let answerClass = ''
       switch(answer) {
@@ -31,6 +50,13 @@ export default {
           break
       }
       return answerClass
+    },
+    trendClass() {
+      /*
+      up = 'fas fa-long-arrow-alt-up'
+      same = 'fas fa-arrows-alt-h'
+      down = 'fas fa-long-arrow-alt-down'
+      */
     }
   }
 }

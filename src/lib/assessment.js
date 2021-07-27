@@ -18,7 +18,7 @@ const Assessment = {
     for (let i = 0; i < assessmentKeys.length; i++) {
       const key = assessmentKeys[i]
       if (key == 'team' || key == 'member') {
-        if (data[key].id != assessment[key].id) {
+        if (data[key] && data[key].id != assessment[key].id) {
           console.log(key, data[key].id + ' != ' + assessment[key].id)
           matches = false
         }

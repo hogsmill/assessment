@@ -2,11 +2,12 @@
   <div>
     <h3>
       Results
+      <button @click="getResults()">Get Results</button>
     </h3>
     <div v-if="server.scope == 'individual'" class="controls">
       <i class="far fa-envelope" title="Email results" @click="mailResults()" />
     </div>
-    <div v-if="server.scope == 'organisation'" class="controls">
+    <div v-if="summary && server.scope == 'organisation'" class="controls">
       <table>
         <tr>
           <td class="show first">
@@ -47,7 +48,7 @@
               <i class="fas fa-calendar-day" @click="setScope('date', 'single')" />
               <br>
               <span>
-                This
+                Latest
               </span>
             </div>
           </td>
@@ -85,15 +86,16 @@
       </table>
     </div>
     <Details v-if="server.scope == 'individual'" />
+    <ResultsHeader :results="results" />
     <div v-if="appType == '5 Dysfunctions'">
-      <div v-for="(result, index) in results" class="results" :key="index">
-        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :dysfunction="dysfunction" />
+      <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
+        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :result="results[result]" />
       </div>
       <div class="explanation" v-html="explanation()" />
     </div>
     <div v-if="appType == 'Team Health Check'">
-      <div v-for="(result, index) in results" class="results" :key="index">
-        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :result="result" />
+      <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
+        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :result="results[result]" />
       </div>
     </div>
   </div>
@@ -108,15 +110,20 @@ import fiveDysfunctions from '../../lib/fiveDysfunctions.js'
 
 import Details from './Details.vue'
 
+import ResultsHeader from './ResultsHeader.vue'
 import Result5Dysfunctions from './fiveDysfunctions/Result.vue'
 import ResultTeamHealthCheck from './teamHealthCheck/Result.vue'
 
 export default {
   components: {
     Details,
+    ResultsHeader,
     Result5Dysfunctions,
     ResultTeamHealthCheck
   },
+  props: [
+    'summary'
+  ],
   data() {
     return {
       scope: {
@@ -141,7 +148,9 @@ export default {
     }
   },
   created() {
-    bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
+    if (this.server.scope == 'individual') {
+      this.getResults()
+    }
 
     bus.$on('loadResults', (data) => {
       console.log('results', data)
@@ -149,8 +158,12 @@ export default {
     })
   },
   methods: {
+    getResults() {
+      bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
+    },
     setScope(scope, value) {
       this.scope[scope] = value
+      bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
     explanation() {
       return fiveDysfunctions.explanation().replace(/\n/g, '<br>')

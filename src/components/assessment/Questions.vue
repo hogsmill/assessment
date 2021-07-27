@@ -39,13 +39,6 @@ export default {
       order: 1
     }
   },
-  created() {
-    bus.$on('answerQuestion', (data) => {
-      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
-        this.answer(data)
-      }
-    })
-  },
   computed: {
     appType() {
       return this.$store.getters.appType
@@ -56,6 +49,13 @@ export default {
     assessment() {
       return this.$store.getters.getAssessment
     }
+  },
+  created() {
+    bus.$on('answerQuestion', (data) => {
+      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
+        this.answer(data)
+      }
+    })
   },
   methods: {
     prev() {
@@ -72,7 +72,11 @@ export default {
     },
     goToResults() {
       if (this.server.autoNextQuestion || confirm('Complete the assessment?')) {
-        this.$store.dispatch('updateState', 'results')
+        if (this.server.scope == 'individual') {
+          this.$store.dispatch('updateState', 'results')
+        } else {
+          this.$store.dispatch('updateCurrentTab', 'results')
+        }
       }
     }
   }

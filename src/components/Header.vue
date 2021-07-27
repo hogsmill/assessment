@@ -23,6 +23,9 @@
         <li class="nav-item" :class="{ active: currentTab == 'game' }">
           <a class="nav-link pointer" @click="setCurrentTab('game')">Game</a>
         </li>
+        <li v-if="server.nonAdminResults" class="nav-item" :class="{ active: currentTab == 'results' }">
+          <a class="nav-link pointer" @click="setCurrentTab('results')">Results</a>
+        </li>
         <li v-if="admin" class="nav-item" :class="{ active: currentTab == 'facilitator' }">
           <a class="nav-link pointer" @click="setCurrentTab('facilitator')">Facilitator</a>
         </li>
@@ -86,6 +89,9 @@ export default {
     },
     currentTab() {
       return this.$store.getters.getCurrentTab
+    },
+    server() {
+      return this.$store.getters.getServer
     }
   },
   created() {

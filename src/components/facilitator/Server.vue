@@ -19,7 +19,7 @@
     </tr>
     <tr v-if="showServer">
       <td>
-        Got to next question in click?
+        Got to next question on click?
       </td>
       <td>
         <input type="checkbox" :checked="server.autoNextQuestion" @click="setAutoNextQuestion()">
@@ -69,6 +69,14 @@
         </select>
       </td>
     </tr>
+    <tr v-if="showServer">
+      <td>
+        Non-admin can see all results??
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.nonAdminResults" @click="toggleNonAdminResults()">
+      </td>
+    </tr>
   </table>
 </template>
 
@@ -104,6 +112,10 @@ export default {
     toggleMultipleTeams() {
       const multiple = !this.server.multipleTeams
       bus.$emit('sendUpdateServer', {field: 'multipleTeams', value: multiple})
+    },
+    toggleNonAdminResults() {
+      const nonAdmin = !this.server.nonAdminResults
+      bus.$emit('sendUpdateServer', {field: 'nonAdminResults', value: nonAdmin})
     },
     setFrequency() {
       const frequency = document.getElementById('server-frequency-select').value

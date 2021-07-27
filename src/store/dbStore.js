@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid')
 
 const fiveDysfunctionsFuns = require('./lib/fiveDysfunctions.js')
 const teamHealthCheckFuns = require('./lib/teamHealthCheck.js')
+const resultsFuns = require('./lib/results.js')
 
 function newServer(data) {
   return  {
@@ -104,17 +105,27 @@ function _query(data) {
   return query
 }
 
-function _resultsQuery(data) {
+function _resultsQuery(data, scope) {
   let query = {}
   if (scope.member == 'individual' && scope.date == 'single') {
-    query = _query(data)
-  } else if scope.member == 'team' && scope.date == 'single') {
-    query = _query(data)
-    delete query.member
-  } else if scope.member == 'organisation' && scope.date == 'single') {
-    query = _query(data)
-    delete query.member
-    delete query.team
+    query = {
+      id: data.id
+    }
+  } else if (scope.member == 'team' && scope.date == 'single') {
+    query = {
+      month: data.month,
+      year: data.year,
+      quarter: data.quarter,
+      team: {
+        id: data.team.id
+      }
+    }
+  } else if (scope.member == 'organisation' && scope.date == 'single') {
+    query = {
+      month: data.month,
+      year: data.year,
+      quarter: data.quarter
+    }
   }
   return query
 }
@@ -263,19 +274,14 @@ module.exports = {
 
     if (debugOn) { console.log('getResults', data) }
 
-    let query = _resultsQuery(data.assessment)
-    db.assessmentsCollection.findOne(query, function(err, res) {
+    db.serverCollection.findOne({}, function(err, server) {
       if (err) throw err
-      let results = []
-      switch(data.appType) {
-        case '5 Dysfunctions':
-          results = fiveDysfunctionsFuns.results(res)
-          break
-        case 'Team Health Check':
-          results = teamHealthCheckFuns.results(res)
-          break
-      }
-      io.emit('loadResults', results)
+      let query = _resultsQuery(data.assessment, data.scope)
+      db.assessmentsCollection.find(query).toArray(function(err, res) {
+        if (err) throw err
+        const results = resultsFuns.get(res, server, data.scope, data.appType)
+        io.emit('loadResults', results)
+      })
     })
   },
 

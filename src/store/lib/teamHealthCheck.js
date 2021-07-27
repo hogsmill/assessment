@@ -58,8 +58,28 @@ module.exports = {
     return questions
   },
 
-  results: function(assessment) {
-    return assessment.questions
+  summarise: function(results) {
+    let summary
+    if (results.length == 1) {
+      summary = results[0]
+    } else {
+      let n = 0
+      for (let i = 0; i < results.length; i++) {
+        switch(results[i]) {
+          case 'red':
+            n = n + 1
+            break
+          case 'amber':
+            n = n + 2
+            break
+          case 'green':
+            n = n + 3
+            break
+        }
+      }
+      summary = n / results.length * 10
+    }
+    return summary
   }
 
 }

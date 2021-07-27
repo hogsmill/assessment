@@ -14,8 +14,9 @@
       </h1>
       <Intro v-if="state == 'intro'" />
       <Questions v-if="state == 'questions'" />
-      <Results v-if="state == 'results'" />
+      <Results v-if="server.scope == 'individual' && state == 'results'" :summary="false" />
     </div>
+    <Results v-if="currentTab == 'results'" :summary="true" />
   </div>
 </template>
 

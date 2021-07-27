@@ -74,17 +74,18 @@ module.exports = {
     return questions
   },
 
-  results: function(assessment) {
-    const results = {}
-    for (let i = 0; i < assessment.questions.length; i++) {
-      const question = assessment.questions[i]
-      if (!results[question.question.dysfunction]) {
-        results[question.question.dysfunction] = 0
+  summarise: function(results) {
+    let summary
+    if (results.length == 1) {
+      summary = results[0]
+    } else {
+      let n = 0
+      for (let i = 0; i < results.length; i++) {
+        n = n + results[i]
       }
-      const questionScore = score[question.answer] ? score[question.answer] : 0
-      results[question.question.dysfunction] = results[question.question.dysfunction] + questionScore
+      summary = n / results.length
     }
-    return results
+    return summary
   }
 
 }
