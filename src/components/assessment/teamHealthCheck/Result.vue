@@ -5,13 +5,11 @@
     </div>
     <div class="answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
-        <div class="answer-holder" :class="answerHolderClass(result.results[res])">
-          <i v-if="typeof(result.results[res]) == 'string'" class="far" :class="answerClass(result.results[res])" />
-          <span v-if="typeof(result.results[res]) == 'number'">{{ result.results[res] }}</span>
+        <div class="answer-holder" :class="answerValue(result.results[res])">
+          <i v-if="scope.member == 'individual'" class="far" :class="answerClass(result.results[res])" />
+          <span v-if="scope.member != 'individual'">{{ result.results[res] }}</span>
         </div>
-        <!--
-        <i class="fas" :class="trendClass()" />
-        -->
+        <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
       </div>
     </div>
   </div>
@@ -20,43 +18,69 @@
 <script>
 export default {
   props: [
-    'result'
+    'result',
+    'scope'
   ],
+  computed: {
+    server() {
+      return this.$store.getters.getServer
+    }
+    },
   methods: {
-    answerHolderClass(answer) {
-      let answerHolderClass = answer
-      if (typeof(answer) == 'number') {
-        if (answer < 33) {
-          answerHolderClass = 'red'
-        } else if (answer < 66) {
-          answerHolderClass = 'amber'
+    answerValue(answer) {
+      let answerValue = ''
+      if (this.scope.member == 'individual') {
+        switch(answer) {
+          case 0:
+            answerValue = 'red'
+            break
+          case 1:
+            answerValue = 'amber'
+            break
+          case 2:
+            answerValue = 'green'
+            break
+        }
+      } else {
+        if (answer < 0.66) {
+          answerValue = 'red'
+        } else if (answerValue < 1.33) {
+          answerValue = 'amber'
         } else {
-          answerHolderClass = 'green'
+          answerValue = 'green'
         }
       }
-      return answerHolderClass
+      return answerValue
     },
     answerClass(answer) {
-      let answerClass = ''
-      switch(answer) {
+      let ansClass = ''
+      switch(this.answerValue(answer)) {
         case 'red':
-          answerClass = 'fa-frown'
+          ansClass = 'fa-frown'
           break
         case 'amber':
-          answerClass = 'fa-meh'
+          ansClass = 'fa-meh'
           break
         case 'green':
-          answerClass = 'fa-smile-beam'
+          ansClass = 'fa-smile-beam'
           break
       }
-      return answerClass
+      return ansClass
     },
-    trendClass() {
-      /*
-      up = 'fas fa-long-arrow-alt-up'
-      same = 'fas fa-arrows-alt-h'
-      down = 'fas fa-long-arrow-alt-down'
-      */
+    trendClass(index) {
+      let trend
+      const keys = Object.keys(this.result.results)
+      const thisResult = this.result.results[keys[index]]
+      const prevResult = this.result.results[keys[index - 1]]
+      console.log(thisResult + ' v ' + prevResult)
+      if (thisResult > prevResult) {
+        trend = 'fa-long-arrow-alt-up'
+      } else if (thisResult < prevResult) {
+        trend = 'fa-long-arrow-alt-down'
+      } else {
+        trend = 'fa-arrows-alt-h'
+      }
+      return trend
     }
   }
 }
@@ -97,6 +121,23 @@ export default {
 
           &.green {
             background-color: darkgreen;
+          }
+        }
+
+        .trend {
+          margin-left: 2px;
+          width: 30px;
+
+          &.fa-long-arrow-alt-up {
+            color: green;
+          }
+
+          &.fa-arrows-alt-h {
+            color: grey;
+          }
+
+          &.fa-long-arrow-alt-down {
+            color: red;
           }
         }
       }

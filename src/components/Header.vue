@@ -21,7 +21,7 @@
       </h1>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item" :class="{ active: currentTab == 'game' }">
-          <a class="nav-link pointer" @click="setCurrentTab('game')">Game</a>
+          <a class="nav-link pointer" @click="setCurrentTab('game')">Assessment</a>
         </li>
         <li v-if="server.nonAdminResults" class="nav-item" :class="{ active: currentTab == 'results' }">
           <a class="nav-link pointer" @click="setCurrentTab('results')">Results</a>

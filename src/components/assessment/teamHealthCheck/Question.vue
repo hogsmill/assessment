@@ -6,7 +6,7 @@
     <table>
       <tr>
         <td>
-         <div class="traffic-light green" />
+          <div class="traffic-light green" />
         </td>
         <td>
           {{ question.question.good }}
@@ -14,7 +14,7 @@
       </tr>
       <tr>
         <td>
-         <div class="traffic-light red" />
+          <div class="traffic-light red" />
         </td>
         <td>
           {{ question.question.bad }}
@@ -42,6 +42,15 @@ export default {
   props: [
     'question'
   ],
+  data() {
+    return {
+      answers: {
+        'red': 0,
+        'amber': 1,
+        'green': 2
+      }
+    }
+  },
   computed: {
     assessment() {
       return this.$store.getters.getAssessment
@@ -49,7 +58,8 @@ export default {
   },
   methods: {
     answer(answer) {
-      bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answer})
+      const answerValue = this.answers[answer]
+      bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answerValue})
     }
   }
 }

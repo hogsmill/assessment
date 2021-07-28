@@ -22,7 +22,15 @@
         Got to next question on click?
       </td>
       <td>
-        <input type="checkbox" :checked="server.autoNextQuestion" @click="setAutoNextQuestion()">
+        <input type="checkbox" :checked="server.autoNextQuestion" @click="toggleAutoNextQuestion()">
+      </td>
+    </tr>
+    <tr v-if="showServer">
+      <td>
+        Host moves slides?
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.hostMovesSlides" @click="toggleHostMovesSlides()">
       </td>
     </tr>
     <tr v-if="showServer">
@@ -105,9 +113,13 @@ export default {
       const scope = document.getElementById('server-scope-select').value
       bus.$emit('sendUpdateServer', {field: 'scope', value: scope})
     },
-    setAutoNextQuestion() {
+    toggleAutoNextQuestion() {
       const auto = !this.server.autoNextQuestion
       bus.$emit('sendUpdateServer', {field: 'autoNextQuestion', value: auto})
+    },
+    toggleHostMovesSlides() {
+      const hostMovesSlides = !this.server.hostMovesSlides
+      bus.$emit('sendUpdateServer', {field: 'hostMovesSlides', value: hostMovesSlides})
     },
     toggleMultipleTeams() {
       const multiple = !this.server.multipleTeams

@@ -89,13 +89,13 @@
     <ResultsHeader :results="results" />
     <div v-if="appType == '5 Dysfunctions'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
-        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :result="results[result]" />
+        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :result="results[result]" :scope="scope" />
       </div>
       <div class="explanation" v-html="explanation()" />
     </div>
     <div v-if="appType == 'Team Health Check'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
-        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :result="results[result]" />
+        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :result="results[result]" :scope="scope" />
       </div>
     </div>
   </div>

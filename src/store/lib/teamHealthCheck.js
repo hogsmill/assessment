@@ -65,19 +65,9 @@ module.exports = {
     } else {
       let n = 0
       for (let i = 0; i < results.length; i++) {
-        switch(results[i]) {
-          case 'red':
-            n = n + 1
-            break
-          case 'amber':
-            n = n + 2
-            break
-          case 'green':
-            n = n + 3
-            break
-        }
+        n = n + results[i]
       }
-      summary = n / results.length * 10
+      summary = n / results.length
     }
     return summary
   }

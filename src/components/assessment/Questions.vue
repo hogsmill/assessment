@@ -8,8 +8,8 @@
         <Question5Dysfunctions v-if="appType == '5 Dysfunctions'" :question="question" />
         <QuestionTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
         <div class="next" v-if="!server.autoNextQuestion">
-          <i v-if="order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
-          <i v-if="order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
+          <i v-if="question.answer && order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
+          <i v-if="question.answer && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
         </div>
       </div>
     </div>
