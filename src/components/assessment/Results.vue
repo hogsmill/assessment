@@ -2,7 +2,9 @@
   <div>
     <h3>
       Results
-      <button @click="getResults()">Get Results</button>
+      <button class="btn btn-info" @click="getResults()">
+        Get Results
+      </button>
     </h3>
     <div v-if="server.scope == 'individual'" class="controls">
       <i class="far fa-envelope" title="Email results" @click="mailResults()" />
@@ -106,7 +108,8 @@ import bus from '../../socket.js'
 
 import mailFuns from '../../lib/mail.js'
 
-import fiveDysfunctions from '../../lib/fiveDysfunctions.js'
+import fiveDysfunctions from '../../lib/email/fiveDysfunctions.js'
+import teamHealthCheck from '../../lib/email/teamHealthCheck.js'
 
 import Details from './Details.vue'
 
@@ -180,6 +183,9 @@ export default {
         case '5 Dysfunctions':
           title = fiveDysfunctions.emailTitle(name, organisation, this.assessment)
           comments = fiveDysfunctions.emailContent(name, organisation, this.results)
+        case 'Team Health Check':
+          title = teamHealthCheck.emailTitle(name, organisation, this.assessment)
+          comments = teamHealthCheck.emailContent(name, organisation, this.results)
       }
       mailFuns.post({
         action: title,

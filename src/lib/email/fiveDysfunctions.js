@@ -39,13 +39,15 @@ function formatResults(results) {
   const keys =  Object.keys(results)
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
-    str = str + key + ': ' + results[key] + ' / 9\n'
-    if (results[key] >= 8) {
-      str = str + '  - Everything is fine for this dysfunction\n\n'
-    } else if (results[key] >= 5) {
-      str = str + '  - This dysfunction could be worrying - it is worth keeping an eye on this\n\n'
+    const resKey = Object.keys(results[key].results).reverse()[0]
+    const result = results[key].results[resKey]
+    str = str + results[key].question + ': ' + result + ' / 9 '
+    if (result >= 8) {
+      str = str + ' - Everything is fine for this dysfunction\n\n'
+    } else if (result >= 5) {
+      str = str + ' - This dysfunction could be worrying; it is worth keeping an eye on this\n\n'
     } else {
-      str = str + '  - This dysfunciton needs addressing\n\n'
+      str = str + ' - This dysfunction needs addressing\n\n'
     }
   }
   return str

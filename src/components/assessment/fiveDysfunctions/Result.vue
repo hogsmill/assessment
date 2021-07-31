@@ -9,12 +9,14 @@
           <div :class="dysfunctionClass(result.results[res])" :title="dysfunctionTitle(result.results[res])">
             {{ result.results[res] }} / 9
           </div>
-          <i>{{ dysfunctionTitle(result.results[res]) }}</i>
         </div>
         <!--
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
         -->
       </div>
+    </div>
+    <div class="status">
+      {{ status() }}
     </div>
   </div>
 </template>
@@ -23,9 +25,14 @@
 export default {
   props: [
     'result',
+    'last',
     'scope'
   ],
   methods: {
+    status() {
+      const last = Object.keys(this.result.results).reverse() [0]
+      return this.dysfunctionTitle(this.result.results[last])
+    },
     dysfunctionClass(score) {
       let str = ''
       if (score >= 8) {
@@ -61,10 +68,10 @@ export default {
       &.result-dysfunction {
         width: 46%;
       }
+
       &.result-value {
         margin: 3px;
         color: #fff;
-        width: 53%;
         text-align: left;
 
         div {
@@ -88,5 +95,10 @@ export default {
         }
       }
     }
+
+    .status {
+      margin-bottom: 24px;
+      font-style: italic;
+    }
   }
-  </style>
+</style>
