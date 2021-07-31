@@ -72,7 +72,6 @@ export default {
       const keys = Object.keys(this.result.results)
       const thisResult = this.result.results[keys[index]]
       const prevResult = this.result.results[keys[index - 1]]
-      console.log(thisResult + ' v ' + prevResult)
       if (thisResult > prevResult) {
         trend = 'fa-long-arrow-alt-up'
       } else if (thisResult < prevResult) {

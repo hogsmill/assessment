@@ -19,12 +19,10 @@ const Assessment = {
       const key = assessmentKeys[i]
       if (key == 'team' || key == 'member') {
         if (data[key] && data[key].id != assessment[key].id) {
-          console.log(key, data[key].id + ' != ' + assessment[key].id)
           matches = false
         }
       } else {
         if (data[key] != assessment[key]) {
-          console.log(key, data[key] + ' != ' + assessment[key])
           matches = false
         }
       }

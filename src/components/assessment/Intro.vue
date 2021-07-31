@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid'
-
 import bus from '../../socket.js'
 
 import ls from '../../lib/localStorage.js'
@@ -69,7 +67,6 @@ export default {
         alert('Please complete all fields')
       } else {
         const assessment = {
-          id: uuidv4(),
           name: name,
           organisation: organisation,
           email: email

@@ -1,34 +1,16 @@
 
-/* Potential assessment keys:
-
-Organisation
-  team
-  month
-  quarter
-  year
-  member
-  organisation
-
-Individual
-  name
-  organisaton
-  email
-*/
-
 const fiveDysfunctionsFuns = require('./fiveDysfunctions.js')
 const teamHealthCheckFuns = require('./teamHealthCheck.js')
 
-function setResults(assessments) {
-  const results = {}
-  for (let i = 0; i < assessments.length; i++) {
-    const assessment = assessments[i]
-    for (let j = 0; j < assessment.questions.length; j++) {
-      const question = assessment.questions[j]
-      results[question.id] = {
-        question: question.question.title,
-        results: {}
-      }
-    }
+function setResults(assessments, appType) {
+  let results
+  switch(appType) {
+    case 'Team Health Check':
+      results = teamHealthCheckFuns.setResults(assessments)
+      break
+    case '5 Dysfunctions':
+      results = fiveDysfunctionsFuns.setResults(assessments)
+      break
   }
   return results
 }
@@ -61,24 +43,20 @@ function result(results, question, key) {
   return results
 }
 
-function average(summarised, appType) {
-  switch(appType) {
-    case 'Team Health Check':
-      summarised = teamHealthCheckFuns.summarise(summarised)
-      break
-    case '5 Dysfunctions':
-      summarised = fiveDysfunctionsFuns.summarise(summarised)
-      break
+function average(results) {
+  let n = 0
+  for (let i = 0; i < results.length; i++) {
+    n = n + results[i]
   }
-  return summarised
+  return n / results.length
 }
 
 function summariseAnswers(results, scope, appType) {
   const aggregated = {}
   let keys = Object.keys(results)
   for (var i = 0; i < keys.length; i++) {
-    const newKey = keys[i].split('+')[2]
     if (scope.member == 'individual') {
+      const newKey = keys[i]
       aggregated[newKey] = []
       aggregated[newKey].push(results[keys[i]])
     } else if (scope.member == 'team') {
@@ -93,7 +71,7 @@ function summariseAnswers(results, scope, appType) {
   const summarised = {}
   for (var i = 0; i < keys.length; i++) {
     const newKey = keys[i].match(/\d{4}\-\d{2}$/)[0]
-    summarised[newKey] = average(aggregated[keys[i]], appType)
+    summarised[newKey] = average(aggregated[keys[i]])
   }
   return summarised
 }
@@ -109,17 +87,19 @@ function summarise(results, scope, appType) {
 module.exports = {
 
   get: function(assessments, server, scope, appType) {
-    let results = setResults(assessments)
+    let results = setResults(assessments, appType)
     for (let i = 0; i < assessments.length; i++) {
-      const assessment = assessments[i]
-      for (let j = 0; j < assessment.questions.length; j++) {
-        const question = assessment.questions[j]
-        const key = getKey(assessment, server)
-        results[question.id] = result(results[question.id], question, key)
+      const key = getKey(assessments[i], server)
+      switch(appType) {
+        case 'Team Health Check':
+          results = teamHealthCheckFuns.assessmentResults(assessments[i], key, results)
+          break
+        case '5 Dysfunctions':
+          results = fiveDysfunctionsFuns.assessmentResults(assessments[i], key, results)
+          break
       }
     }
     results = summarise(results, scope, appType)
-    console.log('results', results)
     return results
   }
 

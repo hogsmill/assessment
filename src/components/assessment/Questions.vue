@@ -1,5 +1,6 @@
 <template>
   <div v-if="assessment.questions" class="questions">
+    <WhosAnswered v-if="admin && server.scope == 'organisation'" />
     <div v-for="(question, index) in assessment.questions" :key="index" class="question-block">
       <div v-if="question.order == order">
         <div class="prev" v-if="!server.autoNextQuestion">
@@ -8,8 +9,8 @@
         <Question5Dysfunctions v-if="appType == '5 Dysfunctions'" :question="question" />
         <QuestionTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
         <div class="next" v-if="!server.autoNextQuestion">
-          <i v-if="question.answer && order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
-          <i v-if="question.answer && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
+          <i v-if="answered(question) && order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
+          <i v-if="answered(question) && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
         </div>
       </div>
     </div>
@@ -26,11 +27,13 @@ import bus from '../../socket.js'
 
 import assessmentFuns from '../../lib/assessment.js'
 
+import WhosAnswered from './WhosAnswered.vue'
 import Question5Dysfunctions from './fiveDysfunctions/Question.vue'
 import QuestionTeamHealthCheck from './teamHealthCheck/Question.vue'
 
 export default {
   components: {
+    WhosAnswered,
     Question5Dysfunctions,
     QuestionTeamHealthCheck
   },
@@ -42,6 +45,9 @@ export default {
   computed: {
     appType() {
       return this.$store.getters.appType
+    },
+    admin() {
+      return this.$store.getters.getAdmin
     },
     server() {
       return this.$store.getters.getServer
@@ -63,6 +69,9 @@ export default {
     },
     next() {
       this.order = this.order + 1
+    },
+    answered(question) {
+      return question.answer != null
     },
     answer(data) {
       bus.$emit('sendSetAnswer', {assessment: this.assessment, questionId: data.questionId, answer: data.answer})

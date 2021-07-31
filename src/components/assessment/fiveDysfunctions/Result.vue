@@ -1,13 +1,20 @@
 <template>
   <div class="result">
     <div class="result-dysfunction">
-      {{ dysfunction }}
+      {{ result.question }}
     </div>
-    <div class="result-value">
-      <div :class="dysfunctionClass(value)" :title="dysfunctionTitle(value)">
-        {{ value }} / 9
+    <div class="answer">
+      <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
+        <div class="result-value">
+          <div :class="dysfunctionClass(result.results[res])" :title="dysfunctionTitle(result.results[res])">
+            {{ result.results[res] }} / 9
+          </div>
+          <i>{{ dysfunctionTitle(result.results[res]) }}</i>
+        </div>
+        <!--
+        <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
+        -->
       </div>
-      <i>{{ dysfunctionTitle(value) }}</i>
     </div>
   </div>
 </template>
@@ -15,8 +22,8 @@
 <script>
 export default {
   props: [
-    'dysfunction',
-    'value'
+    'result',
+    'scope'
   ],
   methods: {
     dysfunctionClass(score) {

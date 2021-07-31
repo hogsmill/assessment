@@ -58,18 +58,29 @@ module.exports = {
     return questions
   },
 
-  summarise: function(results) {
-    let summary
-    if (results.length == 1) {
-      summary = results[0]
-    } else {
-      let n = 0
-      for (let i = 0; i < results.length; i++) {
-        n = n + results[i]
+  setResults: function(assessments, appType) {
+    const results = {}
+    for (let i = 0; i < assessments.length; i++) {
+      const assessment = assessments[i]
+      for (let j = 0; j < assessment.questions.length; j++) {
+        const question = assessment.questions[j]
+        if (!results[question.id]) {
+          results[question.id] = {
+            question: question.question.title,
+            results: {}
+          }
+        }
       }
-      summary = n / results.length
     }
-    return summary
+    return results
+  },
+
+  assessmentResults: function(assessment, key, results) {
+    for (let i = 0; i < assessment.questions.length; i++) {
+      question = assessment.questions[i]
+      results[question.id].results[key] = question.answer
+    }
+    return results
   }
 
 }

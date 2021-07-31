@@ -71,9 +71,6 @@ function _loadAssessment(db, io, query) {
 
 function _query(data) {
   const query = {}
-  if (data.id) {
-    query.id = data.id
-  }
   if (data.month) {
     query.month = data.month
   }
@@ -109,7 +106,9 @@ function _resultsQuery(data, scope) {
   let query = {}
   if (scope.member == 'individual' && scope.date == 'single') {
     query = {
-      id: data.id
+      name: data.name,
+      organisation: data.organisation,
+      email: data.email
     }
   } else if (scope.member == 'team' && scope.date == 'single') {
     query = {
