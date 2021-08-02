@@ -178,19 +178,19 @@ export default {
       if (!email) {
         alert('Please enter a valid email address so we can send you your results')
       } else {
-        let title, comments
+        let title, message
         switch(this.appType) {
           case '5 Dysfunctions':
             title = fiveDysfunctions.emailTitle(name, organisation, this.assessment)
-            comments = fiveDysfunctions.emailContent(name, organisation, this.results)
+            message = fiveDysfunctions.emailContent(name, organisation, this.results)
           case 'Team Health Check':
             title = teamHealthCheck.emailTitle(name, organisation, this.assessment)
-            comments = teamHealthCheck.emailContent(name, organisation, this.results)
+            message = teamHealthCheck.emailContent(name, organisation, this.results)
         }
         bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.results})
         mailFuns.send({
-          to: assessment.email,
-          subjeect: title,
+          to: email,
+          subject: title,
           message: encodeURIComponent(message)
           },
           'Your results are on the way!'

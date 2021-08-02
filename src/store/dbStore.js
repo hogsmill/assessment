@@ -297,7 +297,10 @@ module.exports = {
     const query = _query(data.assessment)
     db.assessmentsCollection.findOne(query, function(err, res) {
       if (err) throw err
-      const resultsEmailled = res.resultsEmailled.push(new Date().toISOString())
+      const resultsEmailled = res.resultsEmailled.push({
+        date: new Date().toISOString(),
+        results: resultsFuns
+      })
       db.assessmentsCollection.updateOne({'_id': res._id}, {resultsEmailled: resultsEmailled}, function(err, ) {
         if (err) throw err
       })
