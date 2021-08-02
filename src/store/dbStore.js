@@ -301,7 +301,7 @@ module.exports = {
         date: new Date().toISOString(),
         results: resultsFuns
       })
-      db.assessmentsCollection.updateOne({'_id': res._id}, {resultsEmailled: resultsEmailled}, function(err, ) {
+      db.assessmentsCollection.updateOne({'_id': res._id}, {$set: {resultsEmailled: resultsEmailled}}, function(err, ) {
         if (err) throw err
       })
     })

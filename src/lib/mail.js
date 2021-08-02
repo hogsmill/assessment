@@ -27,12 +27,7 @@ const Mail = {
     }
   },
 
-  send: function(to, subject, message) {
-    const data = {
-      to: to,
-      subject: subject,
-      message: message
-    }
+  send: function(data, message) {
     $.ajax({
         type: 'GET',
         url: 'https://agilesimulations.co.uk/sendMail.php',
