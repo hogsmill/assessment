@@ -62,7 +62,7 @@ const TeamHealthCheck = {
     if (organisation) {
       str = str + ' of ' + organisation
     }
-    str = str + intro
+    str = str + intro()
     str = str + '\n\n'
     str = str + formatResults(results)
     str = str + '\n\n'

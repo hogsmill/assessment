@@ -1,4 +1,6 @@
 
+import email from './email.js'
+
 const explanationText =
   '<h3>Members of a team with an absence of trust...</h3>\n' +
   '  - Conceal their weaknesses and mistakes from one another\n' +
@@ -33,6 +35,14 @@ const explanationText =
   '  - Rarely defeats competitors\n' +
   '  - Loses achievement-oriented employees\n' +
   '  - Encourages team members to focus on their own careers and individual goals\n\n'
+
+function intro() {
+  const str = [
+    'Thanks for using the free version of the 5 Dysfinction of Teams app',
+    '',
+    'To run this with your whole team, or across teams, you will need to purchase a (very reasonable) subscription to our service. This will give you access to all aggregation, trending and results functionality to get the most from this app.'
+  ]
+}
 
 function formatResults(results) {
   let str = ''
@@ -75,10 +85,13 @@ const FiveDysfunctions = {
     if (organisation) {
       str = str + ' of ' + organisation
     }
+    str = str + intro()
     str = str + '\n\n'
     str = str + formatResults(results)
     str = str + '\n\n'
     str = str + explanationText.replace(/<h2>/g, '').replace(/<\/h2>/g, '')
+    str = str + '\n\n'
+    str = str + email.pricing()
 
     return str
   },
