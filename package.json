@@ -12,7 +12,7 @@
     "core-js": "^3.16.0",
     "death": "^1.1.0",
     "dotenv": "^8.6.0",
-    "highlight.js": "^11.1.0",
+    "highlight.js": "^11.2.0",
     "jquery": "^3.6.0",
     "mongodb": "^3.6.10",
     "sass": "^1.37.0",

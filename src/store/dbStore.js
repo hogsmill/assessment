@@ -40,7 +40,7 @@ function newQuestion(data) {
 }
 
 function newAssessment(query) {
-  query.created: new Date().toISOString()
+  query.created = new Date().toISOString()
   query.resultsEmailled = []
   return query
 }
