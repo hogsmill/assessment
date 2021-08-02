@@ -189,7 +189,7 @@ export default {
         }
         bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.results})
         mailFuns.send({
-          to: email,
+          email: email,
           subject: title,
           message: encodeURIComponent(message)
           },
