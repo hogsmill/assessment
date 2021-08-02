@@ -39,6 +39,12 @@ function newQuestion(data) {
   }
 }
 
+function newAssessment(query) {
+  query.created: new Date().toISOString()
+  query.resultsEmailled = []
+  return query
+}
+
 function _loadServer(db, io) {
   db.serverCollection.findOne({}, function(err, res) {
     if (err) throw err
@@ -237,6 +243,7 @@ module.exports = {
         db.questionCollection.find().toArray(function(err, questions) {
           if (err) throw err
           query.questions = questions
+          const assessment = newAssessment(query)
           db.assessmentsCollection.insertOne(query, function(err, res) {
             if (err) throw err
             query = _query(data)
@@ -280,6 +287,19 @@ module.exports = {
         if (err) throw err
         const results = resultsFuns.get(res, server, data.scope, data.appType)
         io.emit('loadResults', results)
+      })
+    })
+  },
+
+  resultsMailled: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('getResults', data) }
+    const query = _query(data.assessment)
+    db.assessmentsCollection.findOne(query, function(err, res) {
+      if (err) throw err
+      const resultsEmailled = res.resultsEmailled.push(new Date().toISOString())
+      db.assessmentsCollection.updateOne({'_id': res._id}, {resultsEmailled: resultsEmailled}, function(err, ) {
+        if (err) throw err
       })
     })
   },

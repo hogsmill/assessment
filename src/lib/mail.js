@@ -25,7 +25,24 @@ const Mail = {
           }
       })
     }
+  },
+
+  send: function(to, subject, message) {
+    const data = {
+      to: to,
+      subject: subject,
+      message: message
+    }
+    $.ajax({
+        type: 'GET',
+        url: 'https://agilesimulations.co.uk/sendMail.php',
+        data: data,
+        success: () => {
+          alert(message)
+        }
+    })
   }
+
 }
 
 export default Mail

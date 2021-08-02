@@ -23,7 +23,7 @@ APPS=(
   'five-dysfunctions,fiveDysfunctionsServer,fiveDysfunctionsTeams,fiveDysfunctionsQuestions,fiveDysfunctionsAssessments,3038,5 Dysfunctions,5 Dysfunctions'
   'five-dysfunctions-new,fiveDysfunctionsNewServer,fiveDysfunctionsNewTeams,fiveDysfunctionsNewQuestions,fiveDysfunctionsNewAssessments,3040,5 Dysfunctions,5 Dysfunctions New'
   'team-health-check,healthCheckServer,healthCheckTeams,healthCheckQuestions,healthCheckAssessments,3039,Team Health Check,Team Health Check'
-  'team-health-check-new,healthCheckNewServer,healthCheckNewTeams,healthCheckQuestionsNew,healthCheckNewAssessments,3041,Team Health Check,Team Health Check New'
+  'team-health-check-new,healthCheckNewServer,healthCheckNewTeams,healthCheckNewQuestions,healthCheckNewAssessments,3041,Team Health Check,Team Health Check New'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))

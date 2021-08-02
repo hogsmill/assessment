@@ -58,6 +58,8 @@ bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
 
 bus.$on('sendGetResults', (data) => { socket.emit('sendGetResults', data) })
 
+bus.$on('sendResultsMailled', (data) => { socket.emit('sendResultsMailled', data) })
+
 bus.$on('sendRestart', () => { socket.emit('sendRestart') })
 
 // Facilitator
