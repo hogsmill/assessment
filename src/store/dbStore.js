@@ -300,7 +300,8 @@ module.exports = {
       const resultsEmailled = res.resultsEmailled
       resultsEmailled.push({
         date: new Date().toISOString(),
-        results: resultsFuns
+        results: data.results,
+        assessment: data.assessment
       })
       db.assessmentsCollection.updateOne({'_id': res._id}, {$set: {resultsEmailled: resultsEmailled}}, function(err, ) {
         if (err) throw err
