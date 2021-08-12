@@ -12,6 +12,7 @@
         <span v-if="server.scope == 'organisation' && !server.multipleTeams"> for {{ team.name }}</span>
         <i class="fas fa-undo" @click="restart()" />
       </h1>
+      <WalkThrough />
       <Intro v-if="state == 'intro'" />
       <Questions v-if="state == 'questions'" />
       <Results v-if="server.scope == 'individual' && state == 'results'" :summary="false" />
@@ -32,6 +33,8 @@ import Header from './components/Header.vue'
 import ClearStorage from './components/ClearStorage.vue'
 import ConnectionError from './components/error/ConnectionError.vue'
 
+import WalkThrough from './components/about/WalkThrough.vue'
+
 import FacilitatorView from './components/FacilitatorView.vue'
 
 import Intro from './components/assessment/Intro.vue'
@@ -44,6 +47,7 @@ export default {
     Header,
     ClearStorage,
     ConnectionError,
+    WalkThrough,
     FacilitatorView,
     Intro,
     Questions,

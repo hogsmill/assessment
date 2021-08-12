@@ -2,7 +2,7 @@
   <table class="facilitator-table questions-table">
     <tr>
       <td colspan="2">
-        <h4>5 Dysfunctions</h4>
+        <h4>Questions</h4>
         <i v-if="showFiveDysfunctions" @click="setShowFiveDysfunctions(false)" title="collapse" class="fas fa-caret-up toggle" />
         <i v-if="!showFiveDysfunctions" @click="setShowFiveDysfunctions(true)" title="expand" class="fas fa-caret-down toggle" />
       </td>

@@ -126,10 +126,10 @@ export default {
     updateShowAbout(payload) {
       this.$store.dispatch('updateShowAbout', payload)
     },
-    show () {
+    show() {
       this.$modal.show('feedback')
     },
-    hide () {
+    hide() {
       this.$modal.hide('feedback')
     },
     sendFeedback() {

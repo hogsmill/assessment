@@ -19,7 +19,7 @@
     </tr>
     <tr v-if="showServer">
       <td>
-        Got to next question on click?
+        Go to next question on click?
       </td>
       <td>
         <input type="checkbox" :checked="server.autoNextQuestion" @click="toggleAutoNextQuestion()">
@@ -79,7 +79,7 @@
     </tr>
     <tr v-if="showServer">
       <td>
-        Non-admin can see all results??
+        Non-admin can see all results?
       </td>
       <td>
         <input type="checkbox" :checked="server.nonAdminResults" @click="toggleNonAdminResults()">

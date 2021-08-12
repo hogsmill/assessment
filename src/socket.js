@@ -54,6 +54,10 @@ bus.$on('sendLoadAssessment', (data) => { socket.emit('sendLoadAssessment', data
 
 bus.$on('sendAnswerQuestion', (data) => { bus.$emit('answerQuestion', data) })
 
+bus.$on('sendNextQuestion', (data) => { bus.$emit('nextQuestion', data) })
+
+bus.$on('sendGoToResults', (data) => { bus.$emit('goToResults', data) })
+
 bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
 
 bus.$on('sendGetResults', (data) => { socket.emit('sendGetResults', data) })

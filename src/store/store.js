@@ -101,7 +101,7 @@ export const store = new Vuex.Store({
       return state.assessment.myName
     },
     getTeam: (state) => {
-      return state.team
+      return state.assessment.team
     },
     getMonth: (state) => {
       return state.assessment.month

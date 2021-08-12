@@ -33,8 +33,6 @@
 </template>
 
 <script>
-import ls from '../../lib/localStorage'
-
 export default {
   computed: {
     assessment() {

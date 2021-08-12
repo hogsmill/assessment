@@ -2,7 +2,7 @@
   <table class="facilitator-table questions-table">
     <tr>
       <td colspan="2">
-        <h4>Team Health Check</h4>
+        <h4>Questions</h4>
         <i v-if="showTeamHealthCheck" @click="setShowTeamHealthCheck(false)" title="collapse" class="fas fa-caret-up toggle" />
         <i v-if="!showTeamHealthCheck" @click="setShowTeamHealthCheck(true)" title="expand" class="fas fa-caret-down toggle" />
       </td>

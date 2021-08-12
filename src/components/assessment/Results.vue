@@ -76,11 +76,20 @@
             </div>
           </td>
           <td>
-            <div :class="{ 'selected': scope.format == 'graph' }">
-              <i class="fas fa-chart-line" @click="setScope('format', 'graph')" />
+            <div :class="{ 'selected': scope.format == 'graph-separate' }">
+              <i class="fas fa-chart-line" @click="setScope('format', 'graph-separate')" />
               <br>
               <span>
-                Graph
+                Compare
+              </span>
+            </div>
+          </td>
+          <td>
+            <div :class="{ 'selected': scope.format == 'graph-aggregate' }">
+              <i class="fas fa-chart-area" @click="setScope('format', 'graph-aggregate')" />
+              <br>
+              <span>
+                Aggregate
               </span>
             </div>
           </td>

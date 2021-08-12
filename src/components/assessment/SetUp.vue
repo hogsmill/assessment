@@ -106,7 +106,7 @@ export default {
     updateAssessment(key, value) {
       const assessment = this.assessment
       assessment[key] = value
-      ls.storeAssessment(assessment, this.lsSuffix)
+      //ls.storeAssessment(assessment, this.lsSuffix)
       this.$store.dispatch('updateAssessment', assessment)
     },
     selectTeam() {

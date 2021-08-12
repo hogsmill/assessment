@@ -1,6 +1,6 @@
 <template>
   <div v-if="assessment.questions" class="questions">
-    <WhosAnswered v-if="admin && server.scope == 'organisation'" />
+    <WhosAnswered v-if="admin && server.hostMovesSlides && server.scope == 'organisation'" />
     <div v-for="(question, index) in assessment.questions" :key="index" class="question-block">
       <div v-if="question.order == order">
         <div class="prev" v-if="!server.autoNextQuestion">
@@ -8,9 +8,12 @@
         </div>
         <Question5Dysfunctions v-if="appType == '5 Dysfunctions'" :question="question" />
         <QuestionTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
-        <div class="next" v-if="!server.autoNextQuestion">
+        <div class="next" v-if="!server.autoNextQuestion && !server.hostMovesSlides">
           <i v-if="answered(question) && order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
           <i v-if="answered(question) && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
+        </div>
+        <div>
+          <i class="far fa-comment" @click="show(question)" />
         </div>
       </div>
     </div>
@@ -19,6 +22,24 @@
         Go To Results
       </button>
     </div>
+
+    <modal name="comment" :height="312" :classes="['rounded', 'comment']">
+      <div class="float-right mr-2 mt-1">
+        <button type="button" class="close" @click="hide" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="mt-4">
+        <h4>Comment</h4>
+        <div class="comment-form">
+          <textarea id="comment" rows="6" class="form-control" placeholder="Your comment" />
+          <button class="btn btn-sm btn-secondary smaller-font" @click="saveComment()">
+            Save Comment
+          </button>
+        </div>
+      </div>
+    </modal>
+
   </div>
 </template>
 
@@ -39,7 +60,8 @@ export default {
   },
   data() {
     return {
-      order: 1
+      order: 1,
+      questionId: ''
     }
   },
   computed: {
@@ -62,8 +84,31 @@ export default {
         this.answer(data)
       }
     })
+
+    bus.$on('nextQuestion', (data) => {
+      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
+        this.next()
+      }
+    })
+
+    bus.$on('goToResults', (data) => {
+      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
+        this.goToResults()
+      }
+    })
   },
   methods: {
+    show(question) {
+      this.questionId = question.id
+      this.$modal.show('comment')
+    },
+    hide() {
+      this.questionId = ''
+      this.$modal.hide('comment')
+    },
+    saveComment() {
+      this.hide()
+    },
     prev() {
       this.order = this.order - 1
     },
@@ -115,11 +160,23 @@ export default {
         color: #fff;
       }
 
+      .fa-comment {
+        color: #ccc;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
       .prev, .next {
         margin: auto auto;
         width: 100px;
         display: inline-block;
       }
     }
+  }
+
+  .comment-form {
+    padding: 24px;
   }
 </style>
