@@ -2,8 +2,7 @@
 import email from './email.js'
 
 const explanationText =
-  'Members of a team with an absence of trust...\n' +
-  '---------------------------------------------\n' +
+  '<h3>Members of a team with an absence of trust...\n' +
   '  - Conceal their weaknesses and mistakes from one another\n' +
   '  - Hesitate to ask for help or provide constructive feedback\n' +
   '  - Hesitate to offer help outside their own areas of responsibility\n' +
@@ -12,30 +11,25 @@ const explanationText =
   '  - Waste time and energy managing their behaviours for effect\n' +
   '  - Hold grudges\n' +
   '  - Dread meetings and find reasons to avoid spending time together\n\n' +
-
-  'Teams that fears conflict...\n' +
-  '----------------------------\n' +
+  '<h3>Teams that fears conflict...</h3>\n' +
   '  - Have boring meetings\n' +
   '  - Create environments where back-channel politics and personal attacks thrive\n' +
   '  - Ignore controversial topics that are critical to team success\n' +
   '  - Fail to tap into all the opinions and perspectives of team members\n\n' +
 
-  'A team that fails to commit...\n' +
-  '------------------------------\n' +
+  '<h3>A team that fails to commit...</h3>\n' +
   '  - Creates ambiguity among the team about direction and priorities\n' +
   '  - Watches windows of opportunity close due to excessive analysis and unnecessary delay\n' +
   '  - Breeds lack of confidence and fear of failure\n' +
   '  - Revisits discussions and decisions again and again\n' +
   '  - Encourages second-guessing among team members\n\n' +
 
-  'A team that avoids accountability...\n' +
-  '------------------------------------\n' +
+  '<h3>A team that avoids accountability...</h3>\n' +
   '  - Creates resentment among team members who have different standards of performance\n' +
   '  - Encourages mediocrity\n' +
   '  - Misses deadlines and key deliverables\n\n' +
 
-  'A team that is not focused on results...\n' +
-  '----------------------------------------\n' +
+  '<h3>A team that is not focused on results...</h3>\n' +
   '  - Stagnates/fails to grow\n' +
   '  - Rarely defeats competitors\n' +
   '  - Loses achievement-oriented employees\n' +
@@ -91,7 +85,7 @@ const FiveDysfunctions = {
     str = str + '\n\n'
     str = str + formatResults(results)
     str = str + '\n\n'
-    str = str + explanationText
+    str = str + explanationText.replace(/<h3>/g, '').replace(/<\/h3>/g, '')
     str = str + '\n\n'
     str = str + email.pricing()
 
