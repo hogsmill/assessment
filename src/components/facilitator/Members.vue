@@ -117,11 +117,11 @@ export default {
         this.selectedTeam = teamId
       } else {
         this.selectedTeam = document.getElementById('team-select').value
-        const team = this.teams.find((t) => {
-          return t.id == this.selectedTeam
-        })
-        this.members = team ? team.members : []
       }
+      const team = this.teams.find((t) => {
+        return t.id == this.selectedTeam
+      })
+      this.members = team ? team.members : []
     },
     addMember() {
       const name = document.getElementById('new-member').value
