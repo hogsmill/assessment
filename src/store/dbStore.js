@@ -118,35 +118,35 @@ function _resultsQuery(assessment, scope) {
       organisation: assessment.organisation,
       email: assessment.email
     }
-  } else {
-    if (scope.member == 'individual' && scope.date == 'single') {
-      query = {
-        month: assessment.month,
-        year: assessment.year,
-        quarter: assessment.quarter,
-        team: {
-          id: assessment.team
-        },
-        member: {
-          id: assessment.member
-        }
-      }
-    } else if (scope.member == 'team' && scope.date == 'single') {
-      query = {
-        month: assessment.month,
-        year: assessment.year,
-        quarter: assessment.quarter,
-        team: {
-          id: assessment.team
-        }
-      }
-    } else if (scope.member == 'organisation' && scope.date == 'single') {
-      query = {
-        month: assessment.month,
-        year: assessment.year,
-        quarter: assessment.quarter
-      }
+  }
+  if (scope.date == 'single') {
+    query = {
+      month: assessment.month,
+      year: assessment.year,
+      quarter: assessment.quarter
     }
+  }
+  if (scope.date == 'all') {
+    query = {
+      name: null,
+      organisation: null,
+      email: null
+    }
+  }
+  switch(scope.member) {
+    case 'individual':
+      query.team = {
+        id: assessment.team
+      }
+      query.member = {
+        id: assessment.member
+      }
+      break
+    case 'team':
+      query.team = {
+        id: assessment.team
+      }
+      break
   }
   return query
 }
@@ -299,7 +299,6 @@ module.exports = {
     db.serverCollection.findOne({}, function(err, server) {
       if (err) throw err
       let query = _resultsQuery(data.assessment, data.scope)
-      console.log(query)
       db.assessmentsCollection.find(query).toArray(function(err, res) {
         if (err) throw err
         const results = resultsFuns.get(res, server, data.scope, data.appType)

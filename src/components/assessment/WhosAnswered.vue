@@ -40,11 +40,9 @@ export default {
       bus.$emit('sendGoToResults', {assessment: this.assessment})
     },
     members() {
-      console.log(this.teams)
       const team = this.teams.find((t) => {
         return t.id == this.assessment.team.id
       })
-      console.log(team)
       return team ? team.members : []
     }
   }

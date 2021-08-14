@@ -85,7 +85,6 @@ export default {
   },
   created() {
     bus.$on('answerQuestion', (data) => {
-      console.log('answerQuestion', data)
       if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
         this.answer(data)
       }

@@ -73,7 +73,6 @@ function aggregateAnswers(results, scope, appType) {
       aggregated[newKey].push(results[keys[i]])
     }
   }
-  console.log('aggregated', aggregated)
   keys = Object.keys(aggregated)
   const summarised = {}
   for (var i = 0; i < keys.length; i++) {
