@@ -118,35 +118,36 @@ function _resultsQuery(assessment, scope) {
       organisation: assessment.organisation,
       email: assessment.email
     }
-  }
-  if (scope.date == 'single') {
-    query = {
-      month: assessment.month,
-      year: assessment.year,
-      quarter: assessment.quarter
+  } else {
+    if (scope.date == 'single') {
+      query = {
+        month: assessment.month,
+        year: assessment.year,
+        quarter: assessment.quarter
+      }
     }
-  }
-  if (scope.date == 'all') {
-    query = {
-      name: null,
-      organisation: null,
-      email: null
+    if (scope.date == 'all') {
+      query = {
+        name: null,
+        organisation: null,
+        email: null
+      }
     }
-  }
-  switch(scope.member) {
-    case 'individual':
-      query.team = {
-        id: assessment.team
-      }
-      query.member = {
-        id: assessment.member
-      }
-      break
-    case 'team':
-      query.team = {
-        id: assessment.team
-      }
-      break
+    switch(scope.member) {
+      case 'individual':
+        query.team = {
+          id: assessment.team
+        }
+        query.member = {
+          id: assessment.member
+        }
+        break
+      case 'team':
+        query.team = {
+          id: assessment.team
+        }
+        break
+    }
   }
   return query
 }
