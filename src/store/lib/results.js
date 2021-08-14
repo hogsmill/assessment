@@ -105,7 +105,9 @@ module.exports = {
           break
       }
     }
-    results = aggregate(results, scope, appType)
+    if (scope) {
+      results = aggregate(results, scope, appType)
+    }
     return results
   }
 

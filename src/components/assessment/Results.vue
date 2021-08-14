@@ -2,12 +2,9 @@
   <div>
     <h3>
       Results
-      <button class="btn btn-info" @click="getResults()">
-        Get Results
-      </button>
     </h3>
-    <div v-if="server.scope == 'individual'" class="controls">
-      <i class="far fa-envelope" title="Email results" @click="mailResults()" />
+    <div v-if="server.scope == 'individual'" class="controls individual">
+      Click <i class="far fa-envelope" title="Email results" @click="mailResults()" /> to send results
     </div>
     <div v-if="summary && server.scope == 'organisation'" class="controls">
       <table>
@@ -215,6 +212,15 @@ export default {
 
 <style lang="scss">
   .controls {
+
+    &.individual {
+      font-size: larger;
+
+      .fas {
+        position: relative;
+        top: 5px;
+      }
+    }
 
     table {
       margin: 0 auto;
