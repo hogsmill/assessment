@@ -23,14 +23,19 @@
       </button>
     </div>
 
-    <modal name="comment" :height="312" :classes="['rounded', 'comment']">
+    <modal name="comment" :height="350" :classes="['rounded', 'comment']">
       <div class="float-right mr-2 mt-1">
         <button type="button" class="close" @click="hide" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="mt-4">
-        <h4>Comment</h4>
+        <h4>
+          Comment on
+        </h4>
+        <p class="comment-p">
+          {{ questionText }}
+        </p>
         <div class="comment-form">
           <textarea id="comment" rows="6" class="form-control" placeholder="Your comment" />
           <button class="btn btn-sm btn-secondary smaller-font" @click="saveComment()">
@@ -61,7 +66,8 @@ export default {
   data() {
     return {
       order: 1,
-      questionId: ''
+      questionId: '',
+      questionText: ''
     }
   },
   computed: {
@@ -100,6 +106,7 @@ export default {
   methods: {
     show(question) {
       this.questionId = question.id
+      this.questionText = question.question.title ? question.question.title : question.question.question
       this.$modal.show('comment')
     },
     hide() {
@@ -178,5 +185,10 @@ export default {
 
   .comment-form {
     padding: 24px;
+  }
+
+  .comment-p {
+    font-size: medium;
+    text-align: center;
   }
 </style>

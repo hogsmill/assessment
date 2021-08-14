@@ -114,13 +114,6 @@ export default {
 </script>
 
 <style lang="scss">
-.buttons {
-  padding: 6px;
-  position: absolute;
-  bottom: 20px;
-  left: 228px;
-}
-
 #walk-through {
   h4 {
     margin-bottom: 24px;
@@ -133,6 +126,13 @@ export default {
     &.center {
       text-align: center;
     }
+  }
+
+  .buttons {
+    padding: 6px;
+    position: absolute;
+    bottom: 20px;
+    left: 228px;
   }
 }
 </style>

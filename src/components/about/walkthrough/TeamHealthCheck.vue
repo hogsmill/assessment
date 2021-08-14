@@ -132,13 +132,6 @@ export default {
 </script>
 
 <style lang="scss">
-.buttons {
-  padding: 6px;
-  position: absolute;
-  bottom: 20px;
-  left: 228px;
-}
-
 #walk-through {
   h4 {
     margin-bottom: 24px;
@@ -153,6 +146,12 @@ export default {
     }
   }
 
+  .buttons {
+    padding: 6px;
+    bottom: 20px;
+    left: 228px;
+  }
+  
   .spotify-question {
     height: 200px;
     margin: 0 24px;

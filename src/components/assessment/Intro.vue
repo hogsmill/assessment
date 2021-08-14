@@ -55,9 +55,31 @@ export default {
       return setUp
     },
     startAssessmentOrganisation() {
-      const assessment = JSON.parse(localStorage.getItem('assessment-' + this.lsSuffix))
-      bus.$emit('sendLoadAssessment', assessment)
-      this.$store.dispatch('updateState', 'questions')
+      //const assessment = JSON.parse(localStorage.getItem('assessment-' + this.lsSuffix))
+      const team = document.getElementById('setup-select-team').value
+      const member = document.getElementById('setup-select-myname').value
+      let month, quarter
+      if (this.server.frequency == 'monthly') {
+        month = document.getElementById('setup-select-month').value
+      }
+      if (this.server.frequency == 'quarterly') {
+        quarter = document.getElementById('setup-select-quarter').value
+      }
+      const year = document.getElementById('setup-select-year').value
+      if (!team || !member || (!month && !quarter) || !year) {
+        alert('Please complete all fields')
+      } else {
+        const assessment = {
+          team: team,
+          member: member,
+          month: month,
+          quarter: quarter,
+          year: year
+        }
+        this.$store.dispatch('updateAssessment', assessment)
+        bus.$emit('sendLoadAssessment', assessment)
+        this.$store.dispatch('updateState', 'questions')
+      }
     },
     startAssessmentIndividual() {
       const name = document.getElementById('details-name').value
