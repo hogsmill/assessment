@@ -161,7 +161,7 @@ export default {
   },
   created() {
     if (this.server.scope == 'individual') {
-      this.getResults()
+      this.getIndividualResults()
     }
 
     bus.$on('loadResults', (data) => {
@@ -170,6 +170,9 @@ export default {
     })
   },
   methods: {
+    getIndividualResults() {
+      bus.$emit('sendGetResults', {appType: this.appType, scope: null, assessment: this.assessment})
+    },
     getResults() {
       bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },

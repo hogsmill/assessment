@@ -22,13 +22,13 @@
       </tr>
     </table>
     <div class="buttons">
-      <button class="btn btn-info red" :class="{ 'selected': question.answer == 'red'}" @click="answer('red')">
+      <button class="btn btn-info red" :class="{ 'selected': question.answer == answers['red']}" @click="answer('red')">
         <i class="far fa-frown" />
       </button>
-      <button class="btn btn-info amber" :class="{ 'selected': question.answer == 'amber'}" @click="answer('amber')">
+      <button class="btn btn-info amber" :class="{ 'selected': question.answer == answers['amber']}" @click="answer('amber')">
         <i class="far fa-meh" />
       </button>
-      <button class="btn btn-info green" :class="{ 'selected': question.answer == 'green'}" @click="answer('green')">
+      <button class="btn btn-info green" :class="{ 'selected': question.answer == answers['green']}" @click="answer('green')">
         <i class="far fa-smile-beam" />
       </button>
     </div>
@@ -99,22 +99,42 @@ export default {
 
         &.red {
           background-color: red;
+
+          &.selected {
+            border-color: red;
+
+            i {
+              color: red;
+            }
+          }
         }
 
         &.amber {
           background-color: orange;
+
+          &.selected {
+            border-color: orange;
+
+            i {
+              color: orange;
+            }
+          }
         }
 
         &.green {
           background-color: darkgreen;
+
+          &.selected {
+            border-color: darkgreen;
+
+            i {
+              color: darkgreen;
+            }
+          }
         }
 
         &.selected {
-          border-color: #888;
-
-          .far {
-            color: #888;
-          }
+          background-color: #fff;
         }
       }
     }

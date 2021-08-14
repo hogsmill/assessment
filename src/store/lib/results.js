@@ -51,7 +51,7 @@ function average(results) {
   return n / results.length
 }
 
-function summariseAnswers(results, scope, appType) {
+function aggregateAnswers(results, scope, appType) {
   const aggregated = {}
   let keys = Object.keys(results)
   for (var i = 0; i < keys.length; i++) {
@@ -65,8 +65,15 @@ function summariseAnswers(results, scope, appType) {
         aggregated[newKey] = []
       }
       aggregated[newKey].push(results[keys[i]])
+    } else if (scope.member == 'organisation') {
+      const newKey = keys[i].split('+')[2]
+      if (!aggregated[newKey]) {
+        aggregated[newKey] = []
+      }
+      aggregated[newKey].push(results[keys[i]])
     }
   }
+  console.log('aggregated', aggregated)
   keys = Object.keys(aggregated)
   const summarised = {}
   for (var i = 0; i < keys.length; i++) {
@@ -76,10 +83,10 @@ function summariseAnswers(results, scope, appType) {
   return summarised
 }
 
-function summarise(results, scope, appType) {
+function aggregate(results, scope, appType) {
   const keys = Object.keys(results)
   for (let i = 0; i < keys.length; i++) {
-    results[keys[i]].results = summariseAnswers(results[keys[i]].results, scope, appType)
+    results[keys[i]].results = aggregateAnswers(results[keys[i]].results, scope, appType)
   }
   return results
 }
@@ -99,7 +106,7 @@ module.exports = {
           break
       }
     }
-    results = summarise(results, scope, appType)
+    results = aggregate(results, scope, appType)
     return results
   }
 

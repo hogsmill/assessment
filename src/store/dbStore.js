@@ -71,6 +71,8 @@ function _loadAssessment(db, io, query) {
   db.assessmentsCollection.findOne(query, function(err, res) {
     if (err) throw err
     delete res._id
+    res.team = res.team ? res.team.id : null
+    res.member = res.member ? res.member.id : null
     io.emit('loadAssessment', res)
   })
 }
@@ -97,39 +99,53 @@ function _query(data) {
   }
   if (data.team) {
     query.team = {
-      id: data.team.id
+      id: data.team
     }
   }
   if (data.member) {
     query.member = {
-      id: data.member.id
+      id: data.member
     }
   }
   return query
 }
 
-function _resultsQuery(data, scope) {
+function _resultsQuery(assessment, scope) {
   let query = {}
-  if (scope.member == 'individual' && scope.date == 'single') {
+  if (!scope) {
     query = {
-      name: data.name,
-      organisation: data.organisation,
-      email: data.email
+      name: assessment.name,
+      organisation: assessment.organisation,
+      email: assessment.email
     }
-  } else if (scope.member == 'team' && scope.date == 'single') {
-    query = {
-      month: data.month,
-      year: data.year,
-      quarter: data.quarter,
-      team: {
-        id: data.team.id
+  } else {
+    if (scope.member == 'individual' && scope.date == 'single') {
+      query = {
+        month: assessment.month,
+        year: assessment.year,
+        quarter: assessment.quarter,
+        team: {
+          id: assessment.team
+        },
+        member: {
+          id: assessment.member
+        }
       }
-    }
-  } else if (scope.member == 'organisation' && scope.date == 'single') {
-    query = {
-      month: data.month,
-      year: data.year,
-      quarter: data.quarter
+    } else if (scope.member == 'team' && scope.date == 'single') {
+      query = {
+        month: assessment.month,
+        year: assessment.year,
+        quarter: assessment.quarter,
+        team: {
+          id: assessment.team
+        }
+      }
+    } else if (scope.member == 'organisation' && scope.date == 'single') {
+      query = {
+        month: assessment.month,
+        year: assessment.year,
+        quarter: assessment.quarter
+      }
     }
   }
   return query
@@ -244,7 +260,7 @@ module.exports = {
           if (err) throw err
           query.questions = questions
           const assessment = newAssessment(query)
-          db.assessmentsCollection.insertOne(query, function(err, res) {
+          db.assessmentsCollection.insertOne(assessment, function(err, res) {
             if (err) throw err
             query = _query(data)
             _loadAssessment(db, io, query)
@@ -283,6 +299,7 @@ module.exports = {
     db.serverCollection.findOne({}, function(err, server) {
       if (err) throw err
       let query = _resultsQuery(data.assessment, data.scope)
+      console.log(query)
       db.assessmentsCollection.find(query).toArray(function(err, res) {
         if (err) throw err
         const results = resultsFuns.get(res, server, data.scope, data.appType)
