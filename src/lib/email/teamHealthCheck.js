@@ -1,16 +1,10 @@
 
 import email from './email.js'
 
-function intro() {
-  const str = [
-    'Thanks for using the free version of the Team Health Check app',
-    '',
-    'It is always a good idea to regularly check the heath of teams, and this app allows you to do just that.',
-    '',
-    'To run this with your whole team, or across teams, you will need to purchase a (very reasonable) subscription to our service. This will give you access to all aggregation, trending and results functionality to get the most from this app.'
-  ]
-  return str.join('\n')
-}
+const intro =
+  'Thanks for using the free version of the Team Health Check app\n\n' +
+  'It is always a good idea to regularly check the heath of teams, and this app allows you to do just that.\n\n' +
+  'To run this with your whole team, or across teams, you will need to purchase a (very reasonable) subscription to our service. This will give you access to all aggregation, trending and results functionality to get the most from this app.\n\n'
 
 function resultValue(n) {
   let val = ''
@@ -62,7 +56,8 @@ const TeamHealthCheck = {
     if (organisation) {
       str = str + ' of ' + organisation
     }
-    str = str + intro()
+    str = str + '\n\n'
+    str = str + intro
     str = str + '\n\n'
     str = str + formatResults(results)
     str = str + '\n\n'

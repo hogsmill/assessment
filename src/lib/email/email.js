@@ -10,7 +10,7 @@ const Email = {
       '  - Team Health Check',
       '  - 5 Dysfunctions of a Team',
       '  - Planning Poker',
-      'However, you also get full access - including full customisationc/onfiguration - to all our agile games, including:',
+      'However, you also get full access - including full customisationc/configuration - to all our agile games, including:',
       '  - No Estimates',
       '  - The Coin Game (probably an extention of what you think of as the Coin Game...)',
       '  - The Contex Switching Game',
