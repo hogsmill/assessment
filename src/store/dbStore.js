@@ -78,7 +78,16 @@ function _loadAssessment(db, io, query) {
 }
 
 function _query(data) {
-  const query = {}
+  const query = {
+    month: null,
+    quarter: null,
+    year: null,
+    organisation: null,
+    name: null,
+    email: null,
+    team:  null,
+    member: null
+  }
   if (data.month) {
     query.month = data.month
   }
@@ -111,27 +120,25 @@ function _query(data) {
 }
 
 function _resultsQuery(assessment, scope) {
-  let query = {}
+  let query = {
+    name: null,
+    organisation: null,
+    email: null,
+    month: null,
+    quarter: null,
+    year: null,
+    team: null,
+    member: null
+  }
   if (!scope) {
-    query = {
-      name: assessment.name,
-      organisation: assessment.organisation,
-      email: assessment.email
-    }
+    query.name = assessment.name
+    query.organisation = assessment.organisation
+    query.email = assessment.email
   } else {
     if (scope.date == 'single') {
-      query = {
-        month: assessment.month,
-        year: assessment.year,
-        quarter: assessment.quarter
-      }
-    }
-    if (scope.date == 'all') {
-      query = {
-        name: null,
-        organisation: null,
-        email: null
-      }
+      query.month = assessment.month
+      query.year = assessment.year
+      query.quarter = assessment.quarter
     }
     switch(scope.member) {
       case 'individual':
@@ -146,6 +153,11 @@ function _resultsQuery(assessment, scope) {
         query.team = {
           id: assessment.team
         }
+        delete query.member
+        break
+      case 'organisation':
+        delete query.team
+        delete query.member
         break
     }
   }
@@ -300,6 +312,7 @@ module.exports = {
     db.serverCollection.findOne({}, function(err, server) {
       if (err) throw err
       let query = _resultsQuery(data.assessment, data.scope)
+      console.log('_resultsQuery', query)
       db.assessmentsCollection.find(query).toArray(function(err, res) {
         if (err) throw err
         const results = resultsFuns.get(res, server, data.scope, data.appType)

@@ -25,10 +25,12 @@ function getKey(assessment, server) {
   } else {
     if (assessment.quarter) {
       key = assessment.year + '-' + assessment.quarter
-    } else {
+    } else if (assessment.month){
       let month = assessment.month
       month = month < 10 ? '0' + month : month
       key = assessment.year + '-' + month
+    } else {
+      key = '9999-99'
     }
     key = 'm' + assessment.member.id + '+t' + assessment.team.id + '+' + key
   }
@@ -74,6 +76,7 @@ function aggregateAnswers(results, scope, appType) {
     }
   }
   keys = Object.keys(aggregated)
+  console.log(keys)
   const summarised = {}
   for (var i = 0; i < keys.length; i++) {
     const newKey = keys[i].match(/\d{4}\-\d{2}$/)[0]

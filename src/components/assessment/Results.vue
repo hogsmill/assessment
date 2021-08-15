@@ -39,10 +39,10 @@
               </span>
             </div>
           </td>
-          <td class="show">
+          <td class="show" v-if="server.frequency != 'oneoff'">
             Dates
           </td>
-          <td>
+          <td v-if="server.frequency != 'oneoff'">
             <div :class="{ 'selected': scope.date == 'single' }">
               <i class="fas fa-calendar-day" @click="setScope('date', 'single')" />
               <br>
@@ -51,7 +51,7 @@
               </span>
             </div>
           </td>
-          <td>
+          <td v-if="server.frequency != 'oneoff'">
             <div :class="{ 'selected': scope.date == 'all' }">
               <i class="fas fa-calendar-alt" @click="setScope('date', 'all')" />
               <br>
@@ -94,7 +94,7 @@
       </table>
     </div>
     <Details v-if="server.scope == 'individual'" />
-    <ResultsHeader :results="results" />
+    <ResultsHeader :results="results" v-if="server.frequency != 'oneoff'" />
     <div v-if="appType == '5 Dysfunctions'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :result="results[result]" :scope="scope" />
@@ -289,6 +289,7 @@ export default {
     text-align: left;
     border: 4px solid red;
     border-radius: 12px;
+    margin: 12px 24px;
 
     h3 {
       text-align: center;

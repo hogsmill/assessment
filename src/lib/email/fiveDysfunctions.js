@@ -2,7 +2,7 @@
 import email from './email.js'
 
 const explanationText =
-  '<h3>Members of a team with an absence of trust...\n' +
+  '<h3>Members of a team with an absence of trust...</h3>\n' +
   '  - Conceal their weaknesses and mistakes from one another\n' +
   '  - Hesitate to ask for help or provide constructive feedback\n' +
   '  - Hesitate to offer help outside their own areas of responsibility\n' +

@@ -22,7 +22,7 @@
         </td>
         <td>
           <select id="setup-select-myname" @change="selectMember()">
-            <option>
+            <option value="">
               -- Select --
             </option>
             <option v-for="(m, mindex) in members" :key="mindex" :selected="assessment.member && m.id == assessment.member.id" :value="m.id">
@@ -37,7 +37,7 @@
         </td>
         <td v-if="server.frequency == 'monthly'">
           <select id="setup-select-month" @change="selectMonth()">
-            <option>
+            <option value="">
               -- Select --
             </option>
             <option v-for="m in 12" :key="m" :selected="assessment.month && m == assessment.month" :value="m">
@@ -50,7 +50,7 @@
         </td>
         <td v-if="server.frequency == 'quarterly'">
           <select id="setup-select-quarter" @change="selectQuarter()">
-            <option>
+            <option value="">
               -- Select --
             </option>
             <option v-for="q in 4" :key="q" :selected="assessment.quarter && q == assessment.quarter" :vale="q">
@@ -60,12 +60,12 @@
         </td>
       </tr>
       <tr v-if="server.frequency">
-        <td class="year">
+        <td v-if="server.frequency != 'oneoff'" class="year">
           Year:
         </td>
-        <td>
+        <td v-if="server.frequency != 'oneoff'" >
           <select id="setup-select-year" @change="selectYear()">
-            <option>
+            <option value="">
               -- Select --
             </option>
             <option v-for="y in 10" :key="y" :selected="assessment.year && y == assessment.year">

@@ -5,14 +5,14 @@
     <Details v-if="server.scope == 'individual'" />
     <SetUp v-if="server.scope == 'organisation'" />
     <div v-if="server.scope == 'organisation'">
-      <button class="btn btn-info" @click="startAssessmentOrganisation()" :disabled="!setUp()">
+      <button class="btn btn-info" @click="startAssessmentOrganisation()">
         <span>
           Start
         </span>
       </button>
     </div>
     <div v-if="server.scope == 'individual'">
-      <button class="btn btn-info" @click="startAssessmentIndividual()" :disabled="!setUp()">
+      <button class="btn btn-info" @click="startAssessmentIndividual()">
         <span>
           Start
         </span>
@@ -38,6 +38,11 @@ export default {
     Details,
     SetUp
   },
+  data() {
+    return {
+      setUp: false
+    }
+  },
   computed: {
     lsSuffix() {
       return this.$store.getters.lsSuffix
@@ -50,32 +55,48 @@ export default {
     }
   },
   methods: {
-    setUp() {
-      const setUp = true
-      return setUp
+    setUpOk(assessment) {
+      if (this.server.scope == 'individual') {
+        this.setUp = assessment.email && assessment.organisation && assessment.email
+      } else {
+        let setUp = assessment.member
+        if (this.server.frequency == 'monthly') {
+          setUp = setUp && assessment.month && assessment.year
+        } else if (this.server.frequency == 'quarterly') {
+          setUp = setUp && assessment.month && assessment.quarter
+        }
+        if (this.server.multipleTeams) {
+          setUp = setUp && assessment.team
+        }
+        console.log(assessment, setUp)
+        this.setUp = setUp
+      }
+      return this.setUp
     },
     startAssessmentOrganisation() {
       //const assessment = JSON.parse(localStorage.getItem('assessment-' + this.lsSuffix))
       const team = document.getElementById('setup-select-team').value
       const member = document.getElementById('setup-select-myname').value
-      let month, quarter
+      let month, quarter, year
       if (this.server.frequency == 'monthly') {
         month = document.getElementById('setup-select-month').value
       }
       if (this.server.frequency == 'quarterly') {
         quarter = document.getElementById('setup-select-quarter').value
       }
-      const year = document.getElementById('setup-select-year').value
-      if (!team || !member || (!month && !quarter) || !year) {
+      if (this.server.frequency != 'oneoff') {
+        year = document.getElementById('setup-select-year').value
+      }
+      const assessment = {
+        team: team,
+        member: member,
+        month: month,
+        quarter: quarter,
+        year: year
+      }
+      if (!this.setUpOk(assessment)) {
         alert('Please complete all fields')
       } else {
-        const assessment = {
-          team: team,
-          member: member,
-          month: month,
-          quarter: quarter,
-          year: year
-        }
         this.$store.dispatch('updateAssessment', assessment)
         bus.$emit('sendLoadAssessment', assessment)
         this.$store.dispatch('updateState', 'questions')
@@ -85,14 +106,14 @@ export default {
       const name = document.getElementById('details-name').value
       const organisation = document.getElementById('details-organisation').value
       const email = document.getElementById('details-email').value
-      if (!name || !organisation || ! email) {
+      const assessment = {
+        name: name,
+        organisation: organisation,
+        email: email
+      }
+      if (!this.setUpOk(assessment)) {
         alert('Please complete all fields')
       } else {
-        const assessment = {
-          name: name,
-          organisation: organisation,
-          email: email
-        }
         ls.storeAssessment(assessment, this.lsSuffix)
         this.$store.dispatch('updateAssessment', assessment)
         bus.$emit('sendLoadAssessment', assessment)

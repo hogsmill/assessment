@@ -65,7 +65,7 @@
       </td>
       <td>
         <select id="server-frequency-select" :value="server.frequency" @change="setFrequency()">
-          <option value="">
+          <option value="oneoff">
             One-Off
           </option>
           <option value="monthly">
