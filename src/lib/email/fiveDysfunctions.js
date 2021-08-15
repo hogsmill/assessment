@@ -3,37 +3,44 @@ import email from './email.js'
 
 const explanationText =
   '<h3>Members of a team with an absence of trust...</h3>\n' +
-  '  - Conceal their weaknesses and mistakes from one another\n' +
-  '  - Hesitate to ask for help or provide constructive feedback\n' +
-  '  - Hesitate to offer help outside their own areas of responsibility\n' +
-  '  - Jump to conclusions about the intentions and aptitudes of others without attempting to clarify them\n' +
-  '  - Fail to recognize and tap into one another’s skills and experiences\n' +
-  '  - Waste time and energy managing their behaviours for effect\n' +
-  '  - Hold grudges\n' +
-  '  - Dread meetings and find reasons to avoid spending time together\n\n' +
+  '  <ul>' +
+  '    <li>Conceal their weaknesses and mistakes from one another</li>\n' +
+  '    <li>Hesitate to ask for help or provide constructive feedback</li>\n' +
+  '    <li>Hesitate to offer help outside their own areas of responsibility</li>\n' +
+  '    <li>Jump to conclusions about the intentions and aptitudes of others without attempting to clarify them</li>\n' +
+  '    <li>Fail to recognize and tap into one another’s skills and experiences</li>\n' +
+  '    <li>Waste time and energy managing their behaviours for effect</li>\n' +
+  '    <li>Hold grudges</li>\n' +
+  '    <li>Dread meetings and find reasons to avoid spending time together</li>\n\n' +
+  '  </ul>\n\n' +
   '<h3>Teams that fears conflict...</h3>\n' +
-  '  - Have boring meetings\n' +
-  '  - Create environments where back-channel politics and personal attacks thrive\n' +
-  '  - Ignore controversial topics that are critical to team success\n' +
-  '  - Fail to tap into all the opinions and perspectives of team members\n\n' +
-
+  '  <ul>' +
+  '    <li>Have boring meetings</li>\n' +
+  '    <li>Create environments where back-channel politics and personal attacks thrive</li>\n' +
+  '    <li>Ignore controversial topics that are critical to team success</li>\n' +
+  '    <li>Fail to tap into all the opinions and perspectives of team members</li>\n\n' +
+  '  </ul>\n\n' +
   '<h3>A team that fails to commit...</h3>\n' +
-  '  - Creates ambiguity among the team about direction and priorities\n' +
-  '  - Watches windows of opportunity close due to excessive analysis and unnecessary delay\n' +
-  '  - Breeds lack of confidence and fear of failure\n' +
-  '  - Revisits discussions and decisions again and again\n' +
-  '  - Encourages second-guessing among team members\n\n' +
-
+  '  <ul>' +
+  '    <li>Creates ambiguity among the team about direction and priorities</li>\n' +
+  '    <li>Watches windows of opportunity close due to excessive analysis and unnecessary delay</li>\n' +
+  '    <li>Breeds lack of confidence and fear of failure</li>\n' +
+  '    <li>Revisits discussions and decisions again and again</li>\n' +
+  '    <li>Encourages second-guessing among team members</li>\n\n' +
+  '  </ul>\n\n' +
   '<h3>A team that avoids accountability...</h3>\n' +
-  '  - Creates resentment among team members who have different standards of performance\n' +
-  '  - Encourages mediocrity\n' +
-  '  - Misses deadlines and key deliverables\n\n' +
-
+  '  <ul>' +
+  '    <li>Creates resentment among team members who have different standards of performance</li>\n' +
+  '    <li>Encourages mediocrity</li>\n' +
+  '    <li>Misses deadlines and key deliverables</li>\n\n' +
+  '  </ul>\n\n' +
   '<h3>A team that is not focused on results...</h3>\n' +
-  '  - Stagnates/fails to grow\n' +
-  '  - Rarely defeats competitors\n' +
-  '  - Loses achievement-oriented employees\n' +
-  '  - Encourages team members to focus on their own careers and individual goals\n\n'
+  '  <ul>' +
+  '    <li>Stagnates/fails to grow</li>\n' +
+  '    <li>Rarely defeats competitors</li>\n' +
+  '    <li>Loses achievement-oriented employees</li>\n' +
+  '    <li>Encourages team members to focus on their own careers and individual goals</li>\n\n' +
+  '  </ul>\n\n'
 
 const intro =
   'Thanks for using the free version of the 5 Dysfunctions of Teams app\n\n' +
@@ -55,6 +62,17 @@ function formatResults(results) {
       str = str + ' - This dysfunction needs addressing\n\n'
     }
   }
+  return str
+}
+
+function cleanForEmail(str) {
+  str = str.replace(/<h3>/g, '')
+  str = str.replace(/<\/h3>/g, '')
+  str = str.replace(/<ul>/g, '')
+  str = str.replace(/<\/ul>/g, '')
+  str = str.replace(/<li>/g, '  - ')
+  str = str.replace(/\/li>/g, '')
+
   return str
 }
 
@@ -85,7 +103,7 @@ const FiveDysfunctions = {
     str = str + '\n\n'
     str = str + formatResults(results)
     str = str + '\n\n'
-    str = str + explanationText.replace(/<h3>/g, '').replace(/<\/h3>/g, '')
+    str = str + cleanForEmail(explanationText)
     str = str + '\n\n'
     str = str + email.pricing()
 

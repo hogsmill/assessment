@@ -99,7 +99,9 @@
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :result="results[result]" :scope="scope" />
       </div>
-      <div class="explanation" v-html="explanation()" />
+      <div class="explanation-holder">
+        <div class="explanation" v-html="explanation()" />
+      </div>
     </div>
     <div v-if="appType == 'Team Health Check'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
@@ -178,7 +180,7 @@ export default {
       bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
     explanation() {
-      return fiveDysfunctions.explanation().replace(/\n/g, '<br>')
+      return fiveDysfunctions.explanation()
     },
     mailResults() {
       const name = document.getElementById('details-name').value
@@ -219,7 +221,7 @@ export default {
     &.individual {
       font-size: larger;
 
-      .fas {
+      .far {
         position: relative;
         top: 5px;
       }
@@ -283,16 +285,20 @@ export default {
     font-size: larger;
   }
 
-  .explanation {
-    margin-top: 48px;
-    padding: 12px;
-    text-align: left;
-    border: 4px solid red;
-    border-radius: 12px;
-    margin: 12px 24px;
+  .explanation-holder {
+    margin: 48px auto 12px auto;
+    max-width: 750px;
 
-    h3 {
-      text-align: center;
+    .explanation {
+      padding: 12px;
+      text-align: left;
+      border: 4px solid red;
+      border-radius: 12px;
+      margin: 0 24px;
+
+      h3 {
+        text-align: center;
+      }
     }
   }
 </style>
