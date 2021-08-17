@@ -13,7 +13,8 @@
           <i v-if="answered(question) && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
         </div>
         <div>
-          <i class="far fa-comment" @click="show(question)" />
+          <i v-if="!question.comments.length" class="far fa-comment" title="Click to comment." @click="show(question)" />
+          <i v-if="question.comments.length" class="fas fa-comment" title="There are comments..." @click="show(question)" />
         </div>
       </div>
     </div>
@@ -113,6 +114,8 @@ export default {
       this.$modal.hide('comment')
     },
     saveComment() {
+      const comment = document.getElementById('comment').value
+      bus.$emit('sendSaveComment', {assessment: this.assessment, questionId: this.questionId, comment: comment})
       this.hide()
     },
     prev() {
@@ -155,6 +158,10 @@ export default {
       .fas {
         font-size: xxx-large;
         color: #aaa;
+
+        &.fa-comment {
+          color: #f4511e;
+        }
 
         &:hover {
           color: #444;

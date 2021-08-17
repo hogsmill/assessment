@@ -63,7 +63,7 @@
         <td v-if="server.frequency != 'oneoff'" class="year">
           Year:
         </td>
-        <td v-if="server.frequency != 'oneoff'" >
+        <td v-if="server.frequency != 'oneoff'">
           <select id="setup-select-year" @change="selectYear()">
             <option value="">
               -- Select --

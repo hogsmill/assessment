@@ -305,6 +305,30 @@ module.exports = {
     })
   },
 
+  saveComment: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('saveComment', data) }
+
+    const query = _query(data.assessment)
+    db.assessmentsCollection.findOne(query, function(err, res) {
+      if (err) throw err
+      const questions = []
+      for (let i = 0; i < res.questions.length; i++) {
+        const question = res.questions[i]
+        const comments = question.comments ? question.comments : []
+        if (question.id == data.questionId) {
+          comments.push(data.comment)
+        }
+        question.comments = comments
+        questions.push(question)
+      }
+      db.assessmentsCollection.updateOne({'_id': res._id}, {$set: {questions: questions}}, function(err, res) {
+        if (err) throw err
+        _loadAssessment(db, io, query)
+      })
+    })
+  },
+
   getResults: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('getResults', data) }

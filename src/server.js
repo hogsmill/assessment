@@ -122,9 +122,11 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendLoadAssessment', (data) => { dbStore.loadAssessment(db, io, data, debugOn) })
 
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
+    
+    socket.on('sendSaveComment', (data) => { dbStore.saveComment(db, io, data, debugOn) })
 
     socket.on('sendGetResults', (data) => { dbStore.getResults(db, io, data, debugOn) })
-    
+
     socket.on('sendResultsMailled', (data) => { dbStore.resultsMailled(db, io, data, debugOn) })
 
     socket.on('sendRestart', () => { dbStore.restart(db, io, debugOn) })
