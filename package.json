@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "cli-plugin-eslint": "^0.1.0",
-    "core-js": "^3.16.1",
+    "core-js": "^3.16.2",
     "death": "^1.1.0",
     "dotenv": "^8.6.0",
     "highlight.js": "^11.2.0",
