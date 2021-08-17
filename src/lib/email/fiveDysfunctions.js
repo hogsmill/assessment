@@ -11,14 +11,14 @@ const explanationText =
   '    <li>Fail to recognize and tap into one another’s skills and experiences</li>\n' +
   '    <li>Waste time and energy managing their behaviours for effect</li>\n' +
   '    <li>Hold grudges</li>\n' +
-  '    <li>Dread meetings and find reasons to avoid spending time together</li>\n\n' +
+  '    <li>Dread meetings and find reasons to avoid spending time together</li>\n' +
   '  </ul>\n\n' +
   '<h3>Teams that fears conflict...</h3>\n' +
   '  <ul>' +
   '    <li>Have boring meetings</li>\n' +
   '    <li>Create environments where back-channel politics and personal attacks thrive</li>\n' +
   '    <li>Ignore controversial topics that are critical to team success</li>\n' +
-  '    <li>Fail to tap into all the opinions and perspectives of team members</li>\n\n' +
+  '    <li>Fail to tap into all the opinions and perspectives of team members</li>\n' +
   '  </ul>\n\n' +
   '<h3>A team that fails to commit...</h3>\n' +
   '  <ul>' +
@@ -26,25 +26,26 @@ const explanationText =
   '    <li>Watches windows of opportunity close due to excessive analysis and unnecessary delay</li>\n' +
   '    <li>Breeds lack of confidence and fear of failure</li>\n' +
   '    <li>Revisits discussions and decisions again and again</li>\n' +
-  '    <li>Encourages second-guessing among team members</li>\n\n' +
+  '    <li>Encourages second-guessing among team members</li>\n' +
   '  </ul>\n\n' +
   '<h3>A team that avoids accountability...</h3>\n' +
   '  <ul>' +
   '    <li>Creates resentment among team members who have different standards of performance</li>\n' +
   '    <li>Encourages mediocrity</li>\n' +
-  '    <li>Misses deadlines and key deliverables</li>\n\n' +
+  '    <li>Misses deadlines and key deliverables</li>\n' +
   '  </ul>\n\n' +
   '<h3>A team that is not focused on results...</h3>\n' +
   '  <ul>' +
   '    <li>Stagnates/fails to grow</li>\n' +
   '    <li>Rarely defeats competitors</li>\n' +
   '    <li>Loses achievement-oriented employees</li>\n' +
-  '    <li>Encourages team members to focus on their own careers and individual goals</li>\n\n' +
+  '    <li>Encourages team members to focus on their own careers and individual goals</li>\n' +
   '  </ul>\n\n'
 
 const intro =
   'Thanks for using the free version of the 5 Dysfunctions of Teams app\n\n' +
-  'To run this with your whole team, or across teams, you will need to purchase a (very reasonable) subscription to our service. This will give you access to all aggregation, trending and results functionality to get the most from this app.\n\n'
+  'To run this with your whole team, or across teams, you will need to purchase a (very reasonable) subscription to our service. This will give you access to all aggregation, trending and results functionality to get the most from this app.\n\n' +
+  'Here are your result:\n\n'
 
 function formatResults(results) {
   let str = ''
@@ -68,10 +69,10 @@ function formatResults(results) {
 function cleanForEmail(str) {
   str = str.replace(/<h3>/g, '')
   str = str.replace(/<\/h3>/g, '')
-  str = str.replace(/<ul>/g, '')
+  str = str.replace(/\s+<ul>/g, '')
   str = str.replace(/<\/ul>/g, '')
   str = str.replace(/<li>/g, '  - ')
-  str = str.replace(/\/li>/g, '')
+  str = str.replace(/<\/li>/g, '')
 
   return str
 }
@@ -100,9 +101,7 @@ const FiveDysfunctions = {
     }
     str = str + '\n\n'
     str = str + intro
-    str = str + '\n\n'
     str = str + formatResults(results)
-    str = str + '\n\n'
     str = str + cleanForEmail(explanationText)
     str = str + '\n\n'
     str = str + email.pricing()
