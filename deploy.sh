@@ -26,6 +26,7 @@ APPS=(
   'team-health-check,healthCheckServer,healthCheckTeams,healthCheckQuestions,healthCheckAssessments,3039,Team Health Check,Team Health Check'
   'team-health-check-new,healthCheckNewServer,healthCheckNewTeams,healthCheckNewQuestions,healthCheckNewAssessments,3041,Team Health Check,Team Health Check New'
   'team-health-check-eagile,healthCheckEverydayAgileServer,healthCheckEverydayAgileTeams,healthCheckEverydayAgileQuestions,healthCheckEverydayAgileAssessments,3071,Team Health Check,Team Health Check'
+  'agile-maturity,agileMaturityServer,agleMaturityTeams,agileMaturityQuestions,agileMaturityAssessments,3077,Agile Maturity,Agile Maturity'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))
