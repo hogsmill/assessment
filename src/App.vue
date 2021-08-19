@@ -92,8 +92,8 @@ export default {
     const appType = appTypeFuns.get('5 Dysfunctions')
     this.$store.dispatch('updateAppType', appType)
 
+    bus.$emit('sendCheckServer', {appType: appType})
     bus.$emit('sendCheckSystem', {appType: appType})
-    bus.$emit('sendCheckServer')
 
     bus.$emit('sendLoadTeams')
 

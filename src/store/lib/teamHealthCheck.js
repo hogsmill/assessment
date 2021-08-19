@@ -79,6 +79,16 @@ module.exports = {
     for (let i = 0; i < assessment.questions.length; i++) {
       question = assessment.questions[i]
       results[question.id].results[key] = question.answer
+      if (!results[question.id].comments) {
+        results[question.id].comments = {}
+      }
+      const comments = results[question.id].comments[key] ? results[question.id].comments[key] : []
+      if (question.comments) {
+        for (let k = 0; k < question.comments.length; k++) {
+          comments.push(question.comments[k])
+        }
+        results[question.id].comments[key] = comments
+      }
     }
     return results
   }

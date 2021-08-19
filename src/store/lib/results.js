@@ -15,6 +15,18 @@ function setResults(assessments, appType) {
   return results
 }
 
+function comments(results, assessments, appType) {
+  switch(appType) {
+    case 'Team Health Check':
+      results = teamHealthCheckFuns.questionComments(assessments, results)
+      break
+    case '5 Dysfunctions':
+      results = results // Comments not allowed yet...
+      break
+  }
+  return results
+}
+
 function getKey(assessment, server) {
   let key
   if (server.scope == 'individual') {

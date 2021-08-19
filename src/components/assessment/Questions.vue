@@ -8,13 +8,15 @@
         </div>
         <Question5Dysfunctions v-if="appType == '5 Dysfunctions'" :question="question" />
         <QuestionTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
-        <div class="next" v-if="!server.autoNextQuestion && !server.hostMovesSlides">
-          <i v-if="answered(question) && order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
-          <i v-if="answered(question) && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
-        </div>
-        <div>
-          <i v-if="!question.comments.length" class="far fa-comment" title="Click to comment." @click="show(question)" />
-          <i v-if="question.comments.length" class="fas fa-comment" title="There are comments..." @click="show(question)" />
+        <div class="next">
+          <div v-if="server.comments">
+            <i v-if="!question.comments.length" class="far fa-comment" title="Click to comment." @click="show(question)" />
+            <i v-if="question.comments.length" class="fas fa-comment" title="There are comments..." @click="show(question)" />
+          </div>
+          <div v-if="!server.autoNextQuestion && !server.hostMovesSlides">
+            <i v-if="answered(question) && order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
+            <i v-if="answered(question) && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
+          </div>
         </div>
       </div>
     </div>

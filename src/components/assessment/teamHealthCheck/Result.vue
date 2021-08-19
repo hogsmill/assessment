@@ -8,6 +8,7 @@
         <div class="answer-holder" :class="answerValue(result.results[res])">
           <i v-if="scope.member == 'individual'" class="far" :class="answerClass(result.results[res])" />
           <span v-if="scope.member != 'individual'">{{ result.results[res] }}</span>
+          <i v-if="result.comments[res].length" class="far fa-comment" :title="'Comments for ' + result.question + ' from ' + res" @click="showComments(res)"/>
         </div>
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
       </div>
@@ -80,6 +81,9 @@ export default {
         trend = 'fa-arrows-alt-h'
       }
       return trend
+    },
+    showComments(id) {
+      console.log(this.result.comments[id])
     }
   }
 }
@@ -109,6 +113,7 @@ export default {
           margin: 4px 0 4px 12px;
           color: #fff;
           text-align: center;
+          position: relative;
 
           &.red {
             background-color: red;
@@ -120,6 +125,18 @@ export default {
 
           &.green {
             background-color: darkgreen;
+          }
+
+          .fa-comment {
+            position: absolute;
+            top: -4px;
+            right: -3px;
+            color: #aaa;
+            font-size: medium;
+
+            &:hover {
+              cursor: pointer;
+            }
           }
         }
 

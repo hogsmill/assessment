@@ -109,7 +109,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
       emit('updateConnections', {connections: connections, maxConnections: maxConnections})
     })
 
-    socket.on('sendCheckServer', () => { dbStore.checkServer(db, io, debugOn) })
+    socket.on('sendCheckServer', (data) => { dbStore.checkServer(db, io, data, debugOn) })
 
     socket.on('sendCheckSystem', (data) => { dbStore.checkSystem(db, io, data, debugOn) })
 
@@ -122,7 +122,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendLoadAssessment', (data) => { dbStore.loadAssessment(db, io, data, debugOn) })
 
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
-    
+
     socket.on('sendSaveComment', (data) => { dbStore.saveComment(db, io, data, debugOn) })
 
     socket.on('sendGetResults', (data) => { dbStore.getResults(db, io, data, debugOn) })

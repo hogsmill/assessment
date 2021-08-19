@@ -5,13 +5,25 @@ const fiveDysfunctionsFuns = require('./lib/fiveDysfunctions.js')
 const teamHealthCheckFuns = require('./lib/teamHealthCheck.js')
 const resultsFuns = require('./lib/results.js')
 
-function newServer(data) {
-  return  {
+function newServer(appType) {
+  const server = {
     id: uuidv4(),
     scope: 'individual',
     multipleTeams: false,
     autoNextQuestion: false
   }
+  switch(appType) {
+    case '5 Dysfunctions':
+      server.allowComments = false
+      server.comments = false
+      break
+    default:
+      server.allowComments = true
+      server.comments = true
+      break
+
+  }
+  return server
 }
 
 function newTeam(data) {
@@ -29,14 +41,18 @@ function newMember(data) {
   }
 }
 
-function newQuestion(data) {
-  return {
+function newQuestion(data, comments) {
+  const question = {
     id: uuidv4(),
     order: data.order,
     question: data.question,
     protected: data.protected,
     include: true
   }
+  if (comments) {
+    question.comments = []
+  }
+  return question
 }
 
 function newAssessment(query) {
@@ -166,16 +182,16 @@ function _resultsQuery(assessment, scope) {
 
 module.exports = {
 
-  checkServer: function(db, io, debugOn) {
+  checkServer: function(db, io, data, debugOn) {
 
-    if (debugOn) { console.log('checkServer') }
+    if (debugOn) { console.log('checkServer', data) }
 
     db.serverCollection.findOne({}, function(err, res) {
       if (err) throw err
       if (res) {
         _loadServer(db, io)
       } else {
-        const server = newServer()
+        const server = newServer(data.appType)
         db.serverCollection.insertOne(server, function(err, res) {
           if (err) throw err
           _loadServer(db, io)
@@ -222,33 +238,36 @@ module.exports = {
 
     if (debugOn) { console.log('checkSystem', data) }
 
-    db.questionCollection.find().toArray(function(err, res) {
+    db.serverCollection.findOne({}, function(err, server) {
       if (err) throw err
-      if (res.length) {
-        _loadQuestions(db, io)
-      } else {
-        let questions = []
-        switch(data.appType) {
-          case '5 Dysfunctions':
-            questions = fiveDysfunctionsFuns.questions()
-            break
-          case 'Team Health Check':
-            questions = teamHealthCheckFuns.questions()
-            break
+      db.questionCollection.find().toArray(function(err, res) {
+        if (err) throw err
+        if (res.length) {
+          _loadQuestions(db, io)
+        } else {
+          let questions = []
+          switch(data.appType) {
+            case '5 Dysfunctions':
+              questions = fiveDysfunctionsFuns.questions()
+              break
+            case 'Team Health Check':
+              questions = teamHealthCheckFuns.questions()
+              break
+          }
+          for (let i = 0, n = 1; i < questions.length; i++, n++) {
+            data.question = questions[i]
+            data.order = n
+            data.protected = true
+            const question = newQuestion(data, server.allowComments)
+            db.questionCollection.insertOne(question, function(err, res) {
+              if (err) throw err
+              if (i == questions.length - 1) {
+                _loadQuestions(db, io)
+              }
+            })
+          }
         }
-        for (let i = 0, n = 1; i < questions.length; i++, n++) {
-          data.question = questions[i]
-          data.order = n
-          data.protected = true
-          const question = newQuestion(data)
-          db.questionCollection.insertOne(question, function(err, res) {
-            if (err) throw err
-            if (i == questions.length - 1) {
-              _loadQuestions(db, io)
-            }
-          })
-        }
-      }
+      })
     })
   },
 
@@ -336,7 +355,6 @@ module.exports = {
     db.serverCollection.findOne({}, function(err, server) {
       if (err) throw err
       let query = _resultsQuery(data.assessment, data.scope)
-      console.log('_resultsQuery', query)
       db.assessmentsCollection.find(query).toArray(function(err, res) {
         if (err) throw err
         const results = resultsFuns.get(res, server, data.scope, data.appType)
@@ -479,16 +497,19 @@ module.exports = {
 
     if (debugOn) { console.log('addQuestion', data) }
 
-    db.questionCollection.find().toArray(function(err, res) {
+    db.serverCollection.findOne({}, function(err, server) {
       if (err) throw err
-      if (res.length) {
-        data.order = res.length + 1
-        const question = newQuestion(data)
-        db.questionCollection.insertOne(question, function(err, res) {
-          if (err) throw err
-          _loadQuestions(db, io)
-        })
-      }
+      db.questionCollection.find().toArray(function(err, res) {
+        if (err) throw err
+        if (res.length) {
+          data.order = res.length + 1
+          const question = newQuestion(data, server.allowComments)
+          db.questionCollection.insertOne(question, function(err, res) {
+            if (err) throw err
+            _loadQuestions(db, io)
+          })
+        }
+      })
     })
   },
 

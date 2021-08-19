@@ -17,6 +17,14 @@
         </button>
       </td>
     </tr>
+    <tr v-if="showServer && server.allowComments">
+      <td>
+        Allow Comments on Questions
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.comments" @click="toggleComments()">
+      </td>
+    </tr>
     <tr v-if="showServer">
       <td>
         Go to next question on click?
@@ -112,6 +120,10 @@ export default {
     setScope() {
       const scope = document.getElementById('server-scope-select').value
       bus.$emit('sendUpdateServer', {field: 'scope', value: scope})
+    },
+    toggleComments() {
+      const comments = !this.server.comments
+      bus.$emit('sendUpdateServer', {field: 'comments', value: comments})
     },
     toggleAutoNextQuestion() {
       const auto = !this.server.autoNextQuestion
