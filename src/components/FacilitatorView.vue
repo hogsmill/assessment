@@ -8,6 +8,7 @@
     <Members />
     <FiveDysfunctions v-if="appType == '5 Dysfunctions'" />
     <TeamHealthCheck v-if="appType == 'Team Health Check'" />
+    <AgileMaturity v-if="appType == 'Agile Maturity'" />
   </div>
 </template>
 
@@ -19,6 +20,7 @@ import Team from './facilitator/Team.vue'
 import Members from './facilitator/Members.vue'
 import FiveDysfunctions from './facilitator/FiveDysfunctions.vue'
 import TeamHealthCheck from './facilitator/TeamHealthCheck.vue'
+import AgileMaturity from './facilitator/AgileMaturity.vue'
 
 export default {
   components: {
@@ -28,7 +30,8 @@ export default {
     Team,
     Members,
     FiveDysfunctions,
-    TeamHealthCheck
+    TeamHealthCheck,
+    AgileMaturity
   },
   computed: {
     appType() {

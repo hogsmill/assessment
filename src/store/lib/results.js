@@ -1,6 +1,7 @@
 
 const fiveDysfunctionsFuns = require('./fiveDysfunctions.js')
 const teamHealthCheckFuns = require('./teamHealthCheck.js')
+const agileMaturityFuns = require('./agileMaturity.js')
 
 function setResults(assessments, appType) {
   let results
@@ -10,6 +11,9 @@ function setResults(assessments, appType) {
       break
     case '5 Dysfunctions':
       results = fiveDysfunctionsFuns.setResults(assessments)
+      break
+    case 'Agile Maturity':
+      results = agileMaturityFuns.setResults(assessments)
       break
   }
   return results
@@ -22,6 +26,9 @@ function comments(results, assessments, appType) {
       break
     case '5 Dysfunctions':
       results = results // Comments not allowed yet...
+      break
+    case 'Agile Maturity':
+      results = agileMaturityFuns.questionComments(assessments, results)
       break
   }
   return results
@@ -88,7 +95,6 @@ function aggregateAnswers(results, scope, appType) {
     }
   }
   keys = Object.keys(aggregated)
-  console.log(keys)
   const summarised = {}
   for (var i = 0; i < keys.length; i++) {
     const newKey = keys[i].match(/\d{4}\-\d{2}$/)[0]
@@ -117,6 +123,9 @@ module.exports = {
           break
         case '5 Dysfunctions':
           results = fiveDysfunctionsFuns.assessmentResults(assessments[i], key, results)
+          break
+        case 'Agile Maturity':
+          results = agileMaturityFuns.assessmentResults(assessments[i], key, results)
           break
       }
     }

@@ -6,8 +6,9 @@
         <div class="prev" v-if="!server.autoNextQuestion">
           <i v-if="order > 1" class="fas fa-arrow-circle-left" title="Previous question" @click="prev()" />
         </div>
-        <Question5Dysfunctions v-if="appType == '5 Dysfunctions'" :question="question" />
-        <QuestionTeamHealthCheck v-if="appType == 'Team Health Check'" :question="question" />
+        <Question5Dysfunctions v-if="question.include && appType == '5 Dysfunctions'" :question="question" />
+        <QuestionTeamHealthCheck v-if="question.include && appType == 'Team Health Check'" :question="question" />
+        <QuestionAgileMaturity v-if="question.include && appType == 'Agile Maturity'" :question="question" />
         <div class="next">
           <div v-if="server.comments">
             <i v-if="!question.comments.length" class="far fa-comment" title="Click to comment." @click="show(question)" />
@@ -58,12 +59,14 @@ import assessmentFuns from '../../lib/assessment.js'
 import WhosAnswered from './WhosAnswered.vue'
 import Question5Dysfunctions from './fiveDysfunctions/Question.vue'
 import QuestionTeamHealthCheck from './teamHealthCheck/Question.vue'
+import QuestionAgileMaturity from './agileMaturity/Question.vue'
 
 export default {
   components: {
     WhosAnswered,
     Question5Dysfunctions,
-    QuestionTeamHealthCheck
+    QuestionTeamHealthCheck,
+    QuestionAgileMaturity
   },
   data() {
     return {

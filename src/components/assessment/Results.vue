@@ -97,7 +97,7 @@
     <ResultsHeader :results="results" v-if="server.frequency != 'oneoff'" />
     <div v-if="appType == '5 Dysfunctions'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
-        <Result5Dysfunctions v-if="appType == '5 Dysfunctions'" :result="results[result]" :scope="scope" />
+        <Result5Dysfunctions :result="results[result]" :scope="scope" />
       </div>
       <div class="explanation-holder">
         <div class="explanation" v-html="explanation()" />
@@ -105,7 +105,12 @@
     </div>
     <div v-if="appType == 'Team Health Check'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
-        <ResultTeamHealthCheck v-if="appType == 'Team Health Check'" :result="results[result]" :scope="scope" />
+        <ResultTeamHealthCheck :result="results[result]" :scope="scope" />
+      </div>
+    </div>
+    <div v-if="appType == 'Agile Maturity'">
+      <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
+        <ResultAgileMaturity :result="results[result]" :scope="scope" />
       </div>
     </div>
   </div>
@@ -118,19 +123,22 @@ import mailFuns from '../../lib/mail.js'
 
 import fiveDysfunctions from '../../lib/email/fiveDysfunctions.js'
 import teamHealthCheck from '../../lib/email/teamHealthCheck.js'
+import agileMaturity from '../../lib/email/agileMaturity.js'
 
 import Details from './Details.vue'
 
 import ResultsHeader from './ResultsHeader.vue'
 import Result5Dysfunctions from './fiveDysfunctions/Result.vue'
 import ResultTeamHealthCheck from './teamHealthCheck/Result.vue'
+import ResultAgileMaturity from './agileMaturity/Result.vue'
 
 export default {
   components: {
     Details,
     ResultsHeader,
     Result5Dysfunctions,
-    ResultTeamHealthCheck
+    ResultTeamHealthCheck,
+    ResultAgileMaturity
   },
   props: [
     'summary'
@@ -199,6 +207,10 @@ export default {
           case 'Team Health Check':
             title = teamHealthCheck.emailTitle(name, organisation, this.assessment)
             message = teamHealthCheck.emailContent(name, organisation, this.results)
+            break
+          case 'Agile Maturity':
+            title = agileMaturity.emailTitle(name, organisation, this.assessment)
+            message = agileMaturity.emailContent(name, organisation, this.results)
             break
         }
         bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.results})

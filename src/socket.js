@@ -88,6 +88,8 @@ bus.$on('sendAddQuestion', (data) => { socket.emit('sendAddQuestion', data) })
 
 bus.$on('sendUpdateQuestion', (data) => { socket.emit('sendUpdateQuestion', data) })
 
+bus.$on('sendUpdateQuestionInclude', (data) => { socket.emit('sendUpdateQuestionInclude', data) })
+
 bus.$on('sendUpdateQuestionTitle', (data) => { socket.emit('sendUpdateQuestionTitle', data) })
 
 bus.$on('sendUpdateQuestionGood', (data) => { socket.emit('sendUpdateQuestionGood', data) })

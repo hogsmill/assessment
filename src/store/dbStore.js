@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid')
 
 const fiveDysfunctionsFuns = require('./lib/fiveDysfunctions.js')
 const teamHealthCheckFuns = require('./lib/teamHealthCheck.js')
+const agileMaturityFuns = require('./lib/agileMaturity.js')
 const resultsFuns = require('./lib/results.js')
 
 function newServer(appType) {
@@ -252,6 +253,9 @@ module.exports = {
               break
             case 'Team Health Check':
               questions = teamHealthCheckFuns.questions()
+              break
+            case 'Agile Maturity':
+              questions = agileMaturityFuns.questions()
               break
           }
           for (let i = 0, n = 1; i < questions.length; i++, n++) {
@@ -510,6 +514,21 @@ module.exports = {
           })
         }
       })
+    })
+  },
+
+  updateQuestionInclude: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('updateQuestionInclude', data) }
+
+    db.questionCollection.findOne({id: data.id}, function(err, res) {
+      if (err) throw err
+      if (res) {
+        db.questionCollection.updateOne({id: data.id}, {$set: {include: data.include}}, function(err, res) {
+          if (err) throw err
+          _loadQuestions(db, io)
+        })
+      }
     })
   },
 
