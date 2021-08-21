@@ -19,8 +19,9 @@
         title = '5 Dysfunctions'
       } else if (document.location.pathname.match(/team-health-check/)) {
         title = 'Team Health Check'
-      }
-      document.getElementsByTagName('title')[0].innerHTML = title + ' | Agile Simulations'
+      } else if (document.location.pathname.match(/agile-maturity/)) {
+        title = 'Agile Maturity'
+      }      document.getElementsByTagName('title')[0].innerHTML = title + ' | Agile Simulations'
   </script>
   </head>
   <body>
