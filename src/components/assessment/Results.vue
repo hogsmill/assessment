@@ -95,6 +95,9 @@
     </div>
     <Details v-if="server.scope == 'individual'" />
     <ResultsHeader :results="results" v-if="server.frequency != 'oneoff'" />
+
+    <!-- 5 Dysfunctions -->
+
     <div v-if="appType == '5 Dysfunctions'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <Result5Dysfunctions :result="results[result]" :scope="scope" />
@@ -103,11 +106,20 @@
         <div class="explanation" v-html="explanation()" />
       </div>
     </div>
-    <div v-if="appType == 'Team Health Check'">
+
+    <!-- Team Health Check -->
+
+    <div v-if="appType == 'Team Health Check' && tableFormat()">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <ResultTeamHealthCheck :result="results[result]" :scope="scope" />
       </div>
     </div>
+    <div v-if="appType == 'Team Health Check' && graphFormat()">
+      <LineChart />
+    </div>
+
+    <!-- Agile Maturity -->
+
     <div v-if="appType == 'Agile Maturity'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <ResultAgileMaturity :result="results[result]" :scope="scope" />
@@ -132,13 +144,18 @@ import Result5Dysfunctions from './fiveDysfunctions/Result.vue'
 import ResultTeamHealthCheck from './teamHealthCheck/Result.vue'
 import ResultAgileMaturity from './agileMaturity/Result.vue'
 
+import lineChartConfig from './graphConfig/lineChart.js'
+
+import LineChart from './graphs/LineChart.vue'
+
 export default {
   components: {
     Details,
     ResultsHeader,
     Result5Dysfunctions,
     ResultTeamHealthCheck,
-    ResultAgileMaturity
+    ResultAgileMaturity,
+    LineChart
   },
   props: [
     'summary'
@@ -149,7 +166,8 @@ export default {
         member: 'individual',
         date: 'single',
         format: 'table'
-      }
+      },
+      lineChartConfig: lineChartConfig.config()
     }
   },
   computed: {
@@ -175,6 +193,11 @@ export default {
       console.log('results', data)
       this.$store.dispatch('updateResults', data)
     })
+
+    bus.$on('loadGraphResults', (data) => {
+      console.log('graph', data)
+      this.showGraph(data)
+    })
   },
   methods: {
     getIndividualResults() {
@@ -187,6 +210,15 @@ export default {
       this.scope[scope] = value
       bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
+    tableFormat() {
+      return this.scope.format == 'table'
+    },
+    graphFormat() {
+      return this.scope.format.match(/^graph\-/)
+    },
+    showGraph(data) {
+      bus.$emit('showGraph', {chartdata: data, options: this.lineChartConfig.options})
+    },
     explanation() {
       return fiveDysfunctions.explanation()
     },
@@ -198,7 +230,6 @@ export default {
         alert('Please enter a valid email address so we can send you your results')
       } else {
         let title, message
-        console.log(this.appType)
         switch(this.appType) {
           case '5 Dysfunctions':
             title = fiveDysfunctions.emailTitle(name, organisation, this.assessment)

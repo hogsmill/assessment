@@ -5,10 +5,10 @@
     </div>
     <div class="answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
-        <div class="answer-holder" :class="answerValue(result.results[res])">
-          <i v-if="scope.member == 'individual'" class="far" :class="answerClass(result.results[res])" />
-          <span v-if="scope.member != 'individual'">{{ result.results[res] }}</span>
-          <i v-if="result.comments[res].length" class="far fa-comment" :title="'Comments for ' + result.question + ' from ' + res" @click="showComments(res)"/>
+        <div class="answer-holder" :class="answerValue(result.results[res].answer)">
+          <i v-if="scope.member == 'individual'" class="far" :class="answerClass(result.results[res].answer)" />
+          <span v-if="scope.member != 'individual'">{{ result.results[res].answer }}</span>
+          <i v-if="result.results[res].comments.length" class="far fa-comment" :title="'Comments for ' + result.question + ' from ' + res" @click="showComments(res)" />
         </div>
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
       </div>
@@ -45,7 +45,7 @@ export default {
       } else {
         if (answer < 0.66) {
           answerValue = 'red'
-        } else if (answerValue < 1.33) {
+        } else if (answer < 1.33) {
           answerValue = 'amber'
         } else {
           answerValue = 'green'
@@ -83,7 +83,7 @@ export default {
       return trend
     },
     showComments(id) {
-      console.log(this.result.comments[id])
+      console.log(this.result[id].comments)
     }
   }
 }

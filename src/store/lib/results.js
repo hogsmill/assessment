@@ -19,21 +19,6 @@ function setResults(assessments, appType) {
   return results
 }
 
-function comments(results, assessments, appType) {
-  switch(appType) {
-    case 'Team Health Check':
-      results = teamHealthCheckFuns.questionComments(assessments, results)
-      break
-    case '5 Dysfunctions':
-      results = results // Comments not allowed yet...
-      break
-    case 'Agile Maturity':
-      results = agileMaturityFuns.questionComments(assessments, results)
-      break
-  }
-  return results
-}
-
 function getKey(assessment, server) {
   let key
   if (server.scope == 'individual') {
@@ -66,10 +51,19 @@ function result(results, question, key) {
 
 function average(results) {
   let n = 0
+  const comments = []
   for (let i = 0; i < results.length; i++) {
-    n = n + results[i]
+    n = n + results[i].answer
+    const resultComments = results[i].comments
+    for (let j = 0; j < resultComments.length; j++) {
+      comments.push(resultComments[i])
+    }
   }
-  return n / results.length
+  result = {
+    answer: n / results.length,
+    comments: comments
+  }
+  return result
 }
 
 function aggregateAnswers(results, scope, appType) {
@@ -113,7 +107,11 @@ function aggregate(results, scope, appType) {
 
 module.exports = {
 
-  get: function(assessments, server, scope, appType) {
+  scope: function(scope) {
+    return scope.format == 'table' ? 'table' : 'graph'
+  },
+
+  getTabular: function(assessments, server, scope, appType) {
     let results = setResults(assessments, appType)
     for (let i = 0; i < assessments.length; i++) {
       const key = getKey(assessments[i], server)
@@ -133,6 +131,15 @@ module.exports = {
       results = aggregate(results, scope, appType)
     }
     return results
+  },
+
+  getGraph: function(assessments, server, scope, appType) {
+    return {
+      labels: ['a', 'b', 'c', 'd'],
+      datasets: [
+        [100, 150, 250, 400]
+      ]
+    }
   }
 
 }

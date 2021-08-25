@@ -156,6 +156,10 @@ function _resultsQuery(assessment, scope) {
       query.month = assessment.month
       query.year = assessment.year
       query.quarter = assessment.quarter
+    } else {
+      delete query.month
+      delete query.year
+      delete query.quarter
     }
     switch(scope.member) {
       case 'individual':
@@ -361,15 +365,24 @@ module.exports = {
       let query = _resultsQuery(data.assessment, data.scope)
       db.assessmentsCollection.find(query).toArray(function(err, res) {
         if (err) throw err
-        const results = resultsFuns.get(res, server, data.scope, data.appType)
-        io.emit('loadResults', results)
+        let results
+        switch(resultsFuns.scope(data.scope)) {
+          case 'table':
+            results = resultsFuns.getTabular(res, server, data.scope, data.appType)
+            io.emit('loadResults', results)
+            break
+          case 'graph':
+            results = resultsFuns.getGraph(res, server, data.scope, data.appType)
+            io.emit('loadGraphResults', results)
+            break
+        }
       })
     })
   },
 
   resultsMailled: function(db, io, data, debugOn) {
 
-    if (debugOn) { console.log('getResults', data) }
+    if (debugOn) { console.log('resultsMailled', data) }
     const query = _query(data.assessment)
     db.assessmentsCollection.findOne(query, function(err, res) {
       if (err) throw err

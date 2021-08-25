@@ -71,7 +71,6 @@ export default {
         if (this.server.multipleTeams) {
           setUp = setUp && assessment.team
         }
-        console.log(assessment, setUp)
         this.setUp = setUp
       }
       return this.setUp

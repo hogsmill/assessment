@@ -16,7 +16,7 @@
           </select>
         </td>
       </tr>
-      <tr v-if="server.frequency">
+      <tr>
         <td>
           Team Member
         </td>

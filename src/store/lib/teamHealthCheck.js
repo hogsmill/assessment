@@ -78,16 +78,16 @@ module.exports = {
   assessmentResults: function(assessment, key, results) {
     for (let i = 0; i < assessment.questions.length; i++) {
       question = assessment.questions[i]
-      results[question.id].results[key] = question.answer
+      results[question.id].results[key] = {answer: question.answer}
       if (!results[question.id].comments) {
         results[question.id].comments = {}
       }
-      const comments = results[question.id].comments[key] ? results[question.id].comments[key] : []
+      const comments = results[question.id].results[key].comments ? results[question.id].results[key].comments : []
       if (question.comments) {
         for (let k = 0; k < question.comments.length; k++) {
           comments.push(question.comments[k])
         }
-        results[question.id].comments[key] = comments
+        results[question.id].results[key].comments = comments
       }
     }
     return results
