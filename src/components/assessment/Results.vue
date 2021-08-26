@@ -125,6 +125,25 @@
         <ResultAgileMaturity :result="results[result]" :scope="scope" />
       </div>
     </div>
+
+    <modal name="question-comments" id="question-comments" :height="500" :classes="['rounded']">
+      <div class="float-right mr-2 mt-1">
+        <button type="button" class="close" @click="hide" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <h3>
+        Comments for <br>
+        {{ commentsTitle }}
+      </h3>
+      <div class="mt-4">
+        <ul>
+          <li v-for="(comment, index) in comments" :key="index">
+            {{ comment }}
+          </li>
+        </ul>
+      </div>
+    </modal>
   </div>
 </template>
 
@@ -167,6 +186,8 @@ export default {
         date: 'single',
         format: 'table'
       },
+      comments: [],
+      commentsTitle: '',
       lineChartConfig: lineChartConfig.config()
     }
   },
@@ -198,6 +219,11 @@ export default {
       console.log('graph', data)
       this.showGraph(data)
     })
+
+    bus.$on('showQuestionComments', (data) => {
+      console.log('questionComments', data)
+      this.showComments(data)
+    })
   },
   methods: {
     getIndividualResults() {
@@ -215,6 +241,16 @@ export default {
     },
     graphFormat() {
       return this.scope.format.match(/^graph\-/)
+    },
+    showComments(data) {
+      this.comments = data.comments
+      this.commentsTitle = data.title
+      this.$modal.show('question-comments')
+    },
+    hide() {
+      this.comments = []
+      this.commentsTitle = ''
+      this.$modal.hide('question-comments')
     },
     showGraph(data) {
       bus.$emit('showGraph', {chartdata: data, options: this.lineChartConfig.options})
@@ -342,6 +378,12 @@ export default {
       h3 {
         text-align: center;
       }
+    }
+  }
+
+  #question-comments {
+    li {
+      text-align: left;
     }
   }
 </style>

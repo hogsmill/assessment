@@ -10,7 +10,9 @@
           <span v-if="scope.member != 'individual'">
             {{ formatAnswerValue(result.results[res].answer) }}
           </span>
-          <i v-if="result.results[res].comments.length" class="far fa-comment" :title="'Comments for ' + result.question + ' from ' + res" @click="showComments(res)" />
+          <i v-if="result.results[res].comments.length" class="far fa-comment"
+             :title="'Comments for ' + result.question + ' from ' + res"
+             @click="showComments(result.results[res], result.question + ' from ' + res)" />
         </div>
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
       </div>
@@ -19,6 +21,8 @@
 </template>
 
 <script>
+import bus from '../../../socket.js'
+
 export default {
   props: [
     'result',
@@ -87,8 +91,8 @@ export default {
       }
       return trend
     },
-    showComments(id) {
-      console.log(this.result[id].comments)
+    showComments(question, title) {
+      bus.$emit('sendShowQuestionComments', {comments: question.comments, title: title})
     }
   }
 }

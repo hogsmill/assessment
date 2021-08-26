@@ -11,18 +11,16 @@ function newServer(appType) {
     id: uuidv4(),
     scope: 'individual',
     multipleTeams: false,
-    autoNextQuestion: false
+    autoNextQuestion: false,
+    showTeamAnswers: false
   }
   switch(appType) {
     case '5 Dysfunctions':
-      server.allowComments = false
       server.comments = false
       break
     default:
-      server.allowComments = true
       server.comments = true
       break
-
   }
   return server
 }
@@ -377,6 +375,30 @@ module.exports = {
             break
         }
       })
+    })
+  },
+
+  getQuestionAnswers: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('getQuestionAnswers', data) }
+
+    const scope = {
+      date: 'single',
+      member: 'team'
+    }
+    let query = _resultsQuery(data.assessment, scope)
+    db.assessmentsCollection.find(query).toArray(function(err, res) {
+      if (err) throw err
+      let answers = []
+      for (let i = 0; i < res.length; i++) {
+        for (let j = 0; j < res[i].questions.length; j++) {
+          if (res[i].questions[j].id == data.questionId) {
+            answers.push(res[i].questions[j].answer)
+          }
+        }
+      }
+      data.answers = answers
+      io.emit('loadQuestionAnswers', data)
     })
   },
 

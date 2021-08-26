@@ -65,6 +65,12 @@ export const store = new Vuex.Store({
     getServer: (state) => {
       return state.server
     },
+    getAllowComments: (state) => {
+      const noComments = [
+        '5 Dysfunctions'
+      ]
+      return noComments.indexOf(state.appType) < 0
+    },
     getGameName: (state) => {
       return state.gameName
     },

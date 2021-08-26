@@ -2,7 +2,14 @@
   <div class="team-health-check-question">
     <h3>
       {{ question.question.title }}
+      <i v-if="server.scope == 'organisation' && server.showTeamAnswers" class="fas fa-users" title="Show team answers" @click="showTeamAnswers()" />
     </h3>
+    <div class="question-answers" :class="{'visible': showAnswers}">
+      <div>
+        All Answers:
+        <i v-for="(ans, index) in allAnswers" :key="index" class="far" :class="answerClass(ans)" />
+      </div>
+    </div>
     <table>
       <tr>
         <td>
@@ -38,12 +45,16 @@
 <script>
 import bus from '../../../socket.js'
 
+import assessmentFuns from '../../../lib/assessment.js'
+
 export default {
   props: [
     'question'
   ],
   data() {
     return {
+      showAnswers: false,
+      allAnswers: [],
       answers: {
         'red': 0,
         'amber': 1,
@@ -52,14 +63,43 @@ export default {
     }
   },
   computed: {
+    server() {
+      return this.$store.getters.getServer
+    },
     assessment() {
       return this.$store.getters.getAssessment
     }
   },
+  created() {
+    bus.$on('loadQuestionAnswers', (data) => {
+      if (assessmentFuns.isThisAssessment(data, this.assessment)) {
+        this.answers = data.answers
+      }
+    })
+  },
   methods: {
+    answerClass(answer) {
+      let ansClass = ''
+      switch(answer) {
+        case 0:
+          ansClass = 'fa-frown red'
+          break
+        case 1:
+          ansClass = 'fa-meh amber'
+          break
+        case 2:
+          ansClass = 'fa-smile-beam green'
+          break
+      }
+      return ansClass
+    },
     answer(answer) {
       const answerValue = this.answers[answer]
       bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answerValue})
+    },
+    showTeamAnswers() {
+      bus.$emit('sendGetQuestionAnswers', {assessment: this.assessment, questionId: this.question.id})
+      this.showAnswers = !this.showAnswers
     }
   }
 }
@@ -70,6 +110,48 @@ export default {
     margin: auto auto;
     width: 600px;
     display: inline-block;
+    position: relative;
+
+    h3 {
+      .fas {
+        font-size: inherit !important;
+      }
+    }
+
+    .question-answers {
+      visibility: hidden;
+      position: absolute;
+      z-index: 10;
+      width: 100%;
+      top: 40px;
+
+      div {
+        margin: auto;
+        border: 1px solid;
+        padding: 3px;
+        background-color: #fff;
+      }
+
+      i {
+        width: 30px;
+        height: 20px;
+        border-radius: 4px;
+        margin: 6px;
+        color: #fff;
+        font-size: small !important;
+        padding: 3px;
+
+        &.red {
+          background-color: red;
+        }
+        &.amber {
+          background-color: darkorange;
+        }
+        &.green {
+          background-color: green;
+        }
+      }
+    }
 
     .traffic-light {
       height: 150px;

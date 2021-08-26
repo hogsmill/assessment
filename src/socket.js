@@ -60,6 +60,10 @@ bus.$on('sendNextQuestion', (data) => { bus.$emit('nextQuestion', data) })
 
 bus.$on('sendGoToResults', (data) => { bus.$emit('goToResults', data) })
 
+bus.$on('sendShowQuestionComments', (data) => { bus.$emit('showQuestionComments', data) })
+
+bus.$on('sendGetQuestionAnswers', (data) => { socket.emit('sendGetQuestionAnswers', data) })
+
 bus.$on('sendSetAnswer', (data) => { socket.emit('sendSetAnswer', data) })
 
 bus.$on('sendGetResults', (data) => { socket.emit('sendGetResults', data) })
@@ -115,5 +119,7 @@ socket.on('loadAssessment', (data) => { bus.$emit('loadAssessment', data) })
 socket.on('loadResults', (data) => { bus.$emit('loadResults', data) })
 
 socket.on('loadGraphResults', (data) => { bus.$emit('loadGraphResults', data) })
+
+socket.on('loadQuestionAnswers', (data) => { bus.$emit('loadQuestionAnswers', data) })
 
 export default bus

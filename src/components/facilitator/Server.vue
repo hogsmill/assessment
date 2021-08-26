@@ -17,12 +17,20 @@
         </button>
       </td>
     </tr>
-    <tr v-if="showServer && server.allowComments">
+    <tr v-if="showServer && allowComments">
       <td>
         Allow Comments on Questions
       </td>
       <td>
         <input type="checkbox" :checked="server.comments" @click="toggleComments()">
+      </td>
+    </tr>
+    <tr v-if="showServer">
+      <td>
+        Allow show other team members answers
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.showTeamAnswers" @click="toggleShowTeamAnswers()">
       </td>
     </tr>
     <tr v-if="showServer">
@@ -108,6 +116,9 @@ export default {
   computed: {
     server() {
       return this.$store.getters.getServer
+    },
+    allowComments() {
+      return this.$store.getters.getAllowComments
     }
   },
   methods: {
@@ -124,6 +135,10 @@ export default {
     toggleComments() {
       const comments = !this.server.comments
       bus.$emit('sendUpdateServer', {field: 'comments', value: comments})
+    },
+    toggleShowTeamAnswers() {
+      const showTeamAnswers = !this.server.showTeamAnswers
+      bus.$emit('sendUpdateServer', {field: 'showTeamAnswers', value: showTeamAnswers})
     },
     toggleAutoNextQuestion() {
       const auto = !this.server.autoNextQuestion
