@@ -7,7 +7,9 @@
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
         <div class="answer-holder" :class="answerValue(result.results[res].answer)">
           <i v-if="scope.member == 'individual'" class="far" :class="answerClass(result.results[res].answer)" />
-          <span v-if="scope.member != 'individual'">{{ result.results[res].answer }}</span>
+          <span v-if="scope.member != 'individual'">
+            {{ formatAnswerValue(result.results[res].answer) }}
+          </span>
           <i v-if="result.results[res].comments.length" class="far fa-comment" :title="'Comments for ' + result.question + ' from ' + res" @click="showComments(res)" />
         </div>
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
@@ -67,6 +69,9 @@ export default {
           break
       }
       return ansClass
+    },
+    formatAnswerValue(val) {
+      return Math.floor(val * 10) / 10
     },
     trendClass(index) {
       let trend
