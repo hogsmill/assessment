@@ -6,8 +6,8 @@
     <div class="answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
         <div class="result-value">
-          <div :class="dysfunctionClass(result.results[res])" :title="dysfunctionTitle(result.results[res])">
-            {{ result.results[res] }} / 9
+          <div :class="dysfunctionClass(result.results[res].answer)" :title="dysfunctionTitle(result.results[res])">
+            {{ result.results[res].answer }} / 9
           </div>
         </div>
         <!--

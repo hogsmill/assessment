@@ -159,7 +159,10 @@ module.exports = {
           results[k].results[key] = result(results[k].results[key], question)
         }
       }
-      results[k].results[key] = results[k].results[key][k]
+      results[k].results[key] = {
+        answer: results[k].results[key][k],
+        comments: []
+      }
     }
     return results
   }
