@@ -54,9 +54,11 @@ function average(results) {
   const comments = []
   for (let i = 0; i < results.length; i++) {
     n = n + results[i].answer
-    const resultComments = results[i].comments ? results[i].comments : []
-    for (let j = 0; j < resultComments.length; j++) {
-      comments.push(resultComments[i])
+    if (results[i].comments) {
+      const resultComments = results[i].comments
+      for (let j = 0; j < resultComments.length; j++) {
+        comments.push(resultComments[i])
+      }
     }
   }
   result = {
