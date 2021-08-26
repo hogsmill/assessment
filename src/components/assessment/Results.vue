@@ -47,7 +47,7 @@
               <i class="fas fa-calendar-day" @click="setScope('date', 'single')" />
               <br>
               <span>
-                Latest
+                This
               </span>
             </div>
           </td>
