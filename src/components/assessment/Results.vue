@@ -211,12 +211,10 @@ export default {
     }
 
     bus.$on('loadResults', (data) => {
-      console.log('results', data)
       this.$store.dispatch('updateResults', data)
     })
 
     bus.$on('loadGraphResults', (data) => {
-      console.log('graph', data)
       this.showGraph(data)
     })
 
@@ -253,7 +251,10 @@ export default {
       this.$modal.hide('question-comments')
     },
     showGraph(data) {
-      bus.$emit('showGraph', {chartdata: data, options: this.lineChartConfig.options})
+      console.log('showGraph', data)
+      this.lineChartConfig.data.labels = data.labels
+      this.lineChartConfig.data.datasets[0].data = data.datasets[0]
+      bus.$emit('showGraph', {chartdata: this.lineChartConfig.data, options: this.lineChartConfig.options})
     },
     explanation() {
       return fiveDysfunctions.explanation()
@@ -295,6 +296,12 @@ export default {
 </script>
 
 <style lang="scss">
+
+  canvas {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
   .controls {
 
     &.individual {
