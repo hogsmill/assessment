@@ -10,8 +10,6 @@
 <script>
 import bus from '../socket.js'
 
-import ls from '../lib/localStorage.js'
-
 export default {
   data() {
     return {
