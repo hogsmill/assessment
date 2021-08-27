@@ -2,6 +2,7 @@
   <div id="app" class="mb-4">
     <Header />
     <ClearStorage />
+    <RateThisGame />
     <ConnectionError />
     <div v-if="currentTab == 'facilitator'">
       <FacilitatorView />
@@ -30,6 +31,7 @@ import appTypeFuns from './lib/appType.js'
 import assessmentFuns from './lib/assessment.js'
 
 import Header from './components/Header.vue'
+import RateThisGame from './components/RateThisGame.vue'
 import ClearStorage from './components/ClearStorage.vue'
 import ConnectionError from './components/error/ConnectionError.vue'
 
@@ -46,6 +48,7 @@ export default {
   components: {
     Header,
     ClearStorage,
+    RateThisGame,
     ConnectionError,
     WalkThrough,
     FacilitatorView,

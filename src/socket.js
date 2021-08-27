@@ -27,6 +27,8 @@ if (connectToAgileSimulations) {
 
   bus.$on('sendCheckLogin', (data) => { asSocket.emit('sendCheckLogin', data) })
 
+  bus.$on('sendRating', (data) => { asSocket.emit('sendRating', data) })
+
   asSocket.on('loginSuccess', (data) => { bus.$emit('loginSuccess', data) })
 
   asSocket.on('logout', (data) => { bus.$emit('logout', data) })

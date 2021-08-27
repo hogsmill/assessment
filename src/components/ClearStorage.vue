@@ -1,5 +1,5 @@
 <template>
-  <i class="fas fa-store-alt-slash clear-storage" @click="clearLocalStorage()" />
+  <i class="fas fa-store-alt-slash clear-storage" title="Clear Local Storage" @click="clearLocalStorage()" />
 </template>
 
 <script>
