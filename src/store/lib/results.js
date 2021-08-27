@@ -57,7 +57,7 @@ function average(results) {
     if (results[i].comments) {
       const resultComments = results[i].comments
       for (let j = 0; j < resultComments.length; j++) {
-        comments.push(resultComments[i])
+        comments.push(resultComments[j])
       }
     }
   }
