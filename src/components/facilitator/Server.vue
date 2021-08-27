@@ -23,6 +23,8 @@
       </td>
       <td>
         <input type="checkbox" :checked="server.comments" @click="toggleComments()">
+        (Show whose comment?
+        <input type="checkbox" :checked="server.commentsBy" @click="toggleCommentsBy()">)
       </td>
     </tr>
     <tr v-if="showServer">
@@ -31,6 +33,8 @@
       </td>
       <td>
         <input type="checkbox" :checked="server.showTeamAnswers" @click="toggleShowTeamAnswers()">
+        (Show whose answer?
+        <input type="checkbox" :checked="server.showTeamAnswersBy" @click="toggleShowTeamAnswersBy()">)
       </td>
     </tr>
     <tr v-if="showServer">
@@ -136,9 +140,17 @@ export default {
       const comments = !this.server.comments
       bus.$emit('sendUpdateServer', {field: 'comments', value: comments})
     },
+    toggleCommentsBy() {
+      const commentsBy = !this.server.commentsBy
+      bus.$emit('sendUpdateServer', {field: 'commentsBy', value: commentsBy})
+    },
     toggleShowTeamAnswers() {
       const showTeamAnswers = !this.server.showTeamAnswers
       bus.$emit('sendUpdateServer', {field: 'showTeamAnswers', value: showTeamAnswers})
+    },
+    toggleShowTeamAnswersBy() {
+      const showTeamAnswersBy = !this.server.showTeamAnswersBy
+      bus.$emit('sendUpdateServer', {field: 'showTeamAnswersBy', value: showTeamAnswersBy})
     },
     toggleAutoNextQuestion() {
       const auto = !this.server.autoNextQuestion
