@@ -50,9 +50,6 @@ export default {
         trend = 'fa-arrows-alt-h'
       }
       return trend
-    },
-    showComments(id) {
-      console.log(this.result.comments[id])
     }
   }
 }
