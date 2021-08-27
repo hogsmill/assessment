@@ -1,20 +1,33 @@
 
-const fiveDysfunctionsFuns = require('./fiveDysfunctions.js')
-const teamHealthCheckFuns = require('./teamHealthCheck.js')
-const agileMaturityFuns = require('./agileMaturity.js')
+const generic = require('./generic.js')
+const fiveDysfunctions = require('./fiveDysfunctions.js')
+const teamHealthCheck = require('./teamHealthCheck.js')
+const agileMaturity = require('./agileMaturity.js')
+
+function assessmentBy(assessment, teams) {
+  let by = null
+  if (assessment.team) {
+    const team = teams.find((t) => {
+      return t.id = assessment.team
+    })
+    if (team && assessment.member) {
+      by = team.members.find((m) => {
+        return m.id = assessment.member
+      }).name
+    }
+  }
+  return by
+}
 
 function setResults(assessments, appType) {
   let results
   switch(appType) {
     case 'Team Health Check':
-      results = teamHealthCheckFuns.setResults(assessments)
+    case 'Agile Maturity':
+      results = generic.setResults(assessments)
       break
     case '5 Dysfunctions':
-      results = fiveDysfunctionsFuns.setResults(assessments)
-      break
-    case 'Agile Maturity':
-      results = agileMaturityFuns.setResults(assessments)
-      break
+      results = fiveDysfunctions.setResults(assessments)
   }
   return results
 }
@@ -113,19 +126,18 @@ module.exports = {
     return scope.format == 'table' ? 'table' : 'graph'
   },
 
-  get: function(assessments, server, scope, appType) {
+  get: function(assessments, server, teams, scope, appType) {
     let results = setResults(assessments, appType)
     for (let i = 0; i < assessments.length; i++) {
       const key = getKey(assessments[i], server)
+      const by = assessmentBy(assessments[i], teams)
       switch(appType) {
         case 'Team Health Check':
-          results = teamHealthCheckFuns.assessmentResults(assessments[i], key, results)
+        case 'Agile Maturity':
+          results = generic.assessmentResults(assessments[i], key, results, by)
           break
         case '5 Dysfunctions':
-          results = fiveDysfunctionsFuns.assessmentResults(assessments[i], key, results)
-          break
-        case 'Agile Maturity':
-          results = agileMaturityFuns.assessmentResults(assessments[i], key, results)
+          results = fiveDysfunctions.assessmentResults(assessments[i], key, results, by)
           break
       }
     }

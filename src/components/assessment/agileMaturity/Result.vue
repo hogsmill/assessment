@@ -5,8 +5,8 @@
     </div>
     <div class="answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
-        <div class="answer-holder" :class="answerClass[result.results[res]]">
-          {{ result.results[res] }}
+        <div class="answer-holder" :class="answerClass[result.results[res].answer]">
+          {{ result.results[res].answer }}
         </div>
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
       </div>

@@ -5,9 +5,14 @@
       <i v-if="server.scope == 'organisation' && server.showTeamAnswers" class="fas fa-users" title="Show team answers" @click="showTeamAnswers()" />
     </h3>
     <div class="question-answers" :class="{'visible': showAnswers}">
-      <div>
+      <h4>
         All Answers:
-        <i v-for="(ans, index) in allAnswers" :key="index" class="far" :class="answerClass(ans)" />
+      </h4>
+      <div v-for="(ans, index) in allAnswers" :key="index">
+        <i class="far" :class="answerClass(ans.answer)" />
+        <span v-if="server.commentsBy">
+          {{ ans.by }}
+        </span>
       </div>
     </div>
     <table>
@@ -72,8 +77,9 @@ export default {
   },
   created() {
     bus.$on('loadQuestionAnswers', (data) => {
-      if (assessmentFuns.isThisAssessment(data, this.assessment)) {
-        this.answers = data.answers
+      console.log('loadQuestionAnswers', data)
+      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
+        this.allAnswers = data.answers
       }
     })
   },
@@ -122,33 +128,35 @@ export default {
       visibility: hidden;
       position: absolute;
       z-index: 10;
-      width: 100%;
       top: 40px;
+      left: 40%;
+      border: 1px solid;
+      padding: 8px;
+      background-color: #fff;
 
       div {
-        margin: auto;
-        border: 1px solid;
-        padding: 3px;
-        background-color: #fff;
-      }
+        text-align: left;
 
-      i {
-        width: 30px;
-        height: 20px;
-        border-radius: 4px;
-        margin: 6px;
-        color: #fff;
-        font-size: small !important;
-        padding: 3px;
+        i {
+          width: 30px;
+          height: 20px;
+          border-radius: 4px;
+          margin: 6px;
+          color: #fff;
+          font-size: small !important;
+          padding: 3px;
+          position: relative;
+          top: -4px;
 
-        &.red {
-          background-color: red;
-        }
-        &.amber {
-          background-color: darkorange;
-        }
-        &.green {
-          background-color: green;
+          &.red {
+            background-color: red;
+          }
+          &.amber {
+            background-color: darkorange;
+          }
+          &.green {
+            background-color: green;
+          }
         }
       }
     }

@@ -358,13 +358,16 @@ module.exports = {
 
     if (debugOn) { console.log('getResults', data) }
 
-    db.serverCollection.findOne({}, function(err, server) {
+    db.teamsCollection.find().toArray(function(err, teams) {
       if (err) throw err
-      let query = _resultsQuery(data.assessment, data.scope)
-      db.assessmentsCollection.find(query).toArray(function(err, res) {
+      db.serverCollection.findOne({}, function(err, server) {
         if (err) throw err
-        const results = resultsFuns.get(res, server, data.scope, data.appType)
-        io.emit('loadResults', results)
+        let query = _resultsQuery(data.assessment, data.scope)
+        db.assessmentsCollection.find(query).toArray(function(err, res) {
+          if (err) throw err
+          const results = resultsFuns.get(res, server, teams, data.scope, data.appType)
+          io.emit('loadResults', results)
+        })
       })
     })
   },
@@ -377,19 +380,28 @@ module.exports = {
       date: 'single',
       member: 'team'
     }
-    let query = _resultsQuery(data.assessment, scope)
-    db.assessmentsCollection.find(query).toArray(function(err, res) {
+    db.teamsCollection.findOne({id: data.assessment.team}, function(err, team) {
       if (err) throw err
-      let answers = []
-      for (let i = 0; i < res.length; i++) {
-        for (let j = 0; j < res[i].questions.length; j++) {
-          if (res[i].questions[j].id == data.questionId) {
-            answers.push(res[i].questions[j].answer)
+      let query = _resultsQuery(data.assessment, scope)
+      db.assessmentsCollection.find(query).toArray(function(err, res) {
+        if (err) throw err
+        let answers = []
+        for (let i = 0; i < res.length; i++) {
+          for (let j = 0; j < res[i].questions.length; j++) {
+            if (res[i].questions[j].id == data.questionId) {
+              answers.push({
+                answer: res[i].questions[j].answer,
+                by: team.members.find((m) => {
+                  return m.id == res[i].member.id
+                }).name
+              })
+            }
           }
         }
-      }
-      data.answers = answers
-      io.emit('loadQuestionAnswers', data)
+        data.answers = answers
+        console.log(answers)
+        io.emit('loadQuestionAnswers', data)
+      })
     })
   },
 

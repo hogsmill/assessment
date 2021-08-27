@@ -89,9 +89,12 @@
 
     <!-- 5 Dysfunctions -->
 
-    <div v-if="appType == '5 Dysfunctions'">
+    <div v-if="appType == '5 Dysfunctions'  && scope.format == 'table'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <Result5Dysfunctions :result="results[result]" :scope="scope" />
+      </div>
+      <div v-if="appType == '5 Dysfunctions' && scope.format == 'graph'">
+        <LineChart />
       </div>
       <div class="explanation-holder">
         <div class="explanation" v-html="explanation()" />
@@ -111,10 +114,13 @@
 
     <!-- Agile Maturity -->
 
-    <div v-if="appType == 'Agile Maturity'">
+    <div v-if="appType == 'Agile Maturity' && scope.format == 'table'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <ResultAgileMaturity :result="results[result]" :scope="scope" />
       </div>
+    </div>
+    <div v-if="appType == 'Agile Maturity' && scope.format == 'graph'">
+      <LineChart />
     </div>
 
     <modal name="question-comments" id="question-comments" :height="500" :classes="['rounded']">
@@ -130,7 +136,10 @@
       <div class="mt-4">
         <ul>
           <li v-for="(comment, index) in comments" :key="index">
-            {{ comment }}
+            {{ comment.comment }}
+            <span v-if="server.commentsBy">
+              ({{ comment.by }})
+            </span>
           </li>
         </ul>
       </div>
