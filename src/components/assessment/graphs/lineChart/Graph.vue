@@ -1,5 +1,5 @@
 <script>
-import bus from '../../../socket.js'
+import bus from '../../../../socket.js'
 
 import { Line } from 'vue-chartjs'
 

@@ -113,7 +113,7 @@ module.exports = {
     return scope.format == 'table' ? 'table' : 'graph'
   },
 
-  getTabular: function(assessments, server, scope, appType) {
+  get: function(assessments, server, scope, appType) {
     let results = setResults(assessments, appType)
     for (let i = 0; i < assessments.length; i++) {
       const key = getKey(assessments[i], server)
@@ -133,15 +133,6 @@ module.exports = {
       results = aggregate(results, scope, appType)
     }
     return results
-  },
-
-  getGraph: function(assessments, server, scope, appType) {
-    return {
-      labels: ['a', 'b', 'c', 'd'],
-      datasets: [
-        [100, 150, 250, 400]
-      ]
-    }
   }
 
 }

@@ -73,20 +73,11 @@
             </div>
           </td>
           <td>
-            <div :class="{ 'selected': scope.format == 'graph-separate' }">
-              <i class="fas fa-chart-line" @click="setScope('format', 'graph-separate')" />
+            <div :class="{ 'selected': scope.format == 'graph' }">
+              <i class="fas fa-chart-line" @click="setScope('format', 'graph')" />
               <br>
               <span>
-                Compare
-              </span>
-            </div>
-          </td>
-          <td>
-            <div :class="{ 'selected': scope.format == 'graph-aggregate' }">
-              <i class="fas fa-chart-area" @click="setScope('format', 'graph-aggregate')" />
-              <br>
-              <span>
-                Aggregate
+                Graph
               </span>
             </div>
           </td>
@@ -109,12 +100,12 @@
 
     <!-- Team Health Check -->
 
-    <div v-if="appType == 'Team Health Check' && tableFormat()">
+    <div v-if="appType == 'Team Health Check' && scope.format == 'table'">
       <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
         <ResultTeamHealthCheck :result="results[result]" :scope="scope" />
       </div>
     </div>
-    <div v-if="appType == 'Team Health Check' && graphFormat()">
+    <div v-if="appType == 'Team Health Check' && scope.format == 'graph'">
       <LineChart />
     </div>
 
@@ -163,9 +154,8 @@ import Result5Dysfunctions from './fiveDysfunctions/Result.vue'
 import ResultTeamHealthCheck from './teamHealthCheck/Result.vue'
 import ResultAgileMaturity from './agileMaturity/Result.vue'
 
-import lineChartConfig from './graphConfig/lineChart.js'
-
-import LineChart from './graphs/LineChart.vue'
+import LineChart from './graphs/lineChart/Graph.vue'
+import lineChartFuns from './graphs/lineChart/data.js'
 
 export default {
   components: {
@@ -187,8 +177,7 @@ export default {
         format: 'table'
       },
       comments: [],
-      commentsTitle: '',
-      lineChartConfig: lineChartConfig.config()
+      commentsTitle: ''
     }
   },
   computed: {
@@ -211,15 +200,14 @@ export default {
     }
 
     bus.$on('loadResults', (data) => {
+      console.log('loadResults', data)
       this.$store.dispatch('updateResults', data)
-    })
-
-    bus.$on('loadGraphResults', (data) => {
-      this.showGraph(data)
+      if (this.scope.format == 'graph') {
+        this.setGraph()
+      }
     })
 
     bus.$on('showQuestionComments', (data) => {
-      console.log('questionComments', data)
       this.showComments(data)
     })
   },
@@ -234,12 +222,6 @@ export default {
       this.scope[scope] = value
       bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
-    tableFormat() {
-      return this.scope.format == 'table'
-    },
-    graphFormat() {
-      return this.scope.format.match(/^graph\-/)
-    },
     showComments(data) {
       this.comments = data.comments
       this.commentsTitle = data.title
@@ -250,11 +232,10 @@ export default {
       this.commentsTitle = ''
       this.$modal.hide('question-comments')
     },
-    showGraph(data) {
-      console.log('showGraph', data)
-      this.lineChartConfig.data.labels = data.labels
-      this.lineChartConfig.data.datasets[0].data = data.datasets[0]
-      bus.$emit('showGraph', {chartdata: this.lineChartConfig.data, options: this.lineChartConfig.options})
+    setGraph() {
+      const data = lineChartFuns.data(this.results, this.scope)
+      const options = lineChartFuns.options()
+      bus.$emit('showGraph', {chartdata: data, options: options})
     },
     explanation() {
       return fiveDysfunctions.explanation()
