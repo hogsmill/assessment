@@ -74,6 +74,11 @@ import bus from '../socket.js'
 import mailFuns from '../lib/mail.js'
 
 export default {
+  data() {
+    return {
+      connectToAgileSimulations: location.hostname != 'localhost'
+    }
+  },
   computed: {
     thisGame() {
       return this.$store.getters.thisGame
