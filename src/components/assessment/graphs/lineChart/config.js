@@ -5,7 +5,11 @@ const colors = [
   'green',
   'purple',
   'orange',
-  'black'
+  'black',
+  'cyan',
+  'teal',
+  'brown',
+  'olive'
 ]
 
 export default {

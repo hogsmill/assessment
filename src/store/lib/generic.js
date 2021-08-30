@@ -7,6 +7,12 @@ function matchKey(key, assessment) {
   return key == assessment.member.id || key == assessment.team.id
 }
 
+function matchPeriod(key, assessment) {
+  return
+    key == assessment.year + '-q' + formatLabel(assessment.quarter) ||
+    key == assessment.year + '-' + formatLabel(assessment.month)
+}
+
 function average(array) {
   let sum = 0
   for (let i = 0; i < array.length; i++) {
@@ -74,23 +80,19 @@ function initGraphSingleDatasets(assessment, scope, teams) {
 }
 
 function initGraphAllDatasets(assessments, server) {
-  let periods = {}
-  for (let i = 0; i < assessments.length; i++) {
-    switch(server.frequency) {
-      case 'monthly':
-        periods[assessments[i].year + '-' + formatLabel(assessments[i].month)] = true
-        break
-      case 'quarterly':
-        periods[assessments[i].year + '-' + formatLabel(assessments[i].quarter)] = true
-        break
-    }
-  }
+  const periods = Object.keys(periodLabels(assessments, server))
   let data = {}
-  periods = Object.keys(periods).sort()
-  for (let j = 0; j < periods.length; j++) {
-    data[periods[j]] = {
-      label: periods[j],
-      dataset: []
+  const questions = assessments[0].questions.sort((a, b) => {
+    return a.order - b.order
+  })
+  for (let q = 0; q < questions.length; q++) {
+    const dataArrays = []
+    for (let j = 0; j < periods.length; j++) {
+      dataArrays.push([])
+    }
+    data[questions[q].id] = {
+      label: questions[q].question.title,
+      data: dataArrays
     }
   }
   return data
@@ -105,6 +107,34 @@ function questionLabels(assessment) {
     labels.push(questions[i].question.title)
   }
   return labels
+}
+
+function periodLabels(assessments, server) {
+  let periods = {}
+  for (let i = 0; i < assessments.length; i++) {
+    switch(server.frequency) {
+      case 'monthly':
+        periods[assessments[i].year + '-' + formatLabel(assessments[i].month)] = true
+        break
+      case 'quarterly':
+        periods[assessments[i].year + '-q' + formatLabel(assessments[i].quarter)] = true
+        break
+    }
+  }
+  return periods
+}
+
+function labelIndex(assessment, labels, server) {
+  let label
+  switch(server.frequency) {
+    case 'monthly':
+      label = assessment.year + '-' + formatLabel(assessment.month)
+      break
+    case 'quarterly':
+      label = assessment.year + '-q' + formatLabel(assessment.quarter)
+      break
+  }
+  return labels.indexOf(label)
 }
 
 module.exports = {
@@ -166,6 +196,7 @@ module.exports = {
         }
       }
     }
+    console.log(datasets)
     return {
       labels: questionLabels(assessments[0]),
       datasets: aggregate(datasets)
@@ -174,6 +205,28 @@ module.exports = {
 
   graphAllDatasets: function(assessments, server) {
     const datasets = initGraphAllDatasets(assessments, server)
+    const keys = Object.keys(datasets)
+    const labels = Object.keys(periodLabels(assessments, server))
+    let questions
+    for (i = 0; i < assessments.length; i++) {
+      questions = assessments[i].questions.sort((a, b) => {
+        return a.order - b.order
+      })
+      for (j = 0; j < keys.length; j++) {
+        for (k = 0; k < questions.length; k++) {
+          if (questions[k].id == keys[j]) {
+            const index = labelIndex(assessments[i], labels, server)
+            const answer = typeof(questions[k].answer) == 'number' ? questions[k].answer : 0
+            datasets[keys[j]].data[index].push(answer)
+          }
+        }
+      }
+    }
+    console.log(datasets)
+    return {
+      labels: Object.keys(periodLabels(assessments, server)),
+      datasets: aggregate(datasets)
+    }
     return datasets
   }
 

@@ -74,8 +74,7 @@
           </td>
           <td>
             <div :class="{ 'selected': scope.format == 'graph' }">
-              <i v-if="scope.member != 'individual'" class="fas fa-chart-line" @click="setScope('format', 'graph')" />
-              <i v-if="scope.member == 'individual'" class="fas fa-chart-line disabled" />
+              <i class="fas fa-chart-line" @click="setScope('format', 'graph')" />
               <br>
               <span>
                 Graph
@@ -213,12 +212,12 @@ export default {
     }
 
     bus.$on('loadTabularResults', (data) => {
-      console.log('loadTabularResults', data)
+      console.log('table')
       this.$store.dispatch('updateTabularResults', data)
     })
 
     bus.$on('loadGraphResults', (data) => {
-      console.log('loadGraphResults', data)
+      console.log('graph')
       if (data.datasets) {
         this.$store.dispatch('updateGraphResults', data.datasets)
         this.setGraph(data)

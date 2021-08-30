@@ -7,7 +7,7 @@ export default {
   extends: Line,
   mounted() {
     bus.$on('showGraph', (data) => {
-      console.log('here', data)
+      console.log('graph data', data)
       this.renderChart(data.chartdata, data.options)
     })
   }
