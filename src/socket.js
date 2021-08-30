@@ -118,7 +118,7 @@ socket.on('loadQuestions', (data) => { bus.$emit('loadQuestions', data) })
 
 socket.on('loadAssessment', (data) => { bus.$emit('loadAssessment', data) })
 
-socket.on('loadResults', (data) => { bus.$emit('loadResults', data) })
+socket.on('loadTabularResults', (data) => { bus.$emit('loadTabularResults', data) })
 
 socket.on('loadGraphResults', (data) => { bus.$emit('loadGraphResults', data) })
 

@@ -74,7 +74,8 @@
           </td>
           <td>
             <div :class="{ 'selected': scope.format == 'graph' }">
-              <i class="fas fa-chart-line" @click="setScope('format', 'graph')" />
+              <i v-if="scope.member != 'individual'" class="fas fa-chart-line" @click="setScope('format', 'graph')" />
+              <i v-if="scope.member == 'individual'" class="fas fa-chart-line disabled" />
               <br>
               <span>
                 Graph
@@ -85,13 +86,13 @@
       </table>
     </div>
     <Details v-if="server.scope == 'individual'" />
-    <ResultsHeader :results="results" v-if="server.frequency != 'oneoff'" />
+    <ResultsHeader v-if="scope.format == 'table' && server.frequency != 'oneoff'" :results="tabularResults" />
 
     <!-- 5 Dysfunctions -->
 
     <div v-if="appType == '5 Dysfunctions'  && scope.format == 'table'">
-      <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
-        <Result5Dysfunctions :result="results[result]" :scope="scope" />
+      <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
+        <Result5Dysfunctions :result="tabularResults[result]" :scope="scope" />
       </div>
       <div v-if="appType == '5 Dysfunctions' && scope.format == 'graph'">
         <LineChart />
@@ -104,8 +105,8 @@
     <!-- Team Health Check -->
 
     <div v-if="appType == 'Team Health Check' && scope.format == 'table'">
-      <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
-        <ResultTeamHealthCheck :result="results[result]" :scope="scope" />
+      <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
+        <ResultTeamHealthCheck :result="tabularResults[result]" :scope="scope" />
       </div>
     </div>
     <div v-if="appType == 'Team Health Check' && scope.format == 'graph'">
@@ -115,8 +116,8 @@
     <!-- Agile Maturity -->
 
     <div v-if="appType == 'Agile Maturity' && scope.format == 'table'">
-      <div v-for="(result, index) in Object.keys(results)" class="results" :key="index">
-        <ResultAgileMaturity :result="results[result]" :scope="scope" />
+      <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
+        <ResultAgileMaturity :result="tabularResults[result]" :scope="scope" />
       </div>
     </div>
     <div v-if="appType == 'Agile Maturity' && scope.format == 'graph'">
@@ -199,8 +200,11 @@ export default {
     assessment() {
       return this.$store.getters.getAssessment
     },
-    results() {
-      return this.$store.getters.getResults
+    tabularResults() {
+      return this.$store.getters.getTabularResults
+    },
+    graphResults() {
+      return this.$store.getters.getGraphResults
     }
   },
   created() {
@@ -208,11 +212,16 @@ export default {
       this.getIndividualResults()
     }
 
-    bus.$on('loadResults', (data) => {
-      console.log('loadResults', data)
-      this.$store.dispatch('updateResults', data)
-      if (this.scope.format == 'graph') {
-        this.setGraph()
+    bus.$on('loadTabularResults', (data) => {
+      console.log('loadTabularResults', data)
+      this.$store.dispatch('updateTabularResults', data)
+    })
+
+    bus.$on('loadGraphResults', (data) => {
+      console.log('loadGraphResults', data)
+      if (data.datasets) {
+        this.$store.dispatch('updateGraphResults', data.datasets)
+        this.setGraph(data)
       }
     })
 
@@ -241,8 +250,8 @@ export default {
       this.commentsTitle = ''
       this.$modal.hide('question-comments')
     },
-    setGraph() {
-      const data = lineChartFuns.data(this.results, this.scope)
+    setGraph(results) {
+      const data = lineChartFuns.data(results)
       const options = lineChartFuns.options()
       bus.$emit('showGraph', {chartdata: data, options: options})
     },

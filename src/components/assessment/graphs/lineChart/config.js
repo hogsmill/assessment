@@ -1,17 +1,27 @@
 
+const colors = [
+  'red',
+  'blue',
+  'green',
+  'purple',
+  'orange',
+  'black'
+]
+
 export default {
 
-  dataset: function(color) {
+  dataset: function(n) {
     return {
-      backgroundColor: '',
-      pointBackgroundColor: 'white',
+      backgroundColor: colors[n],
+      pointBackgroundColor: colors[n],
       borderWidth: 1,
-      pointBorderColor: '#249EBF',
+      pointBorderColor: colors[n],
       data: [],
       pointRadius: 0,
       fill: 'none',
       borderWidth: 3,
-      borderColor: color,
+      borderColor: colors[n],
+      label: ''
     }
   },
 
@@ -32,7 +42,12 @@ export default {
             gridLines: {display: false}
           }]
         },
-        legend: {display: false},
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+        legend: {display: true},
         responsive: true,
         maintainAspectRatio: false
       }

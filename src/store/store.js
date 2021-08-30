@@ -26,7 +26,8 @@ export const store = new Vuex.Store({
     assessment: {},
     questions: [],
     dysfunctions: [],
-    results: {}
+    tabularResults: {},
+    graphResults: {}
   },
   getters: {
     thisGame: (state) => {
@@ -100,8 +101,11 @@ export const store = new Vuex.Store({
     getDysfunctions: (state) => {
       return state.dysfunctions
     },
-    getResults: (state) => {
-      return state.results
+    getTabularResults: (state) => {
+      return state.tabularResults
+    },
+    getGraphResults: (state) => {
+      return state.graphResults
     },
     getMyName: (state) => {
       return state.assessment.myName
@@ -166,8 +170,11 @@ export const store = new Vuex.Store({
     updateDysfunctions: (state, payload) => {
       state.dysfunctions = payload
     },
-    updateResults: (state, payload) => {
-      state.results = payload
+    updateTabularResults: (state, payload) => {
+      state.tabularResults = payload
+    },
+    updateGraphResults: (state, payload) => {
+      state.graphResults = payload
     },
     updateTeam: (state, payload) => {
       const team = state.teams.find((t) => {
@@ -222,8 +229,11 @@ export const store = new Vuex.Store({
     updateDysfunctions: ({ commit }, payload) => {
       commit('updateDysfunctions', payload)
     },
-    updateResults: ({ commit }, payload) => {
-      commit('updateResults', payload)
+    updateTabularResults: ({ commit }, payload) => {
+      commit('updateTabularResults', payload)
+    },
+    updateGraphResults: ({ commit }, payload) => {
+      commit('updateGraphResults', payload)
     },
     updateMyName: ({ commit }, payload) => {
       commit('updateMyName', payload)

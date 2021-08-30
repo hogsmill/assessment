@@ -365,8 +365,17 @@ module.exports = {
         let query = _resultsQuery(data.assessment, data.scope)
         db.assessmentsCollection.find(query).toArray(function(err, res) {
           if (err) throw err
-          const results = resultsFuns.get(res, server, teams, data.scope, data.appType)
-          io.emit('loadResults', results)
+          let results
+          switch (data.scope.format) {
+            case 'table':
+              results = resultsFuns.getTabular(res, server, teams, data.scope, data.appType)
+              io.emit('loadTabularResults', results)
+              break
+            case 'graph':
+              results = resultsFuns.getGraph(res, server, teams, data.scope, data.appType)
+              io.emit('loadGraphResults', results)
+              break
+          }
         })
       })
     })
@@ -399,7 +408,6 @@ module.exports = {
           }
         }
         data.answers = answers
-        console.log(answers)
         io.emit('loadQuestionAnswers', data)
       })
     })

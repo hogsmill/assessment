@@ -126,7 +126,7 @@ module.exports = {
     return scope.format == 'table' ? 'table' : 'graph'
   },
 
-  get: function(assessments, server, teams, scope, appType) {
+  getTabular: function(assessments, server, teams, scope, appType) {
     let results = setResults(assessments, appType)
     for (let i = 0; i < assessments.length; i++) {
       const key = getKey(assessments[i], server)
@@ -143,6 +143,19 @@ module.exports = {
     }
     if (scope) {
       results = aggregate(results, scope, appType)
+    }
+    return results
+  },
+
+  getGraph: function(assessments, server, teams, scope, appType) {
+    let results = {}
+    switch(scope.date) {
+      case 'single':
+        results = generic.graphSingleDatasets(assessments, scope, teams)
+        break
+      case 'all':
+        results = generic.graphAllDatasets(assessments, server)
+        break
     }
     return results
   }
