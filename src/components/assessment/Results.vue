@@ -186,7 +186,8 @@ export default {
         format: 'table'
       },
       comments: [],
-      commentsTitle: ''
+      commentsTitle: '',
+      graphOptions: lineChartFuns.options()
     }
   },
   computed: {
@@ -251,8 +252,7 @@ export default {
     },
     setGraph(results) {
       const data = lineChartFuns.data(results)
-      const options = lineChartFuns.options()
-      bus.$emit('showGraph', {chartdata: data, options: options})
+      bus.$emit('showGraph', {chartdata: data, options: this.graphOptions})
     },
     explanation() {
       return fiveDysfunctions.explanation()
