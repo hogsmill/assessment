@@ -89,11 +89,11 @@
 
     <!-- 5 Dysfunctions -->
 
-    <div v-if="appType == '5 Dysfunctions'  && scope.format == 'table'">
+    <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'table'}" class="result-block">
       <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
         <Result5Dysfunctions :result="tabularResults[result]" :scope="scope" />
       </div>
-      <div v-if="appType == '5 Dysfunctions' && scope.format == 'graph'">
+      <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
         <LineChart />
       </div>
       <div class="explanation-holder">
@@ -103,23 +103,23 @@
 
     <!-- Team Health Check -->
 
-    <div v-if="appType == 'Team Health Check' && scope.format == 'table'">
+    <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'table'}" class="result-block">
       <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
         <ResultTeamHealthCheck :result="tabularResults[result]" :scope="scope" />
       </div>
     </div>
-    <div v-if="appType == 'Team Health Check' && scope.format == 'graph'">
+    <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'graph'}" class="result-block">
       <LineChart />
     </div>
 
     <!-- Agile Maturity -->
 
-    <div v-if="appType == 'Agile Maturity' && scope.format == 'table'">
+    <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'table'}" class="result-block">
       <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
         <ResultAgileMaturity :result="tabularResults[result]" :scope="scope" />
       </div>
     </div>
-    <div v-if="appType == 'Agile Maturity' && scope.format == 'graph'">
+    <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'graph'}" class="result-block">
       <LineChart />
     </div>
 
@@ -213,12 +213,10 @@ export default {
     }
 
     bus.$on('loadTabularResults', (data) => {
-      console.log('table')
       this.$store.dispatch('updateTabularResults', data)
     })
 
     bus.$on('loadGraphResults', (data) => {
-      console.log('graph')
       if (data.datasets) {
         this.$store.dispatch('updateGraphResults', data.datasets)
         this.setGraph(data)
@@ -360,6 +358,16 @@ export default {
         color: #444;
         cursor: pointer;
       }
+    }
+  }
+
+  .result-block {
+    visibility: hidden;
+    height: 0;
+
+    &.visible {
+      visbility: visible;
+      height: auto;
     }
   }
 
