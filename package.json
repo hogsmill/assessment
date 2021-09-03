@@ -10,7 +10,7 @@
   "dependencies": {
     "chart.js": "^2.9.4",
     "cli-plugin-eslint": "^0.1.0",
-    "core-js": "^3.17.1",
+    "core-js": "^3.17.2",
     "death": "^1.1.0",
     "dotenv": "^8.6.0",
     "highlight.js": "^11.2.0",
