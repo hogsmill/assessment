@@ -8,9 +8,6 @@ do
   if [ "$1" == "-f" ]; then
     FORCE=true
   fi
-  if [ "$1" == "-o" ]; then
-    OUTDATED=false
-  fi
   shift
 done
 
@@ -27,6 +24,7 @@ APPS=(
   'team-health-check-new,healthCheckNewServer,healthCheckNewTeams,healthCheckNewQuestions,healthCheckNewAssessments,3041,Team Health Check,Team Health Check New'
   'team-health-check-eagile,healthCheckEverydayAgileServer,healthCheckEverydayAgileTeams,healthCheckEverydayAgileQuestions,healthCheckEverydayAgileAssessments,3071,Team Health Check,Team Health Check'
   'agile-maturity,agileMaturityServer,agleMaturityTeams,agileMaturityQuestions,agileMaturityAssessments,3077,Agile Maturity,Agile Maturity'
+  'scrum-master,scrumMasterServer,scrumMasterTeams,scrumMasterQuestions,scrumMasterAssessments,3078,Scrum Master Assessment,Scrum Master Assessment'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))
@@ -101,6 +99,7 @@ do
 
 done
 
-if [ "$OUTDATED" == "true" ]; then
+ps -ef | grep php | grep outdated
+if [ $? -eq 1 ]; then
   php /usr/apps/monitor/src/lib/outdated.php &
 fi
