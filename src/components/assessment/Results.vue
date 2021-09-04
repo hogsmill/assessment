@@ -93,12 +93,12 @@
       <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
         <Result5Dysfunctions :result="tabularResults[result]" :scope="scope" />
       </div>
-      <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-        <LineChart />
-      </div>
-      <div class="explanation-holder">
-        <div class="explanation" v-html="explanation()" />
-      </div>
+    </div>
+    <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+      <LineChart />
+    </div>
+    <div class="explanation-holder">
+      <div class="explanation" v-html="explanation()" />
     </div>
 
     <!-- Team Health Check -->
