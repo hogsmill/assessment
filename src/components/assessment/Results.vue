@@ -97,7 +97,7 @@
     <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
       <LineChart />
     </div>
-    <div class="explanation-holder">
+    <div v-if="appType == '5 Dysfunctions'" class="explanation-holder">
       <div class="explanation" v-html="explanation()" />
     </div>
 
