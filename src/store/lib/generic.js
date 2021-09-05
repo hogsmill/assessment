@@ -163,13 +163,11 @@ module.exports = {
       question = assessment.questions[i]
       results[question.id].results[key] = {answer: question.answer}
       const comments = results[question.id].results[key].comments ? results[question.id].results[key].comments : []
-      if (question.comments.length) {
-        for (let k = 0; k < question.comments.length; k++) {
-          comments.push({
-            comment: question.comments[k],
-            by: by
-          })
-        }
+      for (let k = 0; k < question.comments.length; k++) {
+        comments.push({
+          comment: question.comments[k],
+          by: by
+        })
         results[question.id].results[key].comments = comments
       }
     }

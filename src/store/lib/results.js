@@ -25,12 +25,12 @@ function assessmentBy(assessment, teams) {
 function setResults(assessments, appType) {
   let results
   switch(appType) {
-    case 'Team Health Check':
-    case 'Agile Maturity':
-      results = generic.setResults(assessments)
-      break
     case '5 Dysfunctions':
       results = fiveDysfunctions.setResults(assessments)
+      break
+    default:
+      results = generic.setResults(assessments)
+      break
   }
   return results
 }
@@ -135,12 +135,11 @@ module.exports = {
       const key = getKey(assessments[i], server)
       const by = assessmentBy(assessments[i], teams)
       switch(appType) {
-        case 'Team Health Check':
-        case 'Agile Maturity':
-          results = generic.assessmentResults(assessments[i], key, results, by)
-          break
         case '5 Dysfunctions':
           results = fiveDysfunctions.assessmentResults(assessments[i], key, results, by)
+          break
+        default:
+          results = generic.assessmentResults(assessments[i], key, results, by)
           break
       }
     }
