@@ -5,16 +5,19 @@ const teamHealthCheck = require('./teamHealthCheck.js')
 const agileMaturity = require('./agileMaturity.js')
 
 function assessmentBy(assessment, teams) {
+  console.log(assessment, assessment.team, assessment.member)
   let by = null
   if (assessment.team) {
     const team = teams.find((t) => {
       return t.id == assessment.team
     })
+    console.log('here', team)
     if (team && assessment.member) {
       by = team.members.find((m) => {
         return m.id == assessment.member
       }).name
     }
+    console.log('here 2', by)
   }
   return by
 }
