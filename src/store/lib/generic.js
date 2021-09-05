@@ -168,8 +168,8 @@ module.exports = {
           comment: question.comments[k],
           by: by
         })
-        results[question.id].results[key].comments = comments
       }
+      results[question.id].results[key].comments = comments
     }
     return results
   },
@@ -194,7 +194,6 @@ module.exports = {
         }
       }
     }
-    console.log(datasets)
     return {
       labels: questionLabels(assessments[0]),
       datasets: aggregate(datasets)
@@ -220,7 +219,6 @@ module.exports = {
         }
       }
     }
-    console.log(datasets)
     return {
       labels: Object.keys(periodLabels(assessments, server)),
       datasets: aggregate(datasets)
