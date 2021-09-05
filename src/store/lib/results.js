@@ -13,11 +13,8 @@ function assessmentBy(assessment, teams) {
     if (team && assessment.member) {
       by = team.members.find((m) => {
         return m.id = assessment.member
-      })
+      }).name
     }
-  }
-  if (by) {
-    by = by.name
   }
   return by
 }
