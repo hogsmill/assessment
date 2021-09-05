@@ -213,6 +213,7 @@ export default {
     }
 
     bus.$on('loadTabularResults', (data) => {
+      console.log('loadTabularResults', data)
       this.$store.dispatch('updateTabularResults', data)
     })
 
