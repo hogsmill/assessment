@@ -6,15 +6,19 @@ const agileMaturity = require('./agileMaturity.js')
 
 function assessmentBy(assessment, teams) {
   let by = null
+  const team, member
   if (assessment.team) {
-    const team = teams.find((t) => {
+    team = teams.find((t) => {
       return t.id == assessment.team.id
     })
     if (team && assessment.member) {
-      by = team.members.find((m) => {
+      member = team.members.find((m) => {
         return m.id == assessment.member.id
-      }).name
+      })
     }
+  }
+  if (team && member) {
+    by = member.name + ' - ' + team.name
   }
   return by
 }
