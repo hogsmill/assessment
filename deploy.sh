@@ -27,7 +27,7 @@ APPS=(
   'team-health-check-new,healthCheckNewServer,healthCheckNewTeams,healthCheckNewQuestions,healthCheckNewAssessments,3041,Team Health Check,Team Health Check New'
   'team-health-check-eagile,healthCheckEverydayAgileServer,healthCheckEverydayAgileTeams,healthCheckEverydayAgileQuestions,healthCheckEverydayAgileAssessments,3071,Team Health Check,Team Health Check'
   'agile-maturity,agileMaturityServer,agleMaturityTeams,agileMaturityQuestions,agileMaturityAssessments,3077,Agile Maturity,Agile Maturity'
-  'scrum-master,scrumMasterServer,scrumMasterTeams,scrumMasterQuestions,scrumMasterAssessments,3078,Scrum Master Assessment,Scrum Master Assessment'
+  'scrum-master,scrumMasterServer,scrumMasterTeams,scrumMasterQuestions,scrumMasterAssessments,3078,Scrum Master,Scrum Master Assessment'
 )
 
 for ((i = 0; i < ${#APPS[@]}; i++))
@@ -72,7 +72,7 @@ do
     rm $DIR/package-lock.json
     rm -rf $DIR/node_modules
   fi
-  
+
   PWD=`pwd`
   APP=`basename $PWD`
   git stash
