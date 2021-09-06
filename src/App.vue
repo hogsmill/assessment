@@ -10,7 +10,7 @@
     <div v-if="currentTab == 'game'" class="main">
       <h1>
         {{ appType }}
-        <span v-if="server.scope == 'organisation' && !server.multipleTeams"> for {{ team.name }}</span>
+        <span v-if="server.scope == 'organisation' && !server.multipleTeams && team"> for {{ team.name }}</span>
         <i class="fas fa-undo" @click="restart()" />
       </h1>
       <WalkThrough />

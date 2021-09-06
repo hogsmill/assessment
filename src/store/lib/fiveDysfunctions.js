@@ -1,105 +1,105 @@
 
 const questions = [
   {
-    question: 'Team members are passionate and unguarded in their discussion of issues',
+    title: 'Team members are passionate and unguarded in their discussion of issues',
     dysfunction: {
       id: '93a45a1d-7aba-4021-a69e-d515dc2770f4',
       title: 'Fear of Conflict'
     }
   },
   {
-    question: 'Team members call out one another\'s deficiencies or unproductive behaviours',
+    title: 'Team members call out one another\'s deficiencies or unproductive behaviours',
     dysfunction: {
       id: 'c8e214e6-59d4-4ac5-acc2-edfbfadd07b9',
       title: 'Avoidance of Accountability'
     }
   },
   {
-    question: 'Team members know what their peers are working on and how they contribute to the team goals',
+    title: 'Team members know what their peers are working on and how they contribute to the team goals',
     dysfunction: {
       id: 'e6b2661a-213a-4b2b-9383-6ee0414411f1',
       title: 'Lack of Commitment'
     }
   },
   {
-    question: 'Team members quickly and genuinely apologise if they do something damaging to the team',
+    title: 'Team members quickly and genuinely apologise if they do something damaging to the team',
     dysfunction: {
       id: '39554352-7405-44f9-a562-0975439e6e0a',
       title: 'Absence of Trust'
     }
   },
   {
-    question: 'Team members willingly make sacrifices in their departments for the good of the team',
+    title: 'Team members willingly make sacrifices in their departments for the good of the team',
     dysfunction: {
       id: 'd5116a51-1cf5-450a-a507-5e85ccfc9c58',
       title: 'Inattention to Results'
     }
   },
   {
-    question: 'Team members openly admit their weaknesses and mistakes',
+    title: 'Team members openly admit their weaknesses and mistakes',
     dysfunction: {
       id: '39554352-7405-44f9-a562-0975439e6e0a',
       title: 'Absence of Trust'
     }
   },
   {
-    question: 'Team meetings are compelling, and not boring',
+    title: 'Team meetings are compelling, and not boring',
     dysfunction: {
       id: '93a45a1d-7aba-4021-a69e-d515dc2770f4',
       title: 'Fear of Conflict'
     }
   },
   {
-    question: 'Team members leave meetings confident that peers are committed to team decisions',
+    title: 'Team members leave meetings confident that peers are committed to team decisions',
     dysfunction: {
       id: 'e6b2661a-213a-4b2b-9383-6ee0414411f1',
       title: 'Lack of Commitment'
     }
   },
   {
-    question: 'Morale is significantly affected by failure to achieve team goals',
+    title: 'Morale is significantly affected by failure to achieve team goals',
     dysfunction: {
       id: 'd5116a51-1cf5-450a-a507-5e85ccfc9c58',
       title: 'Inattention to Results'
     }
   },
   {
-    question: 'During team meetings, the most important and difficult issues are put on the table',
+    title: 'During team meetings, the most important and difficult issues are put on the table',
     dysfunction: {
       id: '93a45a1d-7aba-4021-a69e-d515dc2770f4',
       title: 'Fear of Conflict'
     }
   },
   {
-    question: 'Team members are deeply concerned about the prospect of letting down their peers',
+    title: 'Team members are deeply concerned about the prospect of letting down their peers',
     dysfunction: {
       id: 'c8e214e6-59d4-4ac5-acc2-edfbfadd07b9',
       title: 'Avoidance of Accountability'
     }
   },
   {
-    question: 'Team members know about one another\'s personal lives and are comfortable discussing them',
+    title: 'Team members know about one another\'s personal lives and are comfortable discussing them',
     dysfunction: {
       id: '39554352-7405-44f9-a562-0975439e6e0a',
       title: 'Absence of Trust'
     }
   },
   {
-    question: 'Team members end discussions with clear and specific resolutions and action items',
+    title: 'Team members end discussions with clear and specific resolutions and action items',
     dysfunction: {
       id: 'e6b2661a-213a-4b2b-9383-6ee0414411f1',
       title: 'Lack of Commitment'
     }
   },
   {
-    question: 'Team members challenge one another about their plans and approaches',
+    title: 'Team members challenge one another about their plans and approaches',
     dysfunction: {
       id: 'c8e214e6-59d4-4ac5-acc2-edfbfadd07b9',
       title: 'Avoidance of Accountability'
     }
   },
   {
-    question: 'Team members are slow to seek credit for their own contributions and point out those of others',
+    title: 'Team members are slow to seek credit for their own contributions and point out those of others',
     dysfunction: {
       id: 'd5116a51-1cf5-450a-a507-5e85ccfc9c58',
       title: 'Inattention to Results'

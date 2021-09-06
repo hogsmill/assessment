@@ -1,7 +1,8 @@
 <template>
-  <div class="result">
+  <div v-if="questionInclude(result.id)" class="result">
     <div class="question">
       {{ result.question }}
+      <input type="checkbox" :checked="questionInclude(result.id)" @click="toggleInclude(result.id)" :title="'Include \'' + result.question + '\''">
     </div>
     <div class="answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
@@ -31,8 +32,11 @@ export default {
   computed: {
     server() {
       return this.$store.getters.getServer
-    }
     },
+    questionsInclude() {
+      return this.$store.getters.getQuestionsInclude
+    }
+  },
   methods: {
     answerValue(answer) {
       let answerValue = ''
@@ -93,6 +97,14 @@ export default {
     },
     showComments(question, title) {
       bus.$emit('sendShowQuestionComments', {comments: question.comments, title: title})
+    },
+    questionInclude(id) {
+      return this.questionsInclude.find((q) => {
+        return q.id == id
+      }).include
+    },
+    toggleInclude(id) {
+      this.$store.dispatch('toggleInclude', {id: id})
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="five-dysfunctions-question">
     <div class="question-holder">
       <div class="question">
-        {{ question.question.question }}
+        {{ question.question.title }}
       </div>
     </div>
     <div class="buttons">

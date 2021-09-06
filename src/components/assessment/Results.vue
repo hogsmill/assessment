@@ -2,125 +2,157 @@
   <div>
     <h3>
       Results
+      <button class="btn btn-sm btn-info mb-2" @click="setTab('questions')">
+        Select
+      </button>
+      <button class="btn btn-sm btn-info mb-2" @click="setTab('results')">
+        Show
+      </button>
     </h3>
-    <div v-if="server.scope == 'individual'" class="controls individual">
-      Click <i class="far fa-envelope" title="Email results" @click="mailResults()" /> to send results
-    </div>
-    <div v-if="summary && server.scope == 'organisation'" class="controls">
-      <table>
-        <tr>
-          <td class="show first">
-            Results
-          </td>
-          <td>
-            <div :class="{ 'selected': scope.member == 'individual' }">
-              <i class="fas fa-user" title="My results" @click="setScope('member', 'individual')" />
-              <br>
-              <span>
-                Me
-              </span>
-            </div>
-          </td>
-          <td>
-            <div :class="{ 'selected': scope.member == 'team' }">
-              <i v-if="server.multipleTeams" class="fas fa-users" title="Team results" @click="setScope('member', 'team')" />
-              <br>
-              <span>
-                My Team
-              </span>
-            </div>
-          </td>
-          <td>
-            <div :class="{ 'selected': scope.member == 'organisation' }">
-              <i v-if="server.multipleTeams" class="fas fa-industry" title="Organisation results" @click="setScope('member', 'organisation')" />
-              <br>
-              <span>
-                Org
-              </span>
-            </div>
-          </td>
-          <td class="show" v-if="server.frequency != 'oneoff'">
-            Dates
-          </td>
-          <td v-if="server.frequency != 'oneoff'">
-            <div :class="{ 'selected': scope.date == 'single' }">
-              <i class="fas fa-calendar-day" @click="setScope('date', 'single')" />
-              <br>
-              <span>
-                This
-              </span>
-            </div>
-          </td>
-          <td v-if="server.frequency != 'oneoff'">
-            <div :class="{ 'selected': scope.date == 'all' }">
-              <i class="fas fa-calendar-alt" @click="setScope('date', 'all')" />
-              <br>
-              <span>
-                All
-              </span>
-            </div>
-          </td>
-          <td class="show">
-            Format
-          </td>
-          <td>
-            <div :class="{ 'selected': scope.format == 'table' }">
-              <i class="fas fa-file-alt" @click="setScope('format', 'table')" />
-              <br>
-              <span>
-                Table
-              </span>
-            </div>
-          </td>
-          <td>
-            <div :class="{ 'selected': scope.format == 'graph' }">
-              <i class="fas fa-chart-line" @click="setScope('format', 'graph')" />
-              <br>
-              <span>
-                Graph
-              </span>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <Details v-if="server.scope == 'individual'" />
-    <ResultsHeader v-if="scope.format == 'table' && server.frequency != 'oneoff'" :results="tabularResults" />
-
-    <!-- 5 Dysfunctions -->
-
-    <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'table'}" class="result-block">
-      <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
-        <Result5Dysfunctions :result="tabularResults[result]" :scope="scope" />
+    <SelectResults v-if="tab == 'questions'" />
+    <div v-if="tab == 'results'">
+      <div v-if="server.scope == 'individual'" class="controls individual">
+        Click <i class="far fa-envelope" title="Email results" @click="mailResults()" /> to send results
       </div>
-    </div>
-    <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-      <LineChart />
-    </div>
-    <div v-if="appType == '5 Dysfunctions'" class="explanation-holder">
-      <div class="explanation" v-html="explanation()" />
-    </div>
-
-    <!-- Team Health Check -->
-
-    <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'table'}" class="result-block">
-      <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
-        <ResultTeamHealthCheck :result="tabularResults[result]" :scope="scope" />
+      <div v-if="summary && server.scope == 'organisation'" class="controls">
+        <table>
+          <tr>
+            <td class="show first">
+              Results
+            </td>
+            <td>
+              <div :class="{ 'selected': scope.member == 'individual' }">
+                <i class="fas fa-user" title="My results" @click="setScope('member', 'individual')" />
+                <br>
+                <span>
+                  Me
+                </span>
+              </div>
+            </td>
+            <td>
+              <div :class="{ 'selected': scope.member == 'team' }">
+                <i v-if="server.multipleTeams" class="fas fa-users" title="Team results" @click="setScope('member', 'team')" />
+                <br>
+                <span>
+                  My Team
+                </span>
+              </div>
+            </td>
+            <td>
+              <div :class="{ 'selected': scope.member == 'organisation' }">
+                <i v-if="server.multipleTeams" class="fas fa-industry" title="Organisation results" @click="setScope('member', 'organisation')" />
+                <br>
+                <span>
+                  Org
+                </span>
+              </div>
+            </td>
+            <td class="show" v-if="server.frequency != 'oneoff'">
+              Dates
+            </td>
+            <td v-if="server.frequency != 'oneoff'">
+              <div :class="{ 'selected': scope.date == 'single' }">
+                <i class="fas fa-calendar-day" @click="setScope('date', 'single')" />
+                <br>
+                <span>
+                  This
+                </span>
+              </div>
+            </td>
+            <td v-if="server.frequency != 'oneoff'">
+              <div :class="{ 'selected': scope.date == 'all' }">
+                <i class="fas fa-calendar-alt" @click="setScope('date', 'all')" />
+                <br>
+                <span>
+                  All
+                </span>
+              </div>
+            </td>
+            <td class="show">
+              Format
+            </td>
+            <td>
+              <div :class="{ 'selected': scope.format == 'table' }">
+                <i class="fas fa-file-alt" @click="setScope('format', 'table')" />
+                <br>
+                <span>
+                  Table
+                </span>
+              </div>
+            </td>
+            <td>
+              <div :class="{ 'selected': scope.format == 'graph' }">
+                <i class="fas fa-chart-line" @click="setScope('format', 'graph')" />
+                <br>
+                <span>
+                  Graph
+                </span>
+              </div>
+            </td>
+            <td class="show">
+              Export
+            </td>
+            <td>
+              <div>
+                <i class="fas fa-file-export" @click="exportToFile()" />
+                <br>
+                <span>
+                  File
+                </span>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
-    </div>
-    <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-      <LineChart />
-    </div>
+      <Details v-if="server.scope == 'individual'" />
+      <ResultsHeader v-if="scope.format == 'table' && server.frequency != 'oneoff'" :results="tabularResults" />
 
-    <!-- Agile Maturity -->
+      <!-- 5 Dysfunctions -->
 
-    <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'table'}" class="result-block">
-      <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
-        <ResultAgileMaturity :result="tabularResults[result]" :scope="scope" />
+      <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'table'}" class="result-block">
+        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
+          <Result5Dysfunctions :result="tabularResults[result]" :scope="scope" />
+        </div>
       </div>
-    </div>
-    <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-      <LineChart />
+      <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <LineChart />
+      </div>
+      <div v-if="appType == '5 Dysfunctions'" class="explanation-holder">
+        <div class="explanation" v-html="explanation()" />
+      </div>
+
+      <!-- Team Health Check -->
+
+      <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'table'}" class="result-block">
+        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
+          <ResultTeamHealthCheck :result="tabularResults[result]" :scope="scope" />
+        </div>
+      </div>
+      <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <LineChart />
+      </div>
+
+      <!-- Agile Maturity -->
+
+      <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'table'}" class="result-block">
+        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
+          <ResultAgileMaturity :result="tabularResults[result]" :scope="scope" />
+        </div>
+      </div>
+      <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <LineChart />
+      </div>
+
+      <!-- Scrum Master -->
+
+      <div v-if="appType == 'Scrum Master'" :class="{'visible': scope.format == 'table'}" class="result-block">
+        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
+          <ResultScrumMaster :result="tabularResults[result]" :scope="scope" />
+        </div>
+      </div>
+      <div v-if="appType == 'Scrum Master'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <LineChart />
+      </div>
     </div>
 
     <modal name="question-comments" id="question-comments" :height="500" :classes="['rounded']">
@@ -158,10 +190,12 @@ import agileMaturity from '../../lib/email/agileMaturity.js'
 
 import Details from './Details.vue'
 
-import ResultsHeader from './ResultsHeader.vue'
+import SelectResults from './results/SelectResults.vue'
+import ResultsHeader from './results/ResultsHeader.vue'
 import Result5Dysfunctions from './fiveDysfunctions/Result.vue'
 import ResultTeamHealthCheck from './teamHealthCheck/Result.vue'
 import ResultAgileMaturity from './agileMaturity/Result.vue'
+import ResultScrumMaster from './scrumMaster/Result.vue'
 
 import LineChart from './graphs/lineChart/Graph.vue'
 import lineChartFuns from './graphs/lineChart/data.js'
@@ -169,10 +203,12 @@ import lineChartFuns from './graphs/lineChart/data.js'
 export default {
   components: {
     Details,
+    SelectResults,
     ResultsHeader,
     Result5Dysfunctions,
     ResultTeamHealthCheck,
     ResultAgileMaturity,
+    ResultScrumMaster,
     LineChart
   },
   props: [
@@ -180,6 +216,7 @@ export default {
   ],
   data() {
     return {
+      tab: 'results',
       scope: {
         member: 'individual',
         date: 'single',
@@ -218,6 +255,7 @@ export default {
     })
 
     bus.$on('loadGraphResults', (data) => {
+      console.log('loadGraphResults', data)
       if (data.datasets) {
         this.$store.dispatch('updateGraphResults', data.datasets)
         this.setGraph(data)
@@ -231,6 +269,9 @@ export default {
   methods: {
     getIndividualResults() {
       bus.$emit('sendGetResults', {appType: this.appType, scope: null, assessment: this.assessment})
+    },
+    setTab(tab) {
+      this.tab = tab
     },
     getResults() {
       bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
@@ -252,6 +293,9 @@ export default {
     setGraph(results) {
       const data = lineChartFuns.data(results)
       bus.$emit('showGraph', {chartdata: data, options: this.graphOptions})
+    },
+    exportToFile() {
+      alert('Under construction')
     },
     explanation() {
       return fiveDysfunctions.explanation()

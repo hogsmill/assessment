@@ -9,6 +9,7 @@
         <Question5Dysfunctions v-if="question.include && appType == '5 Dysfunctions'" :question="question" />
         <QuestionTeamHealthCheck v-if="question.include && appType == 'Team Health Check'" :question="question" />
         <QuestionAgileMaturity v-if="question.include && appType == 'Agile Maturity'" :question="question" />
+        <QuestionScrumMaster v-if="question.include && appType == 'Scrum Master'" :question="question" />
         <div class="next">
           <div v-if="server.comments">
             <i v-if="!question.comments || !question.comments.length" class="far fa-comment" title="Click to comment." @click="show(question)" />
@@ -60,13 +61,15 @@ import WhosAnswered from './WhosAnswered.vue'
 import Question5Dysfunctions from './fiveDysfunctions/Question.vue'
 import QuestionTeamHealthCheck from './teamHealthCheck/Question.vue'
 import QuestionAgileMaturity from './agileMaturity/Question.vue'
+import QuestionScrumMaster from './scrumMaster/Question.vue'
 
 export default {
   components: {
     WhosAnswered,
     Question5Dysfunctions,
     QuestionTeamHealthCheck,
-    QuestionAgileMaturity
+    QuestionAgileMaturity,
+    QuestionScrumMaster
   },
   data() {
     return {

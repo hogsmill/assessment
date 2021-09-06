@@ -3,6 +3,7 @@
     <Intro5Dysfunctions v-if="appType == '5 Dysfunctions'" />
     <IntroTeamHealthCheck v-if="appType == 'Team Health Check'" />
     <IntroAgileMaturity v-if="appType == 'Agile Maturity'" />
+    <IntroScrumMaster v-if="appType == 'Scrum Master'" />
     <Details v-if="server.scope == 'individual'" />
     <SetUp v-if="server.scope == 'organisation'" />
     <div v-if="server.scope == 'organisation'">
@@ -30,6 +31,7 @@ import ls from '../../lib/localStorage.js'
 import IntroAgileMaturity from './agileMaturity/Intro.vue'
 import Intro5Dysfunctions from './fiveDysfunctions/Intro.vue'
 import IntroTeamHealthCheck from './teamHealthCheck/Intro.vue'
+import IntroScrumMaster from './scrumMaster/Intro.vue'
 import Details from './Details.vue'
 import SetUp from './SetUp.vue'
 
@@ -38,6 +40,7 @@ export default {
     IntroAgileMaturity,
     Intro5Dysfunctions,
     IntroTeamHealthCheck,
+    IntroScrumMaster,
     Details,
     SetUp
   },

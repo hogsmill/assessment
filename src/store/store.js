@@ -25,6 +25,7 @@ export const store = new Vuex.Store({
     teams: [],
     assessment: {},
     questions: [],
+    questionsInclude: [],
     dysfunctions: [],
     tabularResults: {},
     graphResults: {}
@@ -92,6 +93,9 @@ export const store = new Vuex.Store({
         }
       }
       return teams
+    },
+    getQuestionsInclude: (state) => {
+      return state.questionsInclude
     },
     getQuestions: (state) => {
       return state.questions.sort((a, b) => {
@@ -167,11 +171,36 @@ export const store = new Vuex.Store({
     updateQuestions: (state, payload) => {
       state.questions = payload
     },
+    toggleInclude: (state, payload) => {
+      const questions = []
+      for (let i = 0; i < state.questionsInclude.length; i++) {
+        const question = state.questionsInclude[i]
+        console.log(question.id + ' == ' + payload.id, question.id == payload.id)
+        if (question.id == payload.id) {
+          question.include = !question.include
+        }
+        questions.push(question)
+      }
+      console.log('q', questions)
+      state.questionsInclude = questions
+    },
     updateDysfunctions: (state, payload) => {
       state.dysfunctions = payload
     },
     updateTabularResults: (state, payload) => {
       state.tabularResults = payload
+      const keys = Object.keys(state.tabularResults)
+      for (let i = 0; i < keys.length; i++) {
+        if (!state.questionsInclude.find((q) => {
+          return q.id == keys[i]
+        })) {
+          state.questionsInclude.push({
+            id: keys[i],
+            question: state.tabularResults[keys[i]].question,
+            include: true
+          })
+        }
+      }
     },
     updateGraphResults: (state, payload) => {
       state.graphResults = payload
@@ -225,6 +254,9 @@ export const store = new Vuex.Store({
     },
     updateQuestions: ({ commit }, payload) => {
       commit('updateQuestions', payload)
+    },
+    toggleInclude: ({ commit }, payload) => {
+      commit('toggleInclude', payload)
     },
     updateDysfunctions: ({ commit }, payload) => {
       commit('updateDysfunctions', payload)

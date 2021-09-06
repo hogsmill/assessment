@@ -149,6 +149,7 @@ module.exports = {
         const question = assessment.questions[j]
         if (!results[question.id]) {
           results[question.id] = {
+            id: question.id,
             question: question.question.title,
             results: {}
           }

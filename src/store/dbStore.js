@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid')
 const fiveDysfunctionsFuns = require('./lib/fiveDysfunctions.js')
 const teamHealthCheckFuns = require('./lib/teamHealthCheck.js')
 const agileMaturityFuns = require('./lib/agileMaturity.js')
+const scrumMasterFuns = require('./lib/scrumMaster.js')
 const resultsFuns = require('./lib/results.js')
 
 function newServer(appType) {
@@ -258,6 +259,9 @@ module.exports = {
               break
             case 'Agile Maturity':
               questions = agileMaturityFuns.questions()
+              break
+            case 'Scrum Master':
+              questions = scrumMasterFuns.questions()
               break
           }
           for (let i = 0, n = 1; i < questions.length; i++, n++) {
