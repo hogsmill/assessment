@@ -9,22 +9,22 @@
     </h4>
     <div class="buttons">
       <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Tourist'].value}" @click="answer('Tourist')" :title="answers['Tourist'].title">
-        0 (Tourist)
+        0 <br> <i class="label">(Tourist)</i>
       </button>
       <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Starting'].value}" @click="answer('Starting')" :title="answers['Starting'].title">
-        1 (Starting)
+        1 <br> <i class="label">(Starting)</i>
       </button>
       <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Improving'].value}" @click="answer('Improving')" :title="answers['Improving'].title">
-        2 (Improving)
+        2 <br> <i class="label">(Improving)</i>
       </button>
       <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Steady'].value}" @click="answer('Steady')" :title="answers['Steady'].title">
-        3 (Steady)
+        3 <br> <i class="label">(Steady)</i>
       </button>
       <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Expert'].value}" @click="answer('Expert')" :title="answers['Expert'].title">
-        4 (Expert)
+        4 <br> <i class="label">(Expert)</i>
       </button>
       <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Master'].value}" @click="answer('Master')" :title="answers['Master'].title">
-        5 (Master)
+        5 <br> <i class="label">(Master)</i>
       </button>
     </div>
   </div>
@@ -88,10 +88,18 @@ export default {
     display: inline-block;
     position: relative;
 
+    .fa-users {
+      font-size: inherit !important;
+    }
+
     h3 {
       .fas {
         font-size: inherit !important;
       }
+    }
+
+    h4 {
+      height: 120px;
     }
 
     .question-answers {
@@ -100,7 +108,7 @@ export default {
       z-index: 10;
       top: 40px;
       left: 40%;
-      border: 1px solid;
+      border: 4px solid;
       padding: 8px;
       background-color: #fff;
 
@@ -116,14 +124,22 @@ export default {
         color: #fff;
         margin: 4px 8px;
         width: 100px;
-        border: 4px solid #fff;
+
+        i {
+          font-size: smaller;
+        }
+
+        &:hover {
+          color: #f4511e !important;
+          background-color: #fff !important;
+        }
 
         &.selected {
           background-color: green;
           border-color: darkgreen;
 
           &:hover {
-            color: #fff;
+            background-color: #fff;
           }
         }
       }
