@@ -98,13 +98,17 @@ function initGraphAllDatasets(assessments, server) {
   return data
 }
 
+function questionLabel(question) {
+  return question.question.label ? question.question.label : question.question.title
+}
+
 function questionLabels(assessment) {
   questions = assessment.questions.sort((a, b) => {
     return a.order - b.order
   })
   const labels = []
   for (let i = 0; i < questions.length; i++) {
-    labels.push(questions[i].question.title)
+    labels.push(questionLabel(questions[i]))
   }
   return labels
 }
@@ -150,7 +154,7 @@ module.exports = {
         if (!results[question.id]) {
           results[question.id] = {
             id: question.id,
-            question: question.question.title,
+            question: questionLabel(question),
             results: {}
           }
         }

@@ -13,5 +13,9 @@
       take this self-assessment and discover new things about your professional you and your
       Scrum skills.
     </p>
+    <p>
+      Thanks to <a href="https://www.linkedin.com/in/amparocorrea">Amparo Correa</a> for
+      this excellent assessment.
+    </p>
   </div>
 </template>

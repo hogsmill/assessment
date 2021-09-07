@@ -175,13 +175,11 @@ export const store = new Vuex.Store({
       const questions = []
       for (let i = 0; i < state.questionsInclude.length; i++) {
         const question = state.questionsInclude[i]
-        console.log(question.id + ' == ' + payload.id, question.id == payload.id)
         if (question.id == payload.id) {
           question.include = !question.include
         }
         questions.push(question)
       }
-      console.log('q', questions)
       state.questionsInclude = questions
     },
     updateDysfunctions: (state, payload) => {

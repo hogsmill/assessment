@@ -1,12 +1,16 @@
 <template>
-  <div class="result">
+  <div v-if="questionInclude(result.id)" class="result">
     <div class="question">
       {{ result.question }}
+      <input type="checkbox" :checked="questionInclude(result.id)" @click="toggleInclude(result.id)" :title="'Include \'' + result.question + '\''">
     </div>
     <div class="answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
         <div class="answer-holder" :class="answerClass[result.results[res].answer]">
           {{ result.results[res].answer }}
+          <i v-if="result.results[res].comments.length" class="far fa-comment"
+             :title="'Comments for ' + result.question + ' from ' + res"
+             @click="showComments(result.results[res], result.question + ' from ' + res)" />
         </div>
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
       </div>
@@ -15,6 +19,8 @@
 </template>
 
 <script>
+import bus from '../../../socket.js'
+
 export default {
   props: [
     'result',
@@ -35,8 +41,11 @@ export default {
   computed: {
     server() {
       return this.$store.getters.getServer
-    }
     },
+    questionsInclude() {
+      return this.$store.getters.getQuestionsInclude
+    }
+  },
   methods: {
     trendClass(index) {
       let trend
@@ -51,6 +60,17 @@ export default {
         trend = 'fa-arrows-alt-h'
       }
       return trend
+    },
+    showComments(question, title) {
+      bus.$emit('sendShowQuestionComments', {comments: question.comments, title: title})
+    },
+    questionInclude(id) {
+      return this.questionsInclude.find((q) => {
+        return q.id == id
+      }).include
+    },
+    toggleInclude(id) {
+      this.$store.dispatch('toggleInclude', {id: id})
     }
   }
 }
@@ -83,7 +103,7 @@ export default {
           position: relative;
 
           &.nought {
-            background-color: #c0392b;
+            background-color: red;
           }
 
           &.one {
@@ -95,15 +115,15 @@ export default {
           }
 
           &.three {
-            background-color: #e67e22;
+            background-color: orange;
           }
 
           &.four {
-            background-color: #f1c40f;
+            background-color: seagreen;
           }
 
           &.five {
-            background-color: #27ae60;
+            background-color: green;
           }
 
           .fa-comment {
