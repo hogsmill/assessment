@@ -3,10 +3,12 @@
     <h3>
       {{ question.question.area }} - {{ question.question.subarea }}
     </h3>
-    <h4>
-      {{ question.question.title }}
-      <i v-if="server.scope == 'organisation' && server.showTeamAnswers" class="fas fa-users" title="Show team answers" @click="showTeamAnswers()" />
-    </h4>
+    <div class="title-holder">
+      <h4>
+        {{ question.question.title }}
+        <i v-if="server.scope == 'organisation' && server.showTeamAnswers" class="fas fa-users" title="Show team answers" @click="showTeamAnswers()" />
+      </h4>
+    </div>
     <div class="buttons">
       <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Tourist'].value}" @click="answer('Tourist')" @mouseover="setTitle(answers['Tourist'].title)" @mouseleave="setTitle('')" :title="answers['Tourist'].title">
         0 <br> <i class="label">(Tourist)</i>
@@ -104,8 +106,13 @@ export default {
       }
     }
 
-    h4 {
+    .title-holder {
       height: 120px;
+      display: flex;
+
+      h4 {
+        margin: auto 0;
+      }
     }
 
     .question-answers {
