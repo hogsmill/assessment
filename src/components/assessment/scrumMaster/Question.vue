@@ -8,24 +8,25 @@
       <i v-if="server.scope == 'organisation' && server.showTeamAnswers" class="fas fa-users" title="Show team answers" @click="showTeamAnswers()" />
     </h4>
     <div class="buttons">
-      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Tourist'].value}" @click="answer('Tourist')" :title="answers['Tourist'].title">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Tourist'].value}" @click="answer('Tourist')" @mouseover="setTitle(answers['Tourist'].title)" @mouseleave="setTitle('')" :title="answers['Tourist'].title">
         0 <br> <i class="label">(Tourist)</i>
       </button>
-      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Starting'].value}" @click="answer('Starting')" :title="answers['Starting'].title">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Starting'].value}" @click="answer('Starting')" @mouseover="setTitle(answers['Starting'].title)" @mouseleave="setTitle('')" :title="answers['Starting'].title">
         1 <br> <i class="label">(Starting)</i>
       </button>
-      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Improving'].value}" @click="answer('Improving')" :title="answers['Improving'].title">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Improving'].value}" @click="answer('Improving')" @mouseover="setTitle(answers['Improving'].title)" @mouseleave="setTitle('')" :title="answers['Improving'].title">
         2 <br> <i class="label">(Improving)</i>
       </button>
-      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Steady'].value}" @click="answer('Steady')" :title="answers['Steady'].title">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Steady'].value}" @click="answer('Steady')" @mouseover="setTitle(answers['Steady'].title)" @mouseleave="setTitle('')" :title="answers['Steady'].title">
         3 <br> <i class="label">(Steady)</i>
       </button>
-      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Expert'].value}" @click="answer('Expert')" :title="answers['Expert'].title">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Expert'].value}" @click="answer('Expert')" @mouseover="setTitle(answers['Expert'].title)" @mouseleave="setTitle('')" :title="answers['Expert'].title">
         4 <br> <i class="label">(Expert)</i>
       </button>
-      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Master'].value}" @click="answer('Master')" :title="answers['Master'].title">
+      <button class="btn btn-info" :class="{ 'selected': question.answer == answers['Master'].value}" @click="answer('Master')" @mouseover="setTitle(answers['Master'].title)" @mouseleave="setTitle('')" :title="answers['Master'].title">
         5 <br> <i class="label">(Master)</i>
       </button>
+      <div id="sm-explanation" v-html="explanation" />
     </div>
   </div>
 </template>
@@ -43,6 +44,7 @@ export default {
     return {
       showAnswers: false,
       allAnswers: [],
+      explanation: '',
       answers: {
         'Tourist': {value: 0, title: 'Still don\'t know how to apply this or never heard of this' },
         'Starting': { value: 1, title: 'This is on my radar' },
@@ -70,6 +72,10 @@ export default {
     })
   },
   methods: {
+    setTitle(title) {
+      console.log(title)
+      this.explanation = title
+    },
     answer(answer) {
       const answerValue = this.answers[answer].value
       bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answerValue})
@@ -142,6 +148,12 @@ export default {
             background-color: #fff;
           }
         }
+      }
+
+      #sm-explanation {
+        height: 24px;
+        font-size: medium;
+        font-style: italic;
       }
     }
   }
