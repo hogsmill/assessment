@@ -187,18 +187,20 @@ export const store = new Vuex.Store({
     },
     updateTabularResults: (state, payload) => {
       state.tabularResults = payload
+      const questions = []
       const keys = Object.keys(state.tabularResults)
       for (let i = 0; i < keys.length; i++) {
         if (!state.questionsInclude.find((q) => {
           return q.id == keys[i]
         })) {
-          state.questionsInclude.push({
+          questions.push({
             id: keys[i],
             question: state.tabularResults[keys[i]].question,
             include: true
           })
         }
       }
+      state.questionsInclude = questions
     },
     updateGraphResults: (state, payload) => {
       state.graphResults = payload

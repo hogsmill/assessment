@@ -9,7 +9,15 @@ const colors = [
   'cyan',
   'teal',
   'brown',
-  'olive'
+  'olive',
+  'pink',
+  'yellow',
+  'gray',
+  'khaki',
+  'lime',
+  'chocolate',
+  'darkslategray',
+  'goldenrod'
 ]
 
 export default {
@@ -39,11 +47,18 @@ export default {
       options: {
         scales: {
           yAxes: [{
-            ticks: {beginAtZero: true, stepSize: 1},
-            gridLines: {display: true}
+            ticks: {
+              beginAtZero: true,
+              stepSize: 1
+            },
+            gridLines: {
+              display: true
+            }
           }],
           xAxes: [{
-            gridLines: {display: false}
+            gridLines: {
+              display: false
+            }
           }]
         },
         elements: {
@@ -51,7 +66,9 @@ export default {
             tension: 0
           }
         },
-        legend: {display: true},
+        legend: {
+          display: true
+        },
         responsive: true,
         maintainAspectRatio: false
       }

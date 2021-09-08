@@ -115,6 +115,9 @@
         </div>
       </div>
       <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <p v-if="scope.date == 'all'">
+          Click legend items to remove questions
+        </p>
         <LineChart />
       </div>
       <div v-if="appType == '5 Dysfunctions'" class="explanation-holder">
@@ -129,6 +132,9 @@
         </div>
       </div>
       <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <p v-if="scope.date == 'all'">
+          Click legend items to remove questions
+        </p>
         <LineChart />
       </div>
 
@@ -140,6 +146,9 @@
         </div>
       </div>
       <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <p v-if="scope.date == 'all'">
+          Click legend items to remove questions
+        </p>
         <LineChart />
       </div>
 
@@ -151,6 +160,9 @@
         </div>
       </div>
       <div v-if="appType == 'Scrum Master'" :class="{'visible': scope.format == 'graph'}" class="result-block">
+        <p v-if="scope.date == 'all'">
+          Click legend items to remove questions
+        </p>
         <LineChart />
       </div>
     </div>
@@ -234,6 +246,9 @@ export default {
     server() {
       return this.$store.getters.getServer
     },
+    questions() {
+      return this.$store.getters.getQuestionsInclude
+    },
     assessment() {
       return this.$store.getters.getAssessment
     },
@@ -292,6 +307,14 @@ export default {
     },
     setGraph(results) {
       const data = lineChartFuns.data(results)
+      const self = this
+      this.graphOptions.legend.onClick = function(e, item) {
+        const question = self.questions.find((q) => {
+          return q.question == item.text
+        })
+        self.$store.dispatch('toggleInclude', {id: question.id})
+        self.setGraph(results)
+      }
       bus.$emit('showGraph', {chartdata: data, options: this.graphOptions})
     },
     exportToFile() {

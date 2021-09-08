@@ -91,7 +91,7 @@ function initGraphAllDatasets(assessments, server) {
       dataArrays.push([])
     }
     data[questions[q].id] = {
-      label: questions[q].question.title,
+      label: questionLabel(questions[q]),
       data: dataArrays
     }
   }

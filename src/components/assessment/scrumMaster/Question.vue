@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     setTitle(title) {
-      console.log(title)
       this.explanation = title
     },
     answer(answer) {
