@@ -20,7 +20,9 @@ function average(array) {
       sum = sum + array[i]
     }
   }
-  return array.length == 0 ? 0 : sum / array.length
+  let answer = sum / array.length
+  answer = Math.floor(answer * 100) / 100
+  return array.length == 0 ? 0 : answer
 }
 
 function aggregateData(array) {
