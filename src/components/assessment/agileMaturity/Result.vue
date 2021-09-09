@@ -77,12 +77,12 @@ export default {
       display: inline-block;
 
       &.question {
-        width: 50%;
+        width: 25%;
         text-align: right;
       }
 
       &.answer {
-        width: 50%;
+        width: 75%;
         text-align: left;
 
         .answer-holder {
