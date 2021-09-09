@@ -90,6 +90,8 @@ bus.$on('sendUpdateMemberName', (data) => { socket.emit('sendUpdateMemberName', 
 
 bus.$on('sendDeleteMember', (data) => { socket.emit('sendDeleteMember', data) })
 
+bus.$on('sendAssessmentsDone', (data) => { socket.emit('sendAssessmentsDone', data) })
+
 bus.$on('sendAddQuestion', (data) => { socket.emit('sendAddQuestion', data) })
 
 bus.$on('sendUpdateQuestion', (data) => { socket.emit('sendUpdateQuestion', data) })
@@ -123,5 +125,7 @@ socket.on('loadTabularResults', (data) => { bus.$emit('loadTabularResults', data
 socket.on('loadGraphResults', (data) => { bus.$emit('loadGraphResults', data) })
 
 socket.on('loadQuestionAnswers', (data) => { bus.$emit('loadQuestionAnswers', data) })
+
+socket.on('loadAssessmentsDone', (data) => { bus.$emit('loadAssessmentsDone', data) })
 
 export default bus

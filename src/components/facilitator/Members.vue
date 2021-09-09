@@ -32,12 +32,20 @@
         <table>
           <thead>
             <tr>
-              <th>
+              <th rowspan="2">
                 Actions
               </th>
-              <th>
+              <th rowspan="2">
                 Member
               </th>
+              <th colspan="12">
+                Assessments
+              </th>
+            </tr>
+            <tr>
+              <td v-for="(date, dindex) in assessmentsDone.labels" :key="dindex">
+                {{ date }}
+              </td>
             </tr>
           </thead>
           <tbody>
@@ -54,6 +62,9 @@
                   <span v-if="editingMember != member.id">{{ member.name }}</span>
                   <input v-if="editingMember == member.id" type="text" :id="'member-name-editing-' + member.id" :value="member.name">
                 </div>
+              </td>
+              <td v-for="(done, dindex) in assessmentsDone.labels" :key="dindex" class="center">
+                <i v-if="assessmentDone(member.id, done)" class="fas fa-check" />
               </td>
             </tr>
           </tbody>
@@ -72,7 +83,11 @@ export default {
       showMembers: false,
       members: [],
       selectedTeam: null,
-      editingMember: null
+      editingMember: null,
+      assessmentsDone: {
+        labels: [],
+        done: {}
+      }
     }
   },
   computed: {
@@ -97,9 +112,22 @@ export default {
       this.setNoTeam()
     })
 
+    bus.$on('loadAssessmentsDone', (data) => {
+      this.assessmentsDone = data
+    })
     this.setNoTeam()
   },
   methods: {
+    assessmentDone(id, label) {
+      let done = false
+      const member = this.assessmentsDone.done[id]
+      if (member) {
+        done = member.find((m) => {
+          return m == label
+        })
+      }
+      return done
+    },
     setShowMember(val) {
       this.showMembers = val
     },
@@ -122,6 +150,9 @@ export default {
         return t.id == this.selectedTeam
       })
       this.members = team ? team.members : []
+      if (team) {
+        bus.$emit('sendAssessmentsDone', {id: team.id})
+      }
     },
     addMember() {
       const name = document.getElementById('new-member').value

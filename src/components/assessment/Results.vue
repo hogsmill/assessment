@@ -115,7 +115,7 @@
         </div>
       </div>
       <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-        <p v-if="scope.date == 'all'">
+        <p v-if="scope.date == 'all' && questions.length">
           Click legend items to remove questions
         </p>
         <LineChart />
@@ -132,7 +132,7 @@
         </div>
       </div>
       <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-        <p v-if="scope.date == 'all'">
+        <p v-if="scope.date == 'all' && questions.length">
           Click legend items to remove questions
         </p>
         <LineChart />
@@ -146,7 +146,7 @@
         </div>
       </div>
       <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-        <p v-if="scope.date == 'all'">
+        <p v-if="scope.date == 'all' && questions.length">
           Click legend items to remove questions
         </p>
         <LineChart />
@@ -160,7 +160,7 @@
         </div>
       </div>
       <div v-if="appType == 'Scrum Master'" :class="{'visible': scope.format == 'graph'}" class="result-block">
-        <p v-if="scope.date == 'all'">
+        <p v-if="scope.date == 'all' && questions.length">
           Click legend items to remove questions
         </p>
         <LineChart />

@@ -184,6 +184,18 @@ function _resultsQuery(assessment, scope) {
   return query
 }
 
+function assessmentDate(assessment) {
+  let label = assessment.year + '-'
+  if (assessment.quarter) {
+    label = label + 'Q' + assessment.quarter
+  }
+  if (assessment.month) {
+    const month = assessment.month < 10 ? '0' + assessment.month : assessment.month
+    label = label + month
+  }
+  return label
+}
+
 module.exports = {
 
   checkServer: function(db, io, data, debugOn) {
@@ -543,6 +555,34 @@ module.exports = {
           if (err) throw err
           _loadTeams(db, io)
         })
+      }
+    })
+  },
+
+  assessmentsDone: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('assessmentsDone', data) }
+
+    db.assessmentsCollection.find({'team.id': data.id}).toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        const done = {
+          labels: [],
+          done: {}
+        }
+        for (let i = 0; i < res.length; i++) {
+          const member = res[i].member
+          const memberDone = done.done[member.id] ? done.done[member.id] : []
+          const date = assessmentDate(res[i])
+          const labels = done.labels
+          if (labels.indexOf(date) < 0) {
+            labels.push(date)
+            done.labels = labels.sort()
+          }
+          memberDone.push(assessmentDate(res[i]))
+          done.done[member.id] = memberDone.sort()
+        }
+        io.emit('loadAssessmentsDone', done)
       }
     })
   },
