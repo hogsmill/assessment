@@ -56,9 +56,10 @@ export default {
       return trend
     },
     questionInclude(id) {
-      return this.questionsInclude.find((q) => {
+      const include this.questionsInclude.find((q) => {
         return q.id == id
-      }).include
+      })
+      return include ? include.include : true
     },
     toggleInclude(id) {
       this.$store.dispatch('toggleInclude', {id: id})

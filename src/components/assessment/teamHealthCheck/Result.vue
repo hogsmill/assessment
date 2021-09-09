@@ -99,9 +99,10 @@ export default {
       bus.$emit('sendShowQuestionComments', {comments: question.comments, title: title})
     },
     questionInclude(id) {
-      return this.questionsInclude.find((q) => {
+      const include this.questionsInclude.find((q) => {
         return q.id == id
-      }).include
+      })
+      return include ? include.include : true
     },
     toggleInclude(id) {
       this.$store.dispatch('toggleInclude', {id: id})
