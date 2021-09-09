@@ -25,7 +25,7 @@
             <option value="">
               -- Select --
             </option>
-            <option v-for="(m, mindex) in members" :key="mindex" :selected="assessment.member && m.id == assessment.member.id" :value="m.id">
+            <option v-for="(m, mindex) in getMembers()" :key="mindex" :selected="assessment.member && m.id == assessment.member.id" :value="m.id">
               {{ m.name }}
             </option>
           </select>
@@ -98,6 +98,9 @@ export default {
     teams() {
       return this.$store.getters.getTeams
     },
+    noTeam() {
+      return this.$store.getters.getNoTeam
+    },
     assessment() {
       return this.$store.getters.getAssessment
     },
@@ -110,16 +113,22 @@ export default {
       this.$store.dispatch('updateAssessment', assessment)
     },
     selectTeam() {
-      const teamId = document.getElementById('setup-select-team').value
+      const teamId = team ? team : document.getElementById('setup-select-team').value
       const team = this.teams.find((t) => {
         return t.id == teamId
       })
       this.updateAssessment('team', team)
       this.members = team ? team.members : []
     },
+    getMembers() {
+      if (!this.server.multipleTeams) {
+        this.members = this.noTeam.members
+      }
+      return this.members
+    },
     selectMember() {
       const memberId = document.getElementById('setup-select-myname').value
-      const member = this.assessment.team.members.find((m) => {
+      const member = this.members.find((m) => {
         return m.id = memberId
       })
       this.updateAssessment('member', member)

@@ -56,6 +56,9 @@ export default {
     server() {
       return this.$store.getters.getServer
     },
+    noTeam() {
+      return this.$store.getters.getNoTeam
+    },
     appType() {
       return this.$store.getters.appType
     }
@@ -78,9 +81,18 @@ export default {
       }
       return this.setUp
     },
+    getTeam() {
+      let team
+      if (!this.server.multipleTeams) {
+        team = this.noTeam.id
+      } else {
+        team = document.getElementById('setup-select-team').value
+      }
+      return team
+    },
     startAssessmentOrganisation() {
       //const assessment = JSON.parse(localStorage.getItem('assessment-' + this.lsSuffix))
-      const team = document.getElementById('setup-select-team').value
+      const team = this.getTeam()
       const member = document.getElementById('setup-select-myname').value
       let month, quarter, year
       if (this.server.frequency == 'monthly') {
