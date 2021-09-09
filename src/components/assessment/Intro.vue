@@ -67,9 +67,9 @@ export default {
       } else {
         let setUp = assessment.member
         if (this.server.frequency == 'monthly') {
-          setUp = setUp && assessment.month && assessment.year
+          setUp = setUp && assessment.year && assessment.month
         } else if (this.server.frequency == 'quarterly') {
-          setUp = setUp && assessment.month && assessment.quarter
+          setUp = setUp && assessment.year && assessment.quarter
         }
         if (this.server.multipleTeams) {
           setUp = setUp && assessment.team
