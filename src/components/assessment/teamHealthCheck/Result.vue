@@ -99,7 +99,7 @@ export default {
       bus.$emit('sendShowQuestionComments', {comments: question.comments, title: title})
     },
     questionInclude(id) {
-      const include this.questionsInclude.find((q) => {
+      const include = this.questionsInclude.find((q) => {
         return q.id == id
       })
       return include ? include.include : true

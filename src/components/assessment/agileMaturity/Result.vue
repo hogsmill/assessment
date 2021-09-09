@@ -56,7 +56,7 @@ export default {
       return trend
     },
     questionInclude(id) {
-      const include this.questionsInclude.find((q) => {
+      const include = this.questionsInclude.find((q) => {
         return q.id == id
       })
       return include ? include.include : true
