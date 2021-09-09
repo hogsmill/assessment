@@ -63,7 +63,9 @@ export default {
         },
         elements: {
           line: {
-            tension: 0
+            tension: 0,
+            pointRadius: 3,
+            pointHitRadius: 3
           }
         },
         legend: {
