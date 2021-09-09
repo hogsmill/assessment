@@ -50,8 +50,8 @@ export default {
     trendClass(index) {
       let trend
       const keys = Object.keys(this.result.results)
-      const thisResult = this.result.results[keys[index]]
-      const prevResult = this.result.results[keys[index - 1]]
+      const thisResult = this.result.results[keys[index]].answer
+      const prevResult = this.result.results[keys[index - 1]].answer
       if (thisResult > prevResult) {
         trend = 'fa-long-arrow-alt-up'
       } else if (thisResult < prevResult) {
