@@ -3,7 +3,7 @@
     <div class="result-dysfunction">
       {{ result.question }}
     </div>
-    <div class="answer">
+    <div class="answer dysfunction-answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
         <div class="result-value">
           <div :class="dysfunctionClass(result.results[res].answer)" :title="dysfunctionTitle(result.results[res])">
@@ -66,9 +66,13 @@ export default {
       vertical-align: middle;
 
       &.result-dysfunction {
-        width: 46%;
+        width: 20%;
       }
 
+      &.dysfunction-answer {
+        width: 20%;
+      }
+      
       &.result-value {
         margin: 3px;
         color: #fff;
