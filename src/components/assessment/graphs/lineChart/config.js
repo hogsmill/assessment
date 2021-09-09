@@ -29,7 +29,8 @@ export default {
       borderWidth: 1,
       pointBorderColor: colors[n],
       data: [],
-      pointRadius: 0,
+      radius: 3,
+      hitRadius: 5,
       fill: 'none',
       borderWidth: 3,
       borderColor: colors[n],
@@ -63,9 +64,7 @@ export default {
         },
         elements: {
           line: {
-            tension: 0,
-            radius: 5,
-            hitRadius: 5
+            tension: 0
           }
         },
         legend: {
