@@ -79,8 +79,10 @@ function average(results) {
       }
     }
   }
+  let answer = n / results.length
+  answer = Math.floor(answer * 100) / 100
   result = {
-    answer: n / results.length,
+    answer: answer,
     comments: comments
   }
   return result
