@@ -50,7 +50,18 @@ export default {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              stepSize: 1
+              stepSize: 1,
+              callback: function(label, index, labels) {
+                switch (label) {
+                  case 0:
+                    return 'Red';
+                  case 1:
+                    return 'Amber';
+                  case 2:
+                    return 'Green';
+
+                }
+              } 
             },
             gridLines: {
               display: true
