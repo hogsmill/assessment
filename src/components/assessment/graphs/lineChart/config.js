@@ -54,14 +54,14 @@ export default {
               callback: function(label, index, labels) {
                 switch (label) {
                   case 0:
-                    return 'Red';
+                    return 'Red'
                   case 1:
-                    return 'Amber';
+                    return 'Amber'
                   case 2:
-                    return 'Green';
+                    return 'Green'
 
                 }
-              } 
+              }
             },
             gridLines: {
               display: true
