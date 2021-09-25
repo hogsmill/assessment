@@ -107,13 +107,13 @@
         </table>
       </div>
       <Details v-if="server.scope == 'individual'" />
-      <ResultsHeader v-if="server.scope == 'organisation' && scope.format == 'table' && server.frequency != 'oneoff'" :results="tabularResults" />
+      <ResultsHeader v-if="server.scope == 'organisation' && scope.format == 'table' && server.frequency != 'oneoff'" :results="tabularResults.results" />
 
       <!-- 5 Dysfunctions -->
 
       <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'table'}" class="result-block">
-        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
-          <Result5Dysfunctions :result="tabularResults[result]" :scope="scope" />
+        <div v-for="(result, index) in Object.keys(tabularResults.results)" class="results" :key="index">
+          <Result5Dysfunctions :result="tabularResults.results[result]" :scope="scope" />
         </div>
       </div>
       <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'graph'}" class="result-block">
@@ -129,8 +129,8 @@
       <!-- Team Health Check -->
 
       <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'table'}" class="result-block">
-        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
-          <ResultTeamHealthCheck :result="tabularResults[result]" :scope="scope" />
+        <div v-for="(result, index) in Object.keys(tabularResults.results)" class="results" :key="index">
+          <ResultTeamHealthCheck :result="tabularResults.results[result]" :scope="scope" />
         </div>
       </div>
       <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'graph'}" class="result-block">
@@ -143,8 +143,8 @@
       <!-- Agile Maturity -->
 
       <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'table'}" class="result-block">
-        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
-          <ResultAgileMaturity :result="tabularResults[result]" :scope="scope" />
+        <div v-for="(result, index) in Object.keys(tabularResults.results)" class="results" :key="index">
+          <ResultAgileMaturity :result="tabularResults.results[result]" :scope="scope" />
         </div>
       </div>
       <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'graph'}" class="result-block">
@@ -157,8 +157,8 @@
       <!-- Scrum Master -->
 
       <div v-if="appType == 'Scrum Master'" :class="{'visible': scope.format == 'table'}" class="result-block">
-        <div v-for="(result, index) in Object.keys(tabularResults)" class="results" :key="index">
-          <ResultScrumMaster :result="tabularResults[result]" :scope="scope" />
+        <div v-for="(result, index) in Object.keys(tabularResults,results)" class="results" :key="index">
+          <ResultScrumMaster :result="tabularResults.results[result]" :scope="scope" />
         </div>
       </div>
       <div v-if="appType == 'Scrum Master'" :class="{'visible': scope.format == 'graph'}" class="result-block">
@@ -334,22 +334,22 @@ export default {
         switch(this.appType) {
           case '5 Dysfunctions':
             title = fiveDysfunctions.emailTitle(name, organisation, this.assessment)
-            message = fiveDysfunctions.emailContent(name, organisation, this.tabularResults)
+            message = fiveDysfunctions.emailContent(name, organisation, this.tabularResults.results)
             break
           case 'Team Health Check':
             title = teamHealthCheck.emailTitle(name, organisation, this.assessment)
-            message = teamHealthCheck.emailContent(name, organisation, this.tabularResults)
+            message = teamHealthCheck.emailContent(name, organisation, this.tabularResults.results)
             break
           case 'Agile Maturity':
             title = agileMaturity.emailTitle(name, organisation, this.assessment)
-            message = agileMaturity.emailContent(name, organisation, this.tabularResults)
+            message = agileMaturity.emailContent(name, organisation, this.tabularResults.results, this.tabularResults.questions)
             break
           case 'Scrum Master':
             title = scrumMaster.emailTitle(name, organisation, this.assessment)
-            message = scrumMaster.emailContent(name, organisation, this.tabularResults)
+            message = scrumMaster.emailContent(name, organisation, this.tabularResults.results)
             break
         }
-        bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.tabularResults})
+        bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.tabularResults.results})
         mailFuns.send({
           email: email,
           subject: title,

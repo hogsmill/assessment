@@ -382,10 +382,11 @@ module.exports = {
         db.assessmentsCollection.find(query).toArray(function(err, res) {
           if (err) throw err
           let results
+          const questions = res[0].questions
           switch (data.scope.format) {
             case 'table':
               results = resultsFuns.getTabular(res, server, teams, data.scope, data.appType)
-              io.emit('loadTabularResults', results)
+              io.emit('loadTabularResults', {results: results, questions: questions})
               break
             case 'graph':
               results = resultsFuns.getGraph(res, server, teams, data.scope, data.appType)
