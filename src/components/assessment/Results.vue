@@ -333,18 +333,18 @@ export default {
         switch(this.appType) {
           case '5 Dysfunctions':
             title = fiveDysfunctions.emailTitle(name, organisation, this.assessment)
-            message = fiveDysfunctions.emailContent(name, organisation, this.results)
+            message = fiveDysfunctions.emailContent(name, organisation, this.tabularResults)
             break
           case 'Team Health Check':
             title = teamHealthCheck.emailTitle(name, organisation, this.assessment)
-            message = teamHealthCheck.emailContent(name, organisation, this.results)
+            message = teamHealthCheck.emailContent(name, organisation, this.tabularResults)
             break
           case 'Agile Maturity':
             title = agileMaturity.emailTitle(name, organisation, this.assessment)
-            message = agileMaturity.emailContent(name, organisation, this.results)
+            message = agileMaturity.emailContent(name, organisation, this.tabularResults)
             break
         }
-        bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.results})
+        bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.tabularResults})
         mailFuns.send({
           email: email,
           subject: title,

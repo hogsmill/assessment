@@ -28,7 +28,7 @@ function formatResults(results) {
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
     const resKey = Object.keys(results[key].results).reverse()[0]
-    const result = results[key].results[resKey]
+    const result = results[key].results[resKey].answer
     str = str + results[key].question + ': ' + resultValue(result) + '\n\n'
   }
   return str
