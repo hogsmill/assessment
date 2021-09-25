@@ -201,6 +201,7 @@ import mailFuns from '../../lib/mail.js'
 import fiveDysfunctions from '../../lib/email/fiveDysfunctions.js'
 import teamHealthCheck from '../../lib/email/teamHealthCheck.js'
 import agileMaturity from '../../lib/email/agileMaturity.js'
+import scrumMaster from '../../lib/email/scrumMaster.js'
 
 import Details from './Details.vue'
 
@@ -342,6 +343,10 @@ export default {
           case 'Agile Maturity':
             title = agileMaturity.emailTitle(name, organisation, this.assessment)
             message = agileMaturity.emailContent(name, organisation, this.tabularResults)
+            break
+          case 'Scrum Master':
+            title = scrumMaster.emailTitle(name, organisation, this.assessment)
+            message = scrumMaster.emailContent(name, organisation, this.tabularResults)
             break
         }
         bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.tabularResults})

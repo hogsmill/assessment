@@ -2,7 +2,7 @@
   <div v-if="questionInclude(result.id)" class="result">
     <div class="question">
       {{ result.question }}
-      <input type="checkbox" :checked="questionInclude(result.id)" @click="toggleInclude(result.id)" :title="'Include \'' + result.question + '\''">
+      <input v-if="server.scope == 'organisation'" type="checkbox" :checked="questionInclude(result.id)" @click="toggleInclude(result.id)" :title="'Include \'' + result.question + '\''">
     </div>
     <div class="answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
