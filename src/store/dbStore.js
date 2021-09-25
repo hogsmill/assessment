@@ -146,7 +146,7 @@ function _resultsQuery(assessment, scope) {
     team: null,
     member: null
   }
-  if (!scope) {
+  if (scope.server == 'individual') {
     query.name = assessment.name
     query.organisation = assessment.organisation
     query.email = assessment.email

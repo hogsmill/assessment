@@ -132,7 +132,6 @@ export default {
     })
 
     bus.$on('loadAssessment', (data) => {
-      console.log('loadAssessment', data)
       if (assessmentFuns.isThisAssessment(data, this.assessment)) {
         this.$store.dispatch('updateAssessment', data)
       }

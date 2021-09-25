@@ -28,7 +28,16 @@
         <h4>Welcome to the {{ appType }} Assessment</h4>
         <div>
           <p>
-            blah...
+            The 5 dysfunctions of a team are normally depicted as a pyramid, thus:
+          </p>
+          <div class="pyramid" />
+          <p>
+            The dysfunctions "stack" on each other, meaning that you need to resolve the "lower layers"
+            before having a chance to resolve the higher layers.
+          </p>
+          <p>
+            Read teh book <i>The Five Dysfunctions of a Team: A Leadership Fable (J–B Lencioni Series)</i>
+            for more details.
           </p>
         </div>
       </div>
@@ -126,6 +135,15 @@ export default {
     &.center {
       text-align: center;
     }
+  }
+
+  .pyramid {
+    height: 200px;
+    margin: 0 24px;
+    background-image: url("../../../assets/img/pyramid.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .buttons {

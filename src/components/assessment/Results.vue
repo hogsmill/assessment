@@ -2,12 +2,14 @@
   <div>
     <h3>
       Results
-      <button class="btn btn-sm btn-info mb-2" @click="setTab('questions')">
-        Select
-      </button>
-      <button class="btn btn-sm btn-info mb-2" @click="setTab('results')">
-        Show
-      </button>
+      <span v-if="server.scope == 'organisation'">
+        <button class="btn btn-sm btn-info mb-2" @click="setTab('questions')">
+          Select
+        </button>
+        <button class="btn btn-sm btn-info mb-2" @click="setTab('results')">
+          Show
+        </button>
+      </span>
     </h3>
     <SelectResults v-if="tab == 'questions'" />
     <div v-if="tab == 'results'">
@@ -105,7 +107,7 @@
         </table>
       </div>
       <Details v-if="server.scope == 'individual'" />
-      <ResultsHeader v-if="scope.format == 'table' && server.frequency != 'oneoff'" :results="tabularResults" />
+      <ResultsHeader v-if="server.scope == 'organisation' && scope.format == 'table' && server.frequency != 'oneoff'" :results="tabularResults" />
 
       <!-- 5 Dysfunctions -->
 
@@ -230,6 +232,7 @@ export default {
     return {
       tab: 'results',
       scope: {
+        server: 'individual',
         member: 'individual',
         date: 'single',
         format: 'table'
@@ -260,17 +263,16 @@ export default {
     }
   },
   created() {
+    this.scope.server = this.server.scope
     if (this.server.scope == 'individual') {
-      this.getIndividualResults()
+      this.getResults()
     }
 
     bus.$on('loadTabularResults', (data) => {
-      console.log('loadTabularResults', data)
       this.$store.dispatch('updateTabularResults', data)
     })
 
     bus.$on('loadGraphResults', (data) => {
-      console.log('loadGraphResults', data)
       if (data.datasets) {
         this.$store.dispatch('updateGraphResults', data.datasets)
         this.setGraph(data)
@@ -282,9 +284,6 @@ export default {
     })
   },
   methods: {
-    getIndividualResults() {
-      bus.$emit('sendGetResults', {appType: this.appType, scope: null, assessment: this.assessment})
-    },
     setTab(tab) {
       this.tab = tab
     },

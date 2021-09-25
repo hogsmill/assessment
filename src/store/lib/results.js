@@ -113,7 +113,11 @@ function aggregateAnswers(results, scope, appType) {
   keys = Object.keys(aggregated)
   const summarised = {}
   for (var i = 0; i < keys.length; i++) {
-    const newKey = keys[i].match(/\d{4}\-\d{2}$/)[0]
+    let newKey =  keys[i].match(/\d{4}\-\d{2}$/)
+    if (!newKey) {
+      newKey =  keys[i].match(/\d{4}\-Q\d{1}$/)
+    }
+    newKey = newKey[0]
     summarised[newKey] = average(aggregated[keys[i]])
   }
   return summarised

@@ -57,6 +57,10 @@
         functionality - team setup, aggregation analysis, graphing, etc. will be
         available by default.
       </p>
+      <p>
+        See the <a href="https://agilesimulations.co.uk/?pricing">Web Site</a> for 
+        more details.
+      </p>
     </div>
   </div>
 </template>
