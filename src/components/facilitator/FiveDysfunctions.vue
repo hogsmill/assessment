@@ -43,12 +43,12 @@
               </td>
               <td>
                 <div class="question">
-                  <span v-if="editingQuestion != question.id">{{ question.question.question }}</span>
+                  <span v-if="editingQuestion != question.id">{{ question.question.title }}</span>
                   <input v-if="editingQuestion == question.id" type="text" :id="'question-editing-' + question.id" :value="question.question.question">
                 </div>
               </td>
               <td>
-                <span v-if="editingQuestion != question.id">{{ question.question.dysfunction }}</span>
+                <span v-if="editingQuestion != question.id">{{ question.question.dysfunction.title }}</span>
                 <Dysfunctions v-if="editingQuestion == question.id" :id="question.id" />
               </td>
             </tr>

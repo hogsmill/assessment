@@ -53,7 +53,7 @@ function formatResults(results) {
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
     const resKey = Object.keys(results[key].results).reverse()[0]
-    const result = results[key].results[resKey]
+    const result = results[key].results[resKey].answer
     str = str + results[key].question + ': ' + result + ' / 9 '
     if (result >= 8) {
       str = str + ' - Everything is fine for this dysfunction\n\n'
