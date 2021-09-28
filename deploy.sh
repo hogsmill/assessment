@@ -23,9 +23,11 @@ APPS=(
   'five-dysfunctions,fiveDysfunctionsServer,fiveDysfunctionsTeams,fiveDysfunctionsQuestions,fiveDysfunctionsAssessments,3038,5 Dysfunctions,5 Dysfunctions'
   'five-dysfunctions-new,fiveDysfunctionsNewServer,fiveDysfunctionsNewTeams,fiveDysfunctionsNewQuestions,fiveDysfunctionsNewAssessments,3040,5 Dysfunctions,5 Dysfunctions New'
   'five-dysfunctions-eagile,fiveDysfunctionsEverydayAgileServer,fiveDysfunctionsEverydayAgileTeams,fiveDysfunctionsEverydayAgileQuestions,fiveDysfunctionsEverydayAgileAssessments,3070,5 Dysfunctions,5 Dysfunctions'
+  'five-dysfunctions-guardian,fiveDysfunctionsGuardianServer,fiveDysfunctionsGuardianTeams,fiveDysfunctionsGuardianQuestions,fiveDysfunctionsGuardianAssessments,3101,5 Dysfunctions,5 Dysfunctions'
   'team-health-check,healthCheckServer,healthCheckTeams,healthCheckQuestions,healthCheckAssessments,3039,Team Health Check,Team Health Check'
   'team-health-check-new,healthCheckNewServer,healthCheckNewTeams,healthCheckNewQuestions,healthCheckNewAssessments,3041,Team Health Check,Team Health Check New'
   'team-health-check-eagile,healthCheckEverydayAgileServer,healthCheckEverydayAgileTeams,healthCheckEverydayAgileQuestions,healthCheckEverydayAgileAssessments,3071,Team Health Check,Team Health Check'
+  'team-health-check-guardian,healthCheckGuardianServer,healthCheckGuardianTeams,healthCheckGuardianQuestions,healthCheckGuardianAssessments,3102,Team Health Check,Team Health Check'
   'agile-maturity,agileMaturityServer,agileMaturityTeams,agileMaturityQuestions,agileMaturityAssessments,3077,Agile Maturity,Agile Maturity'
   'scrum-master,scrumMasterServer,scrumMasterTeams,scrumMasterQuestions,scrumMasterAssessments,3078,Scrum Master,Scrum Master Assessment'
 )
