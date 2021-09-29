@@ -111,7 +111,7 @@
 
       <!-- 5 Dysfunctions -->
 
-      <div v-if="appType == '5 Dysfunctions'" :class="{'visible': scope.format == 'table'}" class="result-block">
+      <div v-if="appType == '5 Dysfunctions' && tabularResults.results" :class="{'visible': scope.format == 'table'}" class="result-block">
         <div v-for="(result, index) in Object.keys(tabularResults.results)" class="results" :key="index">
           <Result5Dysfunctions :result="tabularResults.results[result]" :scope="scope" />
         </div>
@@ -128,7 +128,7 @@
 
       <!-- Team Health Check -->
 
-      <div v-if="appType == 'Team Health Check'" :class="{'visible': scope.format == 'table'}" class="result-block">
+      <div v-if="appType == 'Team Health Check' && tabularResults.results" :class="{'visible': scope.format == 'table'}" class="result-block">
         <div v-for="(result, index) in Object.keys(tabularResults.results)" class="results" :key="index">
           <ResultTeamHealthCheck :result="tabularResults.results[result]" :scope="scope" />
         </div>
@@ -142,7 +142,7 @@
 
       <!-- Agile Maturity -->
 
-      <div v-if="appType == 'Agile Maturity'" :class="{'visible': scope.format == 'table'}" class="result-block">
+      <div v-if="appType == 'Agile Maturity' && tabularResults.results" :class="{'visible': scope.format == 'table'}" class="result-block">
         <div v-for="(result, index) in Object.keys(tabularResults.results)" class="results" :key="index">
           <ResultAgileMaturity :result="tabularResults.results[result]" :scope="scope" />
         </div>
@@ -156,8 +156,8 @@
 
       <!-- Scrum Master -->
 
-      <div v-if="appType == 'Scrum Master'" :class="{'visible': scope.format == 'table'}" class="result-block">
-        <div v-for="(result, index) in Object.keys(tabularResults,results)" class="results" :key="index">
+      <div v-if="appType == 'Scrum Master'&& tabularResults.results" :class="{'visible': scope.format == 'table'}" class="result-block">
+        <div v-for="(result, index) in Object.keys(tabularResults.results)" class="results" :key="index">
           <ResultScrumMaster :result="tabularResults.results[result]" :scope="scope" />
         </div>
       </div>
