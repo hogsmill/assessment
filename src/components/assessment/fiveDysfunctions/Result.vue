@@ -6,7 +6,7 @@
     <div class="answer dysfunction-answer">
       <div v-for="(res, index) in Object.keys(result.results)" :key="index" class="answer-header">
         <div class="result-value">
-          <div :class="dysfunctionClass(result.results[res].answer)" :title="dysfunctionTitle(result.results[res])">
+          <div :class="dysfunctionClass(result.results[res].answer)" :title="dysfunctionTitle(result.results[res].answer)">
             {{ result.results[res].answer }} / 9
           </div>
         </div>
@@ -31,7 +31,7 @@ export default {
   methods: {
     status() {
       const last = Object.keys(this.result.results).reverse() [0]
-      return this.dysfunctionTitle(this.result.results[last])
+      return this.dysfunctionTitle(this.result.results[last].answer)
     },
     dysfunctionClass(score) {
       let str = ''
@@ -46,7 +46,6 @@ export default {
     },
     dysfunctionTitle(score) {
       let str = ''
-      score = parseInt(score)
       if (score >= 8) {
         str = 'Everything\'s fine...'
       } else if (score >= 5) {
@@ -54,6 +53,7 @@ export default {
       } else {
         str = 'This needs addressing'
       }
+      console.log(score, str)
       return str
     }
   }
