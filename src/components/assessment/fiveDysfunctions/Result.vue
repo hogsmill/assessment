@@ -46,6 +46,7 @@ export default {
     },
     dysfunctionTitle(score) {
       let str = ''
+      score = parseInt(score)
       if (score >= 8) {
         str = 'Everything\'s fine...'
       } else if (score >= 5) {
@@ -72,7 +73,7 @@ export default {
       &.dysfunction-answer {
         width: 20%;
       }
-      
+
       &.result-value {
         margin: 3px;
         color: #fff;
