@@ -106,7 +106,7 @@ do
       kill -9 $SERVER
     fi
   fi
-
+  rm -r /usr/apps/$APP/node_modules/.cache/
 done
 
 ps -ef | grep php | grep outdated
