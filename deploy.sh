@@ -19,6 +19,7 @@ echo "*** Note: Do a git pull and deploy -f if you've updated deploy.sh! ***"
 echo "----------------------------------------------------------------"
 
 REPO="https://github.com/hogsmill/assessment.git"
+MAINAPP="assessment"
 APPS=(
   'five-dysfunctions,fiveDysfunctionsServer,fiveDysfunctionsTeams,fiveDysfunctionsQuestions,fiveDysfunctionsAssessments,3038,5 Dysfunctions,5 Dysfunctions'
   'five-dysfunctions-new,fiveDysfunctionsNewServer,fiveDysfunctionsNewTeams,fiveDysfunctionsNewQuestions,fiveDysfunctionsNewAssessments,3040,5 Dysfunctions,5 Dysfunctions New'
@@ -31,6 +32,16 @@ APPS=(
   'agile-maturity,agileMaturityServer,agileMaturityTeams,agileMaturityQuestions,agileMaturityAssessments,3077,Agile Maturity,Agile Maturity'
   'scrum-master,scrumMasterServer,scrumMasterTeams,scrumMasterQuestions,scrumMasterAssessments,3078,Scrum Master,Scrum Master Assessment'
 )
+
+cd $MAINAPP
+git stash
+GIT=`git pull`
+echo $GIT
+if [ "$FORCE" != "true" -a "$GIT" == "Already up to date." ]; then
+  exit 0
+fi
+npm install --legacy-peer-deps
+rm -rf node_modules/.cache
 
 for ((i = 0; i < ${#APPS[@]}; i++))
 do
@@ -69,11 +80,9 @@ do
   fi
 
   cd $DIR
-  if [ "$NEW" == "true" ]
-  then
-    rm $DIR/package-lock.json
-    rm -rf $DIR/node_modules
-  fi
+
+  rm $DIR/package-lock.json
+  rm -rf $DIR/node_modules
 
   PWD=`pwd`
   APP=`basename $PWD`
@@ -106,7 +115,9 @@ do
       kill -9 $SERVER
     fi
   fi
-  rm -r /usr/apps/$APP/node_modules/.cache/
+  rm -rf node_modules
+  ln -s ../$MAINAPP/node_modules node_modules
+  rm -rf $DIR/distdone
 done
 
 ps -ef | grep php | grep outdated
