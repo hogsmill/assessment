@@ -105,8 +105,8 @@ export default {
         year = document.getElementById('setup-select-year').value
       }
       const assessment = {
-        team: team,
-        member: member,
+        team: {id: team},
+        member: {id: member},
         month: month,
         quarter: quarter,
         year: year

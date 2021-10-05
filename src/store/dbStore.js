@@ -83,12 +83,11 @@ function _loadQuestions(db, io) {
 }
 
 function _loadAssessment(db, io, query) {
-
   db.assessmentsCollection.findOne(query, function(err, res) {
     if (err) throw err
     delete res._id
-    res.team = res.team ? res.team.id : null
-    res.member = res.member ? res.member.id : null
+    res.team = res.team ? res.team : null
+    res.member = res.member ? res.member : null
     io.emit('loadAssessment', res)
   })
 }
@@ -123,14 +122,10 @@ function _query(data) {
     query.email = data.email
   }
   if (data.team) {
-    query.team = {
-      id: data.team
-    }
+    query.team = data.team
   }
   if (data.member) {
-    query.member = {
-      id: data.member
-    }
+    query.member = data.member
   }
   return query
 }

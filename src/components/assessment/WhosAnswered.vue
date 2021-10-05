@@ -43,6 +43,7 @@ export default {
       const team = this.teams.find((t) => {
         return t.id == this.assessment.team.id
       })
+      console.log(this.teams, this.assessment)
       return team ? team.members : []
     }
   }
