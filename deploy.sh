@@ -33,7 +33,6 @@ APPS=(
   'scrum-master,scrumMasterServer,scrumMasterTeams,scrumMasterQuestions,scrumMasterAssessments,3078,Scrum Master,Scrum Master Assessment'
 )
 
-cd $MAINAPP
 git stash
 GIT=`git pull`
 echo $GIT
