@@ -182,17 +182,11 @@ function _resultsQuery(assessment, scope) {
     }
     switch(scope.member) {
       case 'individual':
-        query.team = {
-          id: assessment.team
-        }
-        query.member = {
-          id: assessment.member
-        }
+        query.team = assessment.team
+        query.member = assessment.member
         break
       case 'team':
-        query.team = {
-          id: assessment.team
-        }
+        query.team = assessment.team
         delete query.member
         break
       case 'organisation':

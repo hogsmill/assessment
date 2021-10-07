@@ -53,7 +53,6 @@ export default {
       } else {
         str = 'This needs addressing'
       }
-      console.log(score, str)
       return str
     }
   }
