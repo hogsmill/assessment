@@ -13,7 +13,7 @@
         <td>
           <input type="checkbox" :checked="answered(member)">
         </td>
-        <td>
+        <td class="member-name">
           {{ member.name }}
         </td>
       </tr>
@@ -77,5 +77,9 @@ export default {
     right: 12px;
     height: 500px;
     background-color: #fff;
+
+    .member-name {
+      text-align: left;
+    }
   }
 </style>
