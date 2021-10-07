@@ -80,6 +80,7 @@ export default {
 
     .member-name {
       text-align: left;
+      padding-left: 6px;
     }
   }
 </style>
