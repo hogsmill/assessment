@@ -1,7 +1,7 @@
 <template>
   <div class="result">
     <div class="question" />
-    <div v-if="Object.keys(results).length" class="answer">
+    <div v-if="results && Object.keys(results).length" class="answer">
       <div v-for="(date, index) in Object.keys(results[Object.keys(results)[0]].results)" :key="index" class="answer-header">
         {{ date }}
       </div>

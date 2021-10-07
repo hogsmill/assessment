@@ -100,7 +100,7 @@ export default {
     })
 
     bus.$on('setQuestion', (data) => {
-      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment, {'member': true})) {
+      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment, true)) {
         this.setQuestion(data)
       }
     })
