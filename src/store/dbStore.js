@@ -89,6 +89,31 @@ function _loadAssessment(db, io, query) {
     res.team = res.team ? res.team : null
     res.member = res.member ? res.member : null
     io.emit('loadAssessment', res)
+    if (res.team && res.member) {
+      _loadWhosAnswered(db, io, query)
+    }
+  })
+}
+
+function _loadWhosAnswered(db, io, query) {
+  delete query.member
+  db.assessmentsCollection.find(query).toArray(function(err, res) {
+    if (err) throw err
+    if (res.length) {
+      const members = []
+      for (let i = 0; i < res.length; i++) {
+        const member = {
+          id: res[i].member.id,
+          questions: {}
+        }
+        for (let j = 0; j < res[i].questions.length; j++) {
+          const question = res[i].questions[j]
+          member.questions[question.id] = typeof(question.answer) != 'undefined'
+        }
+        members.push(member)
+      }
+      io.emit('loadWhosAnswered', {teamId: query.team.id, members: members})
+    }
   })
 }
 
@@ -313,10 +338,27 @@ module.exports = {
             if (err) throw err
             query = _query(data)
             _loadAssessment(db, io, query)
+            _loadWhosAnswered(db, io, query)
           })
         })
       }
     })
+  },
+
+  prevQuestion: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('prevQuestion', data) }
+
+    data.order = data.question.order - 1
+    io.emit('setQuestion', data)
+  },
+
+  nextQuestion: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('nextQuestion', data) }
+
+    data.order = data.question.order + 1
+    io.emit('setQuestion', data)
   },
 
   setAnswer: function(db, io, data, debugOn) {
@@ -334,7 +376,7 @@ module.exports = {
         }
         questions.push(question)
       }
-      db.assessmentsCollection.updateOne({'_id': res._id}, {$set: {questions: questions}}, function(err, res) {
+      db.assessmentsCollection.updateOne({'_id': res._id}, {$set: {questions: questions}}, function(err, ) {
         if (err) throw err
         _loadAssessment(db, io, query)
       })

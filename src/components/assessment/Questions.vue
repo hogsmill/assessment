@@ -1,9 +1,9 @@
 <template>
   <div v-if="assessment.questions" class="questions">
-    <WhosAnswered v-if="admin && server.hostMovesSlides && server.scope == 'organisation'" />
     <div v-for="(question, index) in assessment.questions" :key="index" class="question-block">
       <div v-if="question.order == order">
-        <div class="prev" v-if="!server.autoNextQuestion">
+        <WhosAnswered v-if="admin && server.hostMovesSlides && server.scope == 'organisation'" :question="question" />
+        <div class="prev" v-if="!server.autoNextQuestion && !server.hostMovesSlides">
           <i v-if="order > 1" class="fas fa-arrow-circle-left" title="Previous question" @click="prev()" />
         </div>
         <Question5Dysfunctions v-if="question.include && appType == '5 Dysfunctions'" :question="question" />
@@ -99,9 +99,9 @@ export default {
       }
     })
 
-    bus.$on('nextQuestion', (data) => {
-      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
-        this.next()
+    bus.$on('setQuestion', (data) => {
+      if (assessmentFuns.isThisAssessment(data.assessment, this.assessment, {'member': true})) {
+        this.setQuestion(data)
       }
     })
 
@@ -126,8 +126,8 @@ export default {
       bus.$emit('sendSaveComment', {assessment: this.assessment, questionId: this.questionId, comment: comment})
       this.hide()
     },
-    prev() {
-      this.order = this.order - 1
+    setQuestion(data) {
+      this.order = data.order
     },
     next() {
       this.order = this.order + 1

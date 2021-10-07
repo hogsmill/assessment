@@ -24,6 +24,7 @@ export const store = new Vuex.Store({
     state: 'intro',
     teams: [],
     assessment: {},
+    whosAnswered: [],
     questions: [],
     questionsInclude: [],
     dysfunctions: [],
@@ -129,6 +130,9 @@ export const store = new Vuex.Store({
     getAssessment: (state) => {
       return state.assessment
     },
+    getWhosAnswered: (state) => {
+      return state.whosAnswered
+    },
     getConnections: (state) => {
       return state.connections
     },
@@ -214,6 +218,9 @@ export const store = new Vuex.Store({
     updateAssessment: (state, payload) => {
       state.assessment = payload
     },
+    updateWhosAnswered: (state, payload) => {
+      state.whosAnswered = payload.members
+    },
     updateWalkThrough: (state, payload) => {
       state.walkThrough = payload
     },
@@ -284,6 +291,9 @@ export const store = new Vuex.Store({
     },
     updateAssessment: ({ commit }, payload) => {
       commit('updateAssessment', payload)
+    },
+    updateWhosAnswered: ({ commit }, payload) => {
+      commit('updateWhosAnswered', payload)
     },
     updateWalkThrough: ({ commit }, payload) => {
       commit('updateWalkThrough', payload)

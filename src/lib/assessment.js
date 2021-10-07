@@ -18,17 +18,19 @@ const ids = {
 
 const Assessment = {
 
-  isThisAssessment: function(data, assessment) {
+  isThisAssessment: function(data, assessment, ignore) {
     let matches = true
     for (let i = 0; i < assessmentKeys.length; i++) {
       const key = assessmentKeys[i]
-      if (ids[key]) {
-        if (data[key].id != assessment[key].id) {
-          matches = false
-        }
-      } else {
-        if (data[key] != assessment[key]) {
-          matches = false
+      if (!ignore || !ignore[key]) {
+        if (ids[key]) {
+          if (data[key].id != assessment[key].id) {
+            matches = false
+          }
+        } else {
+          if (data[key] != assessment[key]) {
+            matches = false
+          }
         }
       }
     }

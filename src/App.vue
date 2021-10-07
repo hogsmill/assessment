@@ -136,6 +136,12 @@ export default {
         this.$store.dispatch('updateAssessment', data)
       }
     })
+
+    bus.$on('loadWhosAnswered', (data) => {
+      if (data.teamId == this.assessment.team.id) {
+        this.$store.dispatch('updateWhosAnswered', data)
+      }
+    })
   },
   methods: {
     restart() {

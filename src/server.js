@@ -123,6 +123,10 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
     socket.on('sendLoadAssessment', (data) => { dbStore.loadAssessment(db, io, data, debugOn) })
 
+    socket.on('sendPrevQuestion', (data) => { dbStore.prevQuestion(db, io, data, debugOn) })
+
+    socket.on('sendNextQuestion', (data) => { dbStore.nextQuestion(db, io, data, debugOn) })
+
     socket.on('sendSetAnswer', (data) => { dbStore.setAnswer(db, io, data, debugOn) })
 
     socket.on('sendGetQuestionAnswers', (data) => { dbStore.getQuestionAnswers(db, io, data, debugOn) })
@@ -150,7 +154,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendUpdateMemberName', (data) => { dbStore.updateMemberName(db, io, data, debugOn) })
 
     socket.on('sendDeleteMember', (data) => { dbStore.deleteMember(db, io, data, debugOn) })
-    
+
     socket.on('sendAssessmentsDone', (data) => { dbStore.assessmentsDone(db, io, data, debugOn) })
 
     socket.on('sendAddQuestion', (data) => { dbStore.addQuestion(db, io, data, debugOn) })

@@ -58,7 +58,9 @@ bus.$on('sendAnswerQuestion', (data) => { bus.$emit('answerQuestion', data) })
 
 bus.$on('sendSaveComment', (data) => { socket.emit('sendSaveComment', data) })
 
-bus.$on('sendNextQuestion', (data) => { bus.$emit('nextQuestion', data) })
+bus.$on('sendPrevQuestion', (data) => { socket.emit('sendPrevQuestion', data) })
+
+bus.$on('sendNextQuestion', (data) => { socket.emit('sendNextQuestion', data) })
 
 bus.$on('sendGoToResults', (data) => { bus.$emit('goToResults', data) })
 
@@ -119,6 +121,10 @@ socket.on('loadTeams', (data) => { bus.$emit('loadTeams', data) })
 socket.on('loadQuestions', (data) => { bus.$emit('loadQuestions', data) })
 
 socket.on('loadAssessment', (data) => { bus.$emit('loadAssessment', data) })
+
+socket.on('loadWhosAnswered', (data) => { bus.$emit('loadWhosAnswered', data) })
+
+socket.on('setQuestion', (data) => { bus.$emit('setQuestion', data) })
 
 socket.on('loadTabularResults', (data) => { bus.$emit('loadTabularResults', data) })
 
