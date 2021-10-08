@@ -3,7 +3,7 @@
     <div v-for="(question, index) in assessment.questions" :key="index" class="question-block">
       <div v-if="question.order == order">
         <WhosAnswered v-if="admin && server.hostMovesSlides && server.scope == 'organisation'" :question="question" />
-        <div class="prev" v-if="!server.autoNextQuestion && !server.hostMovesSlides">
+        <div class="prev" v-if="!server.hostMovesSlides">
           <i v-if="order > 1" class="fas fa-arrow-circle-left" title="Previous question" @click="prev()" />
         </div>
         <Question5Dysfunctions v-if="question.include && appType == '5 Dysfunctions'" :question="question" />
@@ -15,7 +15,7 @@
             <i v-if="!question.comments || !question.comments.length" class="far fa-comment" title="Click to comment." @click="show(question)" />
             <i v-if="question.comments && question.comments.length" class="fas fa-comment" title="There are comments..." @click="show(question)" />
           </div>
-          <div v-if="!server.autoNextQuestion && !server.hostMovesSlides">
+          <div v-if="!server.hostMovesSlides">
             <i v-if="answered(question) && order < assessment.questions.length" class="fas fa-arrow-circle-right" title="Next question" @click="next()" />
             <i v-if="answered(question) && order == assessment.questions.length" class="fas fa-poll-h" title="Go to Results" @click="goToResults()" />
           </div>
