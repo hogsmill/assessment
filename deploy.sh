@@ -33,10 +33,10 @@ APPS=(
   'team-health-check-and,healthCheckAndServer,healthCheckAndTeams,healthCheckAndQuestions,healthCheckAndAssessments,3110,Team Health Check,Team Health Check'
   'agile-maturity,agileMaturityServer,agileMaturityTeams,agileMaturityQuestions,agileMaturityAssessments,3077,Agile Maturity,Agile Maturity'
   'agile-maturity-eagile,agileMaturityEverydayAgileServer,agileMaturityEverydayAgileTeams,agileMaturityEverydayAgileQuestions,agileMaturityEverydayAgileAssessments,3117,Agile Maturity,Agile Maturity'
-  'agile-maturity-and,agileMaturityAndServer,agileMaturityAndTeams,agileMaturityAndQuestions,agileMaturityAndAssessments,3115,Agile Maturity,Agile Maturity'
+  'agile-maturity-and,agileMaturityAndServer,agileMaturityAndTeams,agileMaturityAndQuestions,agileMaturityAndAssessments,3119,Agile Maturity,Agile Maturity'
   'scrum-master,scrumMasterServer,scrumMasterTeams,scrumMasterQuestions,scrumMasterAssessments,3078,Scrum Master,Scrum Master Assessment'
   'scrum-master-eagile,scrumMasterEverydayAgileServer,scrumMasterEverydayAgileTeams,scrumMasterEverydayAgileQuestions,scrumMasterEverydayAgileAssessments,3118,Scrum Master,Scrum Master Assessment'
-  'scrum-master-and,scrumMasterAndServer,scrumMasterAndTeams,scrumMasterAndQuestions,scrumMasterAndAssessments,3122,Scrum Master,Scrum Master Assessment'
+  'scrum-master-and,scrumMasterAndServer,scrumMasterAndTeams,scrumMasterAndQuestions,scrumMasterAndAssessments,3120,Scrum Master,Scrum Master Assessment'
 )
 
 git stash
