@@ -106,6 +106,7 @@ do
     if [ "$ROUTE" != "" ]; then
       APP="${APP}-${ROUTE}"
     fi
+    APPTYPE=${GAMES[$g]}
     APPNAME=${GAMES[$g]}
 
     echo "------------------------------------------------"
@@ -123,9 +124,7 @@ do
     echo "VUE_APP_TEAMS_COLLECTION=$TEAMSCOLLECTION" >> $ENVFILE
     echo "VUE_APP_QUESTION_COLLECTION=$QUESTIONCOLLECTION" >> $ENVFILE
     echo "VUE_APP_ASSESSMENTS_COLLECTION=$ASSESSMENTSCOLLECTION" >> $ENVFILE
-    if [ ! -z "$APPNAME" ]; then
-      echo "VUE_APP_NAME=$APPNAME" >> $ENVFILE
-    fi
+    echo "VUE_APP_NAME=$APPNAME" >> $ENVFILE
 
     cd $DIR
 
