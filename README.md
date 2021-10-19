@@ -1,8 +1,8 @@
-# Context Switching
+# Assessment Platform
 
 ## Project setup
 ```
-npm install
+npm install --legacy-peer-deps
 ```
 
 ### Compiles and hot-reloads for development
@@ -26,8 +26,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ## Running the node.js server for socket.io
 
 ```
-Navigate to coin-game/coin-game/src
-Then run 'node server.js'
-This is will listen on localhost:3003
+node src/server.js
 ```
-"# assessment" 
+This is will listen on localhost:3003
+
+"# assessment"
