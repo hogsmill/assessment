@@ -19,6 +19,8 @@ const ids = {
 const Assessment = {
 
   isThisAssessment: function(data, assessment, ignoreMember) {
+    console.log('data', data)
+    console.log('assessment', assessment)
     let matches = true
     for (let i = 0; i < assessmentKeys.length; i++) {
       const key = assessmentKeys[i]
