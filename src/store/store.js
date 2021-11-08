@@ -184,16 +184,16 @@ export const store = new Vuex.Store({
       state.questions = payload
       console.log(state.questions)
       const areas = []
-      const levels = []
+      const levels = {}
       if (state.questions.length && state.appType == 'Agile Maturity') {
         for (let i = 0; i < state.questions.length; i++) {
           if (areas.indexOf(state.questions[i].question.area) < 0) {
             areas.push(state.questions[i].question.area)
           }
         }
-        for (let j = 0; j < state.questions[0].question.levels.length; j++) {
-          if (levels.indexOf(state.questions[0].question.levels[j].level)) {
-            levels.push(state.questions[0].question.levels[j].level)
+        for (let j = 1; j <= 5; j++) {
+          levels[j] = {
+            level: state.questions[0].question.levels[j].level
           }
         }
       }

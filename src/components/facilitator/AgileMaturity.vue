@@ -100,30 +100,33 @@
                       </button>
                     </td>
                     <td>
-                      Title
-                    </td>
-                    <td>
-                      <input type="text" id="new-question-title">
+                      <table>
+                        <tr>
+                          <td>
+                            Area
+                          </td>
+                          <td>
+                            <select id="question-new-area">
+                              <option>
+                                -- Select --
+                              </option>
+                              <option v-for="(area, index) in questionAreas" :key="index">
+                                {{ area }}
+                              </option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Title
+                          </td>
+                          <td>
+                            <input type="text" id="question-new-title">
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
-                  <!--
-                  <tr>
-                    <td>
-                      Good
-                    </td>
-                    <td>
-                      <input type="text" id="new-question-good">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Bad
-                    </td>
-                    <td>
-                      <input type="text" id="new-question-bad">
-                    </td>
-                  </tr>
-                  -->
                 </table>
               </td>
             </tr>
@@ -171,8 +174,14 @@ export default {
       }
     },
     addQuestion() {
-      const question = document.getElementById('new-question').value
-      bus.$emit('sendAddQuestion', {question: question})
+      const area = document.getElementById('question-new-area').value
+      const title = document.getElementById('question-new-title').value
+      const question = {
+        title: title,
+        area: area,
+        levels: this.questionLevels
+      }
+      bus.$emit('sendAddQuestion', {appType: 'Agile Maturity', question: question})
     },
     deleteQuestion(question) {
       if (confirm('Delete question ' + question.order)) {
@@ -217,6 +226,10 @@ export default {
     }
 
     td {
+      table {
+        margin: 0;
+      }
+
       &.center {
         text-align: center;
       }
