@@ -678,6 +678,23 @@ module.exports = {
     }
   },
 
+  updateQuestionLevel: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('updateQuestionLevel', data) }
+
+    db.questionCollection.findOne({id: data.id}, function(err, res) {
+      if (err) throw err
+      if (res) {
+        const question = res.question
+        question.levels[data.level].description = data.value
+        db.questionCollection.updateOne({id: data.id}, {$set: {question: question}}, function(err, res) {
+          if (err) throw err
+          _loadQuestions(db, io)
+        })
+      }
+    })
+  },
+
   deleteQuestion: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('deleteQuestion', data) }

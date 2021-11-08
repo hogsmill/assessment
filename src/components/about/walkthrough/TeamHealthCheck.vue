@@ -31,7 +31,7 @@
             The assessment works by presenting a set of topics, and a statement
             describing a "great", and a "terrible" description of that state.
           </p>
-          <div class="spotify-question" />
+          <div class="health-check-question" />
           <p>
             Participants simple decide if the great (red) or terrible (green)
             statement best describes the current state in their team. They can
@@ -46,13 +46,21 @@
           back to allow good and bad areas to be discussed and addressed.
         </p>
         <p>
-          You can test this assessment out and get the results mailed by completing
-          your details and pressing Start
+          You can test this assessment out and get the results mailed by pressing
+          <button class="btn btn-info">
+            Skip
+          </button>, then completing your details and pressing
+          <button class="btn btn-info">
+            Start
+          </button>
         </p>
+        <DataIntro :app="'Team Health Checks'" />
       </div>
       <div class="mt-4" v-if="step == 4">
         <h4>Welcome to the {{ appType }} Assessment</h4>
-        <Generic :step="2" />
+        <p>
+          
+        </p>
       </div>
       <div class="mt-4" v-if="step == 5">
         <h4>Welcome to the {{ appType }} Assessment</h4>
@@ -82,11 +90,13 @@
 <script>
 import params from '../../../lib/params.js'
 
+import DataIntro from './generic/DataIntro.vue'
 import Generic from './Generic.vue'
 import Facilitation from '../Facilitation.vue'
 
 export default {
   components: {
+    DataIntro,
     Generic,
     Facilitation
   },
@@ -151,11 +161,38 @@ export default {
     bottom: 20px;
     left: 228px;
   }
-  
-  .spotify-question {
+
+  .health-check-question {
     height: 200px;
     margin: 0 24px;
-    background-image: url("../../../assets/img/spotify-question.jpg");
+    background-image: url("../../../assets/img/health-check-question.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .health-check-table {
+    height: 200px;
+    margin: 0 24px;
+    background-image: url("../../../assets/img/health-check-table.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .health-check-org {
+    height: 200px;
+    margin: 0 24px;
+    background-image: url("../../../assets/img/health-check-org.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .health-check-team {
+    height: 200px;
+    margin: 0 24px;
+    background-image: url("../../../assets/img/health-check-team.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

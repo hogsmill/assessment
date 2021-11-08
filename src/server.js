@@ -169,6 +169,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
     socket.on('sendUpdateQuestionBad', (data) => { data.field = 'bad'; dbStore.updateQuestion(db, io, data, debugOn) })
 
+    socket.on('sendUpdateQuestionLevel', (data) => { dbStore.updateQuestionLevel(db, io, data, debugOn) })
+
     socket.on('sendUpdateQuestionQuestion', (data) => { data.field = 'question'; dbStore.updateQuestion(db, io, data, debugOn) })
 
     socket.on('sendUpdateQuestionDysfunction', (data) => { data.field = 'dysfunction'; dbStore.updateQuestion(db, io, data, debugOn) })

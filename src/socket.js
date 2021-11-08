@@ -106,6 +106,8 @@ bus.$on('sendUpdateQuestionGood', (data) => { socket.emit('sendUpdateQuestionGoo
 
 bus.$on('sendUpdateQuestionBad', (data) => { socket.emit('sendUpdateQuestionBad', data) })
 
+bus.$on('sendUpdateQuestionLevel', (data) => { socket.emit('sendUpdateQuestionLevel', data) })
+
 bus.$on('sendUpdateQuestionQuestion', (data) => { socket.emit('sendUpdateQuestionQuestion', data) })
 
 bus.$on('sendUpdateQuestionDysfunction', (data) => { socket.emit('sendUpdateQuestionDysfunction', data) })

@@ -32,6 +32,16 @@
                 {{ question.order }}
               </td>
               <td>
+                <select>
+                  <option>
+                    -- Select --
+                  </option>
+                  <option v-for="(area, aindex) in questionAreas" :key="aindex" :selected="area == question.question.area">
+                    {{ area }}
+                  </option>
+                </select>
+              </td>
+              <td>
                 <table>
                   <tr>
                     <td rowspan="3">
@@ -58,42 +68,25 @@
                       </div>
                     </td>
                   </tr>
-                  <!--
                   <tr>
-                    <td>
-                      Good
-                    </td>
-                    <td>
-                      <div class="actions">
-                        <i v-if="editingQuestionGood != question.id" class="fas fa-edit" @click="setEditingQuestionGood(question)" />
-                        <i v-if="editingQuestionGood == question.id" class="fas fa-save" @click="saveQuestionGood(question)" />
-                      </div>
-                    </td>
-                    <td>
-                      <div class="question">
-                        <span v-if="editingQuestionGood != question.id">{{ question.question.good }}</span>
-                        <input v-if="editingQuestionGood == question.id" type="text" :id="'question-good-editing-' + question.id" :value="question.question.good">
-                      </div>
+                    <td colspan="3">
+                      <table>
+                        <tr v-for="(n, lindex) in 5" :key="lindex">
+                          <td>
+                            {{ question.question.levels[n].level }}
+                            <div class="actions">
+                              <i v-if="!editingLevel(question, n)" class="fas fa-edit" @click="setEditingQuestionLevel(question, n)" />
+                              <i v-if="editingLevel(question, n)" class="fas fa-save" @click="saveQuestionLevel(question, n)" />
+                            </div>
+                          </td>
+                          <td>
+                            <span v-if="!editingLevel(question, n)">{{ question.question.levels[n].description }}</span>
+                            <textarea v-if="editingLevel(question, n)" type="text" :id="'question-level-editing-' + question.id + '-' + n" :value="question.question.levels[n].description" />
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      Bad
-                    </td>
-                    <td>
-                      <div class="actions">
-                        <i v-if="editingQuestionBad != question.id" class="fas fa-edit" @click="setEditingQuestionBad(question)" />
-                        <i v-if="editingQuestionBad == question.id" class="fas fa-save" @click="saveQuestionBad(question)" />
-                      </div>
-                    </td>
-                    <td>
-                      <div class="question">
-                        <span v-if="editingQuestionBad != question.id">{{ question.question.bad }}</span>
-                        <input v-if="editingQuestionBad == question.id" type="text" :id="'question-bad-editing-' + question.id" :value="question.question.bad">
-                      </div>
-                    </td>
-                  </tr>
-                  -->
                 </table>
               </td>
             </tr>
@@ -149,13 +142,18 @@ export default {
     return {
       showAgileMaturity: false,
       editingQuestionTitle: null,
-      editingQuestionGood: null,
-      editingQuestionBad: null
+      editingQuestionLevel: {question: null, level: null}
     }
   },
   computed: {
     questions() {
       return this.$store.getters.getQuestions
+    },
+    questionAreas() {
+      return this.$store.getters.getMaturityQuestionAreas
+    },
+    questionLevels() {
+      return this.$store.getters.getMaturityQuestionLevels
     }
   },
   created() {
@@ -188,26 +186,21 @@ export default {
     setEditingQuestionTitle(question) {
       this.editingQuestionTitle = question.id
     },
-    setEditingQuestionGood(question) {
-      this.editingQuestionGood = question.id
+    setEditingQuestionLevel(question, level) {
+      this.editingQuestionLevel = {question: question.id, level: level}
     },
-    setEditingQuestionBad(question) {
-      this.editingQuestionBad = question.id
+    editingLevel(question, level) {
+      return this.editingQuestionLevel.question == question.id && this.editingQuestionLevel.level == level
     },
     saveQuestionTitle() {
       const title = document.getElementById('question-title-editing-' + this.editingQuestionTitle).value
       bus.$emit('sendUpdateQuestionTitle', {id: this.editingQuestionTitle, value: title})
       this.editingQuestionTitle = null
     },
-    saveQuestionGood() {
-      const good = document.getElementById('question-good-editing-' + this.editingQuestionGood).value
-      bus.$emit('sendUpdateQuestionGood', {id: this.editingQuestionGood, value: good})
-      this.editingQuestionGood = null
-    },
-    saveQuestionBad() {
-      const bad = document.getElementById('question-bad-editing-' + this.editingQuestionBad).value
-      bus.$emit('sendUpdateQuestionBad', {id: this.editingQuestionBad, value: bad})
-      this.editingQuestionBad = null
+    saveQuestionLevel() {
+      const level = document.getElementById('question-level-editing-' + this.editingQuestionLevel.question + '-' + this.editingQuestionLevel.level).value
+      bus.$emit('sendUpdateQuestionLevel', {id: this.editingQuestionLevel.question, level: this.editingQuestionLevel.level, value: level})
+      this.editingQuestionLevel = {question: null, level: null}
     }
   }
 }
@@ -243,6 +236,10 @@ export default {
         input {
           width: 590px;
         }
+      }
+
+      textarea {
+        width: 100%;
       }
     }
   }

@@ -26,6 +26,8 @@ export const store = new Vuex.Store({
     assessment: {},
     whosAnswered: [],
     questions: [],
+    maturityQuestionAreas: [],
+    maturityQuestionLevels: [],
     questionsInclude: [],
     dysfunctions: [],
     tabularResults: {},
@@ -103,6 +105,12 @@ export const store = new Vuex.Store({
         return a.order - b.order
       })
     },
+    getMaturityQuestionAreas: (state) => {
+      return state.maturityQuestionAreas
+    },
+    getMaturityQuestionLevels: (state) => {
+      return state.maturityQuestionLevels
+    },
     getDysfunctions: (state) => {
       return state.dysfunctions
     },
@@ -174,6 +182,23 @@ export const store = new Vuex.Store({
     },
     updateQuestions: (state, payload) => {
       state.questions = payload
+      console.log(state.questions)
+      const areas = []
+      const levels = []
+      if (state.questions.length && state.appType == 'Agile Maturity') {
+        for (let i = 0; i < state.questions.length; i++) {
+          if (areas.indexOf(state.questions[i].question.area) < 0) {
+            areas.push(state.questions[i].question.area)
+          }
+        }
+        for (let j = 0; j < state.questions[0].question.levels.length; j++) {
+          if (levels.indexOf(state.questions[0].question.levels[j].level)) {
+            levels.push(state.questions[0].question.levels[j].level)
+          }
+        }
+      }
+      state.maturityQuestionAreas = areas
+      state.maturityQuestionLevels = levels
     },
     toggleInclude: (state, payload) => {
       const questions = []
