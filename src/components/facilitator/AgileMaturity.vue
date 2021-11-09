@@ -42,14 +42,14 @@
                 </select>
               </td>
               <td>
-                <table>
+                <table class="question-holder-table">
                   <tr>
                     <td rowspan="3">
                       <div class="actions">
                         <i v-if="question.protected" class="fas fa-trash-alt" title="Unable to delete system question" />
                         <i v-if="!question.protected" class="fas fa-trash-alt enabled" :title="'Delete ' + question.order" @click="deleteQuestion(question)" />
-                        <i v-if="question.order > 1" class="fas fa-arrow-up" title="Move question up" />
-                        <i v-if="question.order < questions.length" class="fas fa-arrow-down" title="Move question down" />
+                        <i v-if="question.order > 1" class="fas fa-arrow-up" title="Move question up" @click="moveQuestionUp(question.id)" />
+                        <i v-if="question.order < questions.length" class="fas fa-arrow-down" title="Move question down" @click="moveQuestionUp(question.id)" />
                       </div>
                     </td>
                     <td class="title">
@@ -60,7 +60,7 @@
                         <i v-if="editingQuestionTitle != question.id" class="fas fa-edit" @click="setEditingQuestionTitle(question)" />
                         <i v-if="editingQuestionTitle == question.id" class="fas fa-save" @click="saveQuestionTitle(question)" />
                       </div>
-                      <div>
+                      <div class="title">
                         <span v-if="editingQuestionTitle != question.id">{{ question.question.title }}</span>
                         <input v-if="editingQuestionTitle == question.id" type="text" :id="'question-title-editing-' + question.id" :value="question.question.title">
                       </div>
@@ -218,7 +218,16 @@ export default {
     width: 100%;
     margin: 0 auto;
 
+    .title {
+      font-weight: bold;
+      font-size: larger;
+    }
+
     table {
+      &.question-holder-table {
+        border-width: 0;
+      }
+
       &.question-table {
         min-width: 500px;
       }
@@ -232,11 +241,6 @@ export default {
     td {
       table {
         margin: 0;
-      }
-
-      &.title {
-        font-weight: bold;
-        font-size: larger;
       }
 
       &.inline {
