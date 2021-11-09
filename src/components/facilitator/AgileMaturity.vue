@@ -52,17 +52,15 @@
                         <i v-if="question.order < questions.length" class="fas fa-arrow-down" title="Move question down" />
                       </div>
                     </td>
-                    <td>
+                    <td class="title">
                       Title
                     </td>
-                    <td>
+                    <td class="inline">
                       <div class="actions">
                         <i v-if="editingQuestionTitle != question.id" class="fas fa-edit" @click="setEditingQuestionTitle(question)" />
                         <i v-if="editingQuestionTitle == question.id" class="fas fa-save" @click="saveQuestionTitle(question)" />
                       </div>
-                    </td>
-                    <td>
-                      <div class="question">
+                      <div>
                         <span v-if="editingQuestionTitle != question.id">{{ question.question.title }}</span>
                         <input v-if="editingQuestionTitle == question.id" type="text" :id="'question-title-editing-' + question.id" :value="question.question.title">
                       </div>
@@ -70,7 +68,7 @@
                   </tr>
                   <tr>
                     <td colspan="3">
-                      <table>
+                      <table class="question-table">
                         <tr v-for="(n, lindex) in 5" :key="lindex">
                           <td>
                             {{ question.question.levels[n].level }}
@@ -220,6 +218,12 @@ export default {
     width: 100%;
     margin: 0 auto;
 
+    table {
+      &.question-table {
+        min-width: 500px;
+      }
+    }
+
     th {
       text-align: center;
       padding: 2px 6px;
@@ -228,6 +232,17 @@ export default {
     td {
       table {
         margin: 0;
+      }
+
+      &.title {
+        font-weight: bold;
+        font-size: larger;
+      }
+
+      &.inline {
+        div {
+          display: inline-block;
+        }
       }
 
       &.center {
