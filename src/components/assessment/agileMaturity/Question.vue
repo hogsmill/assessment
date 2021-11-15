@@ -74,7 +74,8 @@ export default {
     }
 
     td {
-      padding: 2px 6px;
+      padding: 12px;
+      line-height: 1.2;
 
       &.left {
         text-align: left;
