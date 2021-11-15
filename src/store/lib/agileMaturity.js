@@ -129,7 +129,7 @@ const questions = [
       2: {level: 'Emerging', description: 'The team has a Definition of Done but does not enforce it'},
       3: {level: 'Operating', description: 'The team has a Definition of Done that is applied to all work'},
       4: {level: 'Adaptive', description: 'The team has an evolving definition of done that is applied to all work'},
-      5: {level: 'Innovative', description: 'The team has a definition of done at a story levelthat is evolving and advancing the team toward continuous deployment(and/or story level release activities where  deployment is not involved)'}
+      5: {level: 'Innovative', description: 'The team has a definition of done at a story level that is evolving and advancing the team toward continuous deployment(and/or story level release activities where  deployment is not involved)'}
     }
   },
   {
@@ -138,7 +138,7 @@ const questions = [
     levels: {
       1: {level: 'Developing', description: 'Big up-front design and significant investment in building up front frameworks - "Kitchen-Sink"'},
       2: {level: 'Emerging', description: 'Looking for ways to simplify architecture, testing, development but it is not the standard approach'},
-      3: {level: 'Operating', description: 'Using the YAGNI* practice when approaching new work and have a backlog of opportunities to simplify existing code/configurations'},
+      3: {level: 'Operating', description: 'Using the YAGNI practice when approaching new work and have a backlog of opportunities to simplify existing code/configurations'},
       4: {level: 'Adaptive', description: 'Able to defer design decisions which may be required by a future requirement, team sets aside enough time to regularly address issues with complexity'},
       5: {level: 'Innovative', description: 'Just-in-time design, established needs, no duplication, no gold-plating, fewest moving parts'}
     }
