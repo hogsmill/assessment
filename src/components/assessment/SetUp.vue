@@ -53,7 +53,7 @@
             <option value="">
               -- Select --
             </option>
-            <option v-for="q in 4" :key="q" :selected="assessment.quarter && q == assessment.quarter" :vale="q">
+            <option v-for="q in 4" :key="q" :selected="assessment.quarter && q == assessment.quarter" :value="q">
               Q{{ q }}
             </option>
           </select>

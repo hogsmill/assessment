@@ -182,7 +182,6 @@ export const store = new Vuex.Store({
     },
     updateQuestions: (state, payload) => {
       state.questions = payload
-      console.log(state.questions)
       const areas = []
       const levels = {}
       if (state.questions.length && state.appType == 'Agile Maturity') {

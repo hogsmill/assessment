@@ -210,7 +210,6 @@ function assessmentDate(assessment) {
   return label
 }
 
-
 function _assessmentsDone(db, io, data, debugOn) {
 
   db.assessmentsCollection.find({'team.id': data.id}).toArray(function(err, res) {
@@ -625,7 +624,7 @@ module.exports = {
 
     const parts = data.label.split(/\-/)
     const year = parts[0]
-    const monthOrQuarter = parts[1]
+    const monthOrQuarter = parts[1].replace(/^Q/, '')
     db.assessmentsCollection.find({'team.id': data.teamId}).toArray(function(err, res) {
       if (err) throw err
       if (res.length) {
@@ -635,6 +634,7 @@ module.exports = {
             if (assessment.quarter == monthOrQuarter || assessment.month == parseInt(monthOrQuarter)) {
               db.assessmentsCollection.deleteOne({"_id": assessment._id}, function(err, ) {
                 if (err) throw err
+                data.id = data.teamId
                 _assessmentsDone(db, io, data, debugOn)
               })
             }

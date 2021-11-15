@@ -60,6 +60,7 @@ if (!prod) {
 }
 
 const dbStore = require('./store/dbStore.js')
+const dbUpdate = require('./store/dbUpdate.js')
 
 const MongoClient = require('mongodb').MongoClient
 
@@ -92,6 +93,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
   db.teamsCollection = db.collection(teamsCollection)
   db.questionCollection = db.collection(questionCollection)
   db.assessmentsCollection = db.collection(assessmentsCollection)
+
+  dbUpdate.run(db)
 
   io.on('connection', (socket) => {
     const connection = socket.handshake.headers.host
