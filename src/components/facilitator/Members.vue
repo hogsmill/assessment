@@ -39,7 +39,7 @@
                 Member
               </th>
               <th colspan="12">
-                Assessments
+                Assessments (click to delete)
               </th>
             </tr>
             <tr>
@@ -64,7 +64,7 @@
                 </div>
               </td>
               <td v-for="(done, dindex) in assessmentsDone.labels" :key="dindex" class="center">
-                <i v-if="assessmentDone(member.id, done)" class="fas fa-check" />
+                <i v-if="assessmentDone(member.id, done)" class="fas fa-check assessment-done" title="Delete this assessment" @click="deleteAssessment(member, done)" />
               </td>
             </tr>
           </tbody>
@@ -170,6 +170,11 @@ export default {
       const name = document.getElementById('member-name-editing-' + this.editingMember).value
       bus.$emit('sendUpdateMemberName', {teamId: this.selectedTeam, id: this.editingMember, name: name})
       this.editingMember = null
+    },
+    deleteAssessment(member, label) {
+      if (confirm('Delete assessment from ' + label + ' for ' + member.name)) {
+        bus.$emit('sendDeleteAssessment', {teamId: this.selectedTeam, memberId: member.id, label: label})
+      }
     }
   }
 }
@@ -200,6 +205,10 @@ export default {
 
       .member-name {
         width: 200px;
+      }
+
+      .assessment-done:hover {
+        cursor: pointer;
       }
     }
   }

@@ -210,6 +210,33 @@ function assessmentDate(assessment) {
   return label
 }
 
+
+function _assessmentsDone(db, io, data, debugOn) {
+
+  db.assessmentsCollection.find({'team.id': data.id}).toArray(function(err, res) {
+    if (err) throw err
+    if (res.length) {
+      const done = {
+        labels: [],
+        done: {}
+      }
+      for (let i = 0; i < res.length; i++) {
+        const member = res[i].member
+        const memberDone = done.done[member.id] ? done.done[member.id] : []
+        const date = assessmentDate(res[i])
+        const labels = done.labels
+        if (labels.indexOf(date) < 0) {
+          labels.push(date)
+          done.labels = labels.sort()
+        }
+        memberDone.push(assessmentDate(res[i]))
+        done.done[member.id] = memberDone.sort()
+      }
+      io.emit('loadAssessmentsDone', done)
+    }
+  })
+}
+
 module.exports = {
 
   checkServer: function(db, io, data, debugOn) {
@@ -592,32 +619,36 @@ module.exports = {
     })
   },
 
+  deleteAssessment: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('deleteAssessment', data) }
+
+    const parts = data.label.split(/\-/)
+    const year = parts[0]
+    const monthOrQuarter = parts[1]
+    db.assessmentsCollection.find({'team.id': data.teamId}).toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        for (let i = 0; i < res.length; i++) {
+          const assessment = res[i]
+          if (assessment.member.id == data.memberId && year == assessment.year) {
+            if (assessment.quarter == monthOrQuarter || assessment.month == parseInt(monthOrQuarter)) {
+              db.assessmentsCollection.deleteOne({"_id": assessment._id}, function(err, ) {
+                if (err) throw err
+                _assessmentsDone(db, io, data, debugOn)
+              })
+            }
+          }
+        }
+      }
+    })
+  },
+
   assessmentsDone: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('assessmentsDone', data) }
 
-    db.assessmentsCollection.find({'team.id': data.id}).toArray(function(err, res) {
-      if (err) throw err
-      if (res.length) {
-        const done = {
-          labels: [],
-          done: {}
-        }
-        for (let i = 0; i < res.length; i++) {
-          const member = res[i].member
-          const memberDone = done.done[member.id] ? done.done[member.id] : []
-          const date = assessmentDate(res[i])
-          const labels = done.labels
-          if (labels.indexOf(date) < 0) {
-            labels.push(date)
-            done.labels = labels.sort()
-          }
-          memberDone.push(assessmentDate(res[i]))
-          done.done[member.id] = memberDone.sort()
-        }
-        io.emit('loadAssessmentsDone', done)
-      }
-    })
+    _assessmentsDone(db, io, data, debugOn)
   },
 
   addQuestion: function(db, io, data, debugOn) {

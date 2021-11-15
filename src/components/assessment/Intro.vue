@@ -68,14 +68,14 @@ export default {
       if (this.server.scope == 'individual') {
         this.setUp = assessment.email && assessment.organisation && assessment.email
       } else {
-        let setUp = assessment.member
+        let setUp = assessment.member.id
         if (this.server.frequency == 'monthly') {
           setUp = setUp && assessment.year && assessment.month
         } else if (this.server.frequency == 'quarterly') {
           setUp = setUp && assessment.year && assessment.quarter
         }
         if (this.server.multipleTeams) {
-          setUp = setUp && assessment.team
+          setUp = setUp && assessment.team.id
         }
         this.setUp = setUp
       }
