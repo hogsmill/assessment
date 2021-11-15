@@ -52,7 +52,7 @@ const questions = [
       2: {level: 'Emerging', description: 'The team collaborates with customers at the end of the sprint or after the sprint has ended rather than during the sprint'},
       3: {level: 'Operating', description: 'The team is collaborating with the customer during the sprint and only occasionally misses opportunities to do so'},
       4: {level: 'Adaptive', description: 'The team is collaborating with customers frequently throughout the sprint on all work items where there are opportunities to do so'},
-      5: {level: 'Innovative', description: 'The team is collaboratingw ith the customers throughout the sprint on all necessary work items and has built a trusted relationship'}
+      5: {level: 'Innovative', description: 'The team is collaborating with the customers throughout the sprint on all necessary work items and has built a trusted relationship'}
     }
   },
   {

@@ -446,11 +446,12 @@ module.exports = {
         for (let i = 0; i < res.length; i++) {
           for (let j = 0; j < res[i].questions.length; j++) {
             if (res[i].questions[j].id == data.questionId) {
+              const answerBy = team ? team.members.find((m) => {
+                return m.id == res[i].member.id
+              }).name : null
               answers.push({
                 answer: res[i].questions[j].answer,
-                by: team.members.find((m) => {
-                  return m.id == res[i].member.id
-                }).name
+                by: answerBy
               })
             }
           }
