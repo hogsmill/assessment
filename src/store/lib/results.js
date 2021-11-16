@@ -71,7 +71,9 @@ function average(results) {
   let n = 0
   const comments = []
   for (let i = 0; i < results.length; i++) {
-    n = n + results[i].answer
+    if (results[i].answer) {
+      n = n + parseInt(results[i].answer)
+    }
     if (results[i].comments) {
       const resultComments = results[i].comments
       for (let j = 0; j < resultComments.length; j++) {
@@ -113,11 +115,7 @@ function aggregateAnswers(results, scope, appType) {
   keys = Object.keys(aggregated)
   const summarised = {}
   for (var i = 0; i < keys.length; i++) {
-    let newKey =  keys[i].match(/\d{4}\-\d+$/)
-    //let newKey =  keys[i].match(/\d{4}\-\d{2}$/)
-    //if (!newKey) {
-    //  newKey =  keys[i].match(/\d{4}\-Q\d{1}$/)
-    //}
+    let newKey =  keys[i].match(/\d{4}\-\d{1,2}$/)
     newKey = newKey[0]
     summarised[newKey] = average(aggregated[keys[i]])
   }

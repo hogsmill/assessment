@@ -3,7 +3,7 @@
     <div class="question" />
     <div v-if="results && Object.keys(results).length" class="answer">
       <div v-for="(date, index) in Object.keys(results[Object.keys(results)[0]].results)" :key="index" class="answer-header">
-        {{ date }}
+        {{ dateLabel(date) }}
       </div>
     </div>
   </div>
@@ -13,7 +13,16 @@
 export default {
   props: [
     'results'
-  ]
+  ],
+  methods: {
+    dateLabel(d) {
+      if (d.match(/\-\d{1}/)) {
+        const l = d.split('-')
+        d = l[0] + '-Q' + l[1]
+      }
+      return d
+    }
+  }
 }
 </script>
 

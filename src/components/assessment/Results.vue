@@ -274,6 +274,7 @@ export default {
     })
 
     bus.$on('loadGraphResults', (data) => {
+      console.log('graph results', data)
       if (data.datasets) {
         this.$store.dispatch('updateGraphResults', data.datasets)
         this.setGraph(data)
