@@ -143,6 +143,10 @@ function labelIndex(assessment, labels, server) {
   return labels.indexOf(label)
 }
 
+function int(n) {
+  return typeof(n) == 'number' && !isNaN(n) ? n : 0
+}
+
 module.exports = {
 
   // Tabular
@@ -197,7 +201,7 @@ module.exports = {
       for (j = 0; j < keys.length; j++) {
         if (matchKey(keys[j], assessments[i])) {
           for (k = 0; k < questions.length; k++) {
-            const answer = typeof(questions[k].answer) == 'number' ? questions[k].answer : 0
+            const answer = int(parseInt(questions[k].answer))
             datasets[keys[j]].data[k].push(answer)
           }
         }
@@ -222,7 +226,7 @@ module.exports = {
         for (k = 0; k < questions.length; k++) {
           if (questions[k].id == keys[j]) {
             const index = labelIndex(assessments[i], labels, server)
-            const answer = typeof(questions[k].answer) == 'number' ? questions[k].answer : 0
+            const answer = int(parseInt(questions[k].answer))
             datasets[keys[j]].data[index].push(answer)
           }
         }
