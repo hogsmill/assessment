@@ -95,6 +95,9 @@ export default {
     currentTab() {
       return this.$store.getters.getCurrentTab
     },
+    assessment() {
+      return this.$store.getters.getAssessment
+    },
     server() {
       return this.$store.getters.getServer
     }
@@ -126,7 +129,11 @@ export default {
       }
     },
     setCurrentTab(payload) {
-      this.$store.dispatch('updateCurrentTab', payload)
+      if (payload == 'results' && !this.assessment.created) {
+        alert('You must select an assessment (e.g. team, member, dates...) to view the results')
+      } else {
+        this.$store.dispatch('updateCurrentTab', payload)
+      }
     },
     updateShowAbout(payload) {
       this.$store.dispatch('updateShowAbout', payload)
