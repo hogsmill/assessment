@@ -52,6 +52,8 @@ export default {
               beginAtZero: true,
               stepSize: 1,
               callback: function(label, index, labels) {
+                return label
+                /*
                 switch (label) {
                   case 0:
                     return 'Red'
@@ -61,6 +63,7 @@ export default {
                     return 'Green'
 
                 }
+                */
               }
             },
             gridLines: {
