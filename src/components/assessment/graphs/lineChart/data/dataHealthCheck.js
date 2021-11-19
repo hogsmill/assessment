@@ -1,5 +1,5 @@
 
-import config from './config.js'
+import config from '../config/healthCheck.js'
 
 const conf = config.config()
 

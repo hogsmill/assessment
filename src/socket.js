@@ -134,6 +134,8 @@ socket.on('loadTabularResults', (data) => { bus.$emit('loadTabularResults', data
 
 socket.on('loadGraphResults', (data) => { bus.$emit('loadGraphResults', data) })
 
+socket.on('loadExportResults', (data) => { bus.$emit('loadExportResults', data) })
+
 socket.on('loadQuestionAnswers', (data) => { bus.$emit('loadQuestionAnswers', data) })
 
 socket.on('loadAssessmentsDone', (data) => { bus.$emit('loadAssessmentsDone', data) })

@@ -443,7 +443,11 @@ module.exports = {
           switch (data.scope.format) {
             case 'table':
               results = resultsFuns.getTabular(res, server, teams, data.scope, data.appType)
-              io.emit('loadTabularResults', {results: results, questions: questions})
+              if (data.scope.export) {
+                io.emit('loadExportResults', {results: results, questions: questions})
+              } else {
+                io.emit('loadTabularResults', {results: results, questions: questions})
+              }
               break
             case 'graph':
               results = resultsFuns.getGraph(res, server, teams, data.scope, data.appType)

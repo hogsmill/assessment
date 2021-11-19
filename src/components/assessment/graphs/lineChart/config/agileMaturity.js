@@ -49,10 +49,27 @@ export default {
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true,
+              min: 1,
+              max: 5,
               stepSize: 1,
               callback: function(label, index, labels) {
-                return label
+                switch (label) {
+                  case 1:
+                    return 'Developing'
+                    break
+                  case 2:
+                    return 'Emerging'
+                    break
+                  case 3:
+                    return 'Operating'
+                    break
+                  case 4:
+                    return 'Adaptive'
+                    break
+                  case 5:
+                    return 'Innovative'
+                    break
+                }
               }
             },
             gridLines: {

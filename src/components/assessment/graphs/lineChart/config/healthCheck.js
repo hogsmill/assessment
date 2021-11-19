@@ -49,10 +49,21 @@ export default {
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true,
+              min: 0,
+              max: 2,
               stepSize: 1,
               callback: function(label, index, labels) {
-                return label
+                switch (label) {
+                  case 0:
+                    return 'Red'
+                    break
+                  case 1:
+                    return 'Amber'
+                    break
+                  case 2:
+                    return 'Green'
+                    break
+                }
               }
             },
             gridLines: {

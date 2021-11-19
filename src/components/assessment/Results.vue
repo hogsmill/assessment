@@ -137,7 +137,7 @@
         <p v-if="scope.date == 'all' && questions.length">
           Click legend items to remove questions
         </p>
-        <LineChart />
+        <LineChar />
       </div>
 
       <!-- Agile Maturity -->
@@ -214,6 +214,8 @@ import ResultScrumMaster from './scrumMaster/Result.vue'
 
 import LineChart from './graphs/lineChart/Graph.vue'
 import lineChartFuns from './graphs/lineChart/data.js'
+import lineChartFunsHealthCheck from './graphs/lineChart/data/dataHealthCheck.js'
+import lineChartFunsMaturity from './graphs/lineChart/data/dataMaturity.js'
 
 export default {
   components: {
@@ -236,11 +238,11 @@ export default {
         server: 'individual',
         member: 'individual',
         date: 'single',
-        format: 'table'
+        format: 'table',
+        export: false
       },
       comments: [],
-      commentsTitle: '',
-      graphOptions: lineChartFuns.options()
+      commentsTitle: ''
     }
   },
   computed: {
@@ -271,6 +273,12 @@ export default {
 
     bus.$on('loadTabularResults', (data) => {
       this.$store.dispatch('updateTabularResults', data)
+    })
+
+    bus.$on('loadExportResults', (data) => {
+      console.log('export', data)
+      this.scope.export = false
+      //this.$store.dispatch('updateTabularResults', data)
     })
 
     bus.$on('loadGraphResults', (data) => {
@@ -305,20 +313,38 @@ export default {
       this.commentsTitle = ''
       this.$modal.hide('question-comments')
     },
-    setGraph(results) {
-      const data = lineChartFuns.data(results)
+    graphOptions(results) {
+      let options
+      console.log('appType', this.appType)
+      switch(this.appType) {
+        case 'Agile Maturity':
+          options = lineChartFunsMaturity.options()
+          console.log('here', options)
+          break
+        case 'Agile Maturity':
+          options = lineChartFunsHealthCheck.options()
+          break
+        default:
+          options = lineChartFuns.options()
+          break
+      }
       const self = this
-      this.graphOptions.legend.onClick = function(e, item) {
+      options.legend.onClick = function(e, item) {
         const question = self.questions.find((q) => {
           return q.question == item.text
         })
         self.$store.dispatch('toggleInclude', {id: question.id})
         self.setGraph(results)
       }
-      bus.$emit('showGraph', {chartdata: data, options: this.graphOptions})
+      return options
+    },
+    setGraph(results) {
+      const data = lineChartFuns.data(results)
+      bus.$emit('showGraph', {chartdata: data, options: this.graphOptions(results)})
     },
     exportToFile() {
-      alert('Under construction')
+      this.scope.export = true
+      bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
     explanation() {
       return fiveDysfunctions.explanation()
