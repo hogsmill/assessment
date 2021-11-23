@@ -88,9 +88,11 @@ bus.$on('sendDeleteTeam', (data) => { socket.emit('sendDeleteTeam', data) })
 
 bus.$on('sendAddMember', (data) => { socket.emit('sendAddMember', data) })
 
-bus.$on('sendUpdateMemberName', (data) => { socket.emit('sendUpdateMemberName', data) })
+bus.$on('sendUpdateMemberDetails', (data) => { socket.emit('sendUpdateMemberDetails', data) })
 
 bus.$on('sendDeleteMember', (data) => { socket.emit('sendDeleteMember', data) })
+
+bus.$on('sendChangeTeam', (data) => { socket.emit('sendChangeTeam', data) })
 
 bus.$on('sendDeleteAssessment', (data) => { socket.emit('sendDeleteAssessment', data) })
 

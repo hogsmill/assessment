@@ -578,9 +578,9 @@ module.exports = {
     })
   },
 
-  updateMemberName: function(db, io, data, debugOn) {
+  updateMemberDetails: function(db, io, data, debugOn) {
 
-    if (debugOn) { console.log('updateMemberName', data) }
+    if (debugOn) { console.log('updateMemberDetails', data) }
 
     db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
       if (err) throw err
@@ -590,6 +590,7 @@ module.exports = {
           const member = res.members[i]
           if (member.id == data.id) {
             member.name = data.name
+            member.email = data.email
           }
           members.push(res.members[i])
         }
@@ -618,6 +619,49 @@ module.exports = {
           if (err) throw err
           _loadTeams(db, io)
         })
+      }
+    })
+  },
+
+  changeTeam: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('changeTeam', data) }
+
+    db.teamsCollection.find().toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        for (let i = 0; i < res.length; i++) {
+          let members = res[i].members
+          if (res[i].id == data.teamId) {
+            members.push(data.member)
+          } else {
+            const newMembers = []
+            for (let j = 0; j < members.length; j++) {
+              if (members[j].id != data.member.id) {
+                newMembers.push(members[j])
+              }
+            }
+            members = newMembers
+          }
+          db.teamsCollection.updateOne({'_id': res[i]._id}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadTeams(db, io)
+          })
+        }
+      }
+    })
+    db.assessmentsCollection.find().toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].member.id == data.member.id) {
+            const team = res[i].team
+            team.id = data.teamId
+            db.assessmentsCollection.updateOne({'_id': res[i]._id}, {$set: {team: team}}, function(err, res) {
+              if (err) throw err
+            })
+          }
+        }
       }
     })
   },

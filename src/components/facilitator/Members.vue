@@ -38,6 +38,9 @@
               <th rowspan="2">
                 Member
               </th>
+              <th rowspan="2">
+                Email
+              </th>
               <th colspan="12">
                 Assessments (click to delete)
               </th>
@@ -54,13 +57,30 @@
                 <div class="actions">
                   <i class="fas fa-trash-alt enabled" :title="'Delete ' + member.name" @click="deleteMember(member)" />
                   <i v-if="editingMember != member.id" class="fas fa-edit" @click="setEditingMember(member)" />
-                  <i v-if="editingMember == member.id" class="fas fa-save" @click="saveMemberName()" />
+                  <i v-if="editingMember == member.id" class="fas fa-save" @click="saveMemberDetails()" />
+                  <i class="fas fa-users" @click="showChangeTeam(member)" />
+                  <div v-if="changingTeamMember == member.id">
+                    <select :id="'change-team-' + member.id" @change="changeTeam(member)">
+                      <option value="">
+                        -- Select --
+                      </option>
+                      <option v-for="(t, tindex) in teams" :key="tindex" :value="t.id">
+                        {{ t.name }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </td>
               <td>
                 <div class="member-name">
                   <span v-if="editingMember != member.id">{{ member.name }}</span>
                   <input v-if="editingMember == member.id" type="text" :id="'member-name-editing-' + member.id" :value="member.name">
+                </div>
+              </td>
+              <td>
+                <div class="member-email">
+                  <span v-if="editingMember != member.id">{{ member.email }}</span>
+                  <input v-if="editingMember == member.id" type="text" :id="'member-email-editing-' + member.id" :value="member.email">
                 </div>
               </td>
               <td v-for="(done, dindex) in assessmentsDone.labels" :key="dindex" class="center">
@@ -84,6 +104,7 @@ export default {
       members: [],
       selectedTeam: null,
       editingMember: null,
+      changingTeamMember: null,
       assessmentsDone: {
         labels: [],
         done: {}
@@ -154,6 +175,14 @@ export default {
         bus.$emit('sendAssessmentsDone', {id: team.id})
       }
     },
+    showChangeTeam(member) {
+      this.changingTeamMember = member.id
+    },
+    changeTeam(member) {
+      const teamId = document.getElementById('change-team-' + member.id).value
+      bus.$emit('sendChangeTeam', {teamId: teamId, member: member})
+      this.changingTeamMember = null
+    },
     addMember() {
       const name = document.getElementById('new-member').value
       bus.$emit('sendAddMember', {teamId: this.selectedTeam, name: name})
@@ -166,9 +195,10 @@ export default {
     setEditingMember(member) {
       this.editingMember = member.id
     },
-    saveMemberName() {
+    saveMemberDetails() {
       const name = document.getElementById('member-name-editing-' + this.editingMember).value
-      bus.$emit('sendUpdateMemberName', {teamId: this.selectedTeam, id: this.editingMember, name: name})
+      const email = document.getElementById('member-email-editing-' + this.editingMember).value
+      bus.$emit('sendUpdateMemberDetails', {teamId: this.selectedTeam, id: this.editingMember, name: name, email: email})
       this.editingMember = null
     },
     deleteAssessment(member, label) {
@@ -200,6 +230,7 @@ export default {
 
         .fas {
           margin: 2px 2px;
+          cursor: pointer;
         }
       }
 

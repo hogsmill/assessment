@@ -73,6 +73,14 @@
     </tr>
     <tr v-if="showServer && server.scope == 'organisation'">
       <td>
+        Teams in Departments?
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.teamsInDepartments" @click="toggleTeamsInDepartments()">
+      </td>
+    </tr>
+    <tr v-if="showServer && server.scope == 'organisation'">
+      <td>
         Multiple Teams?
       </td>
       <td>
@@ -159,6 +167,10 @@ export default {
     toggleHostMovesSlides() {
       const hostMovesSlides = !this.server.hostMovesSlides
       bus.$emit('sendUpdateServer', {field: 'hostMovesSlides', value: hostMovesSlides})
+    },
+    toggleTeamsInDepartments() {
+      const departments = !this.server.teamsInDepartments
+      bus.$emit('sendUpdateServer', {field: 'teamsInDepartments', value: departments})
     },
     toggleMultipleTeams() {
       const multiple = !this.server.multipleTeams
