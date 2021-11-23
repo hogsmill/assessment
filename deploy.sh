@@ -73,6 +73,7 @@ do
     case ${GAMES[$g]} in
       "5 Dysfunctions" )
         SERVERCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Server"
+        DEARTMENTSCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Assements"
@@ -80,6 +81,7 @@ do
         ;;
       "Team Health Check" )
         SERVERCOLLECTION="healthCheck${COLLECTIONSUFFIX}Server"
+        DEARTMENTSCOLLECTION="healthCheck${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="healthCheck${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="healthCheck${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="healthCheck${COLLECTIONSUFFIX}Assements"
@@ -88,6 +90,7 @@ do
         ;;
       "Agile Maturity" )
         SERVERCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Server"
+        DEARTMENTSCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Assements"
@@ -95,6 +98,7 @@ do
         ;;
       "Scrum Master" )
         SERVERCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Server"
+        DEARTMENTSCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Assements"
@@ -121,6 +125,7 @@ do
     echo "VUE_APP_PORT=$PORT" > $ENVFILE
     echo "VUE_APP_TYPE=$APPTYPE" >> $ENVFILE
     echo "VUE_APP_SERVER_COLLECTION=$SERVERCOLLECTION" >> $ENVFILE
+    echo "VUE_APP_DEPARTMENTS_COLLECTION=$DEPARTMENTSCOLLECTION" >> $ENVFILE
     echo "VUE_APP_TEAMS_COLLECTION=$TEAMSCOLLECTION" >> $ENVFILE
     echo "VUE_APP_QUESTION_COLLECTION=$QUESTIONCOLLECTION" >> $ENVFILE
     echo "VUE_APP_ASSESSMENTS_COLLECTION=$ASSESSMENTSCOLLECTION" >> $ENVFILE
