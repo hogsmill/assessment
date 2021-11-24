@@ -73,7 +73,7 @@ do
     case ${GAMES[$g]} in
       "5 Dysfunctions" )
         SERVERCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Server"
-        DEARTMENTSCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Departments"
+        DEPARTMENTSCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="fiveDysFunctions${COLLECTIONSUFFIX}Assements"
@@ -81,7 +81,7 @@ do
         ;;
       "Team Health Check" )
         SERVERCOLLECTION="healthCheck${COLLECTIONSUFFIX}Server"
-        DEARTMENTSCOLLECTION="healthCheck${COLLECTIONSUFFIX}Departments"
+        DEPARTMENTSCOLLECTION="healthCheck${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="healthCheck${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="healthCheck${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="healthCheck${COLLECTIONSUFFIX}Assements"
@@ -90,7 +90,7 @@ do
         ;;
       "Agile Maturity" )
         SERVERCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Server"
-        DEARTMENTSCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Departments"
+        DEPARTMENTSCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="agileMaturity${COLLECTIONSUFFIX}Assements"
@@ -98,7 +98,7 @@ do
         ;;
       "Scrum Master" )
         SERVERCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Server"
-        DEARTMENTSCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Departments"
+        DEPARTMENTSCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Departments"
         TEAMSCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Teams"
         QUESTIONCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Questions"
         ASSESSMENTSCOLLECTION="scrumMaster${COLLECTIONSUFFIX}Assements"
