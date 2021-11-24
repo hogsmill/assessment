@@ -22,6 +22,7 @@ export const store = new Vuex.Store({
     server: {},
     gameName: '',
     state: 'intro',
+    departments: [],
     teams: [],
     assessment: {},
     whosAnswered: [],
@@ -87,6 +88,9 @@ export const store = new Vuex.Store({
         return t.name == '_No Team_'
       })
       return team ? team : {}
+    },
+    getDepartments: (state) => {
+      return state.departments
     },
     getTeams: (state) => {
       const teams = []
@@ -175,6 +179,9 @@ export const store = new Vuex.Store({
     },
     updateState: (state, payload) => {
       state.state = payload
+    },
+    updateDepartments: (state, payload) => {
+      state.departments = payload
     },
     updateTeams: (state, payload) => {
       state.teams = payload
@@ -279,6 +286,9 @@ export const store = new Vuex.Store({
     },
     updateState: ({ commit }, payload) => {
       commit('updateState', payload)
+    },
+    updateDepartments: ({ commit }, payload) => {
+      commit('updateDepartments', payload)
     },
     updateTeams: ({ commit }, payload) => {
       commit('updateTeams', payload)

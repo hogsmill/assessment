@@ -3,6 +3,7 @@
     <h2>{{ appType }} - Facilitator View</h2>
     <Connections />
     <Server />
+    <Departments v-if="server.teamsInDepartments" />
     <Teams v-if="server.multipleTeams" />
     <Team v-if="!server.multipleTeams" />
     <Members />
@@ -15,6 +16,7 @@
 <script>
 import Connections from './facilitator/Connections.vue'
 import Server from './facilitator/Server.vue'
+import Departments from './facilitator/Departments.vue'
 import Teams from './facilitator/Teams.vue'
 import Team from './facilitator/Team.vue'
 import Members from './facilitator/Members.vue'
@@ -26,6 +28,7 @@ export default {
   components: {
     Connections,
     Server,
+    Departments,
     Teams,
     Team,
     Members,

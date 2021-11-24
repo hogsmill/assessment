@@ -26,6 +26,14 @@ function newServer(appType) {
   return server
 }
 
+function newDepartment(data) {
+  return  {
+    id: uuidv4(),
+    name: data.name,
+    teams: []
+  }
+}
+
 function newTeam(data) {
   return  {
     id: uuidv4(),
@@ -65,6 +73,13 @@ function _loadServer(db, io) {
   db.serverCollection.findOne({}, function(err, res) {
     if (err) throw err
     io.emit('loadServer', res)
+  })
+}
+
+function _loadDepartments(db, io) {
+  db.departmentsCollection.find().toArray(function(err, res) {
+    if (err) throw err
+    io.emit('loadDepartments', res)
   })
 }
 
@@ -333,6 +348,13 @@ module.exports = {
     })
   },
 
+  loadDepartments: function(db, io, debugOn) {
+
+    if (debugOn) { console.log('loadDepartments') }
+
+    _loadDepartments(db, io)
+  },
+
   loadTeams: function(db, io, debugOn) {
 
     if (debugOn) { console.log('loadTeams') }
@@ -529,6 +551,37 @@ module.exports = {
     })
   },
 
+  addDepartment: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('addDepartment', data) }
+
+    const team = newDepartment(data)
+    db.departmentsCollection.insertOne(team, function(err, res) {
+      if (err) throw err
+      _loadDepartments(db, io)
+    })
+  },
+
+  updateDepartmentName: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('updateDepartmentName', data) }
+
+    db.departmentsCollection.updateOne({id: data.id}, {$set: {name: data.name}}, function(err, res) {
+      if (err) throw err
+      _loadDepartments(db, io)
+    })
+  },
+
+  deleteDepartment: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('deleteDepartment', data) }
+
+    db.departmentsCollection.deleteOne({id: data.id}, function(err, res) {
+      if (err) throw err
+      _loadDepartments(db, io)
+    })
+  },
+
   addTeam: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('addTeam', data) }
@@ -545,6 +598,16 @@ module.exports = {
     if (debugOn) { console.log('updateTeamName', data) }
 
     db.teamsCollection.updateOne({id: data.id}, {$set: {name: data.name}}, function(err, res) {
+      if (err) throw err
+      _loadTeams(db, io)
+    })
+  },
+
+  updateTeamDepartment: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('updateTeamDepartment', data) }
+
+    db.teamsCollection.updateOne({id: data.id}, {$set: {department: {id: data.department}}}, function(err, res) {
       if (err) throw err
       _loadTeams(db, io)
     })

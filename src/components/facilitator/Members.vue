@@ -7,6 +7,18 @@
         <i v-if="!showMembers" @click="setShowMember(true)" title="expand" class="fas fa-caret-down toggle" />
       </td>
     </tr>
+    <tr v-if="showMembers && server.teamsInDepartments">
+      <td>
+        Department: <select id="department-select" @change="setDepartment()">
+          <option value="">
+            -- Select --
+          </option>
+          <option v-for="(d, index) in departments" :key="index" :value="d.id">
+            {{ d.name }}
+          </option>
+        </select>
+      </td>
+    </tr>
     <tr v-if="showMembers && server.multipleTeams">
       <td>
         Team: <select id="team-select" @change="setTeam()">
@@ -120,6 +132,9 @@ export default {
     },
     teams() {
       return this.$store.getters.getTeams
+    },
+    departments() {
+      return this.$store.getters.getDepartments
     }
   },
   created() {

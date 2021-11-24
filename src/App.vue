@@ -98,6 +98,7 @@ export default {
     bus.$emit('sendCheckServer', {appType: appType})
     bus.$emit('sendCheckSystem', {appType: appType})
 
+    bus.$emit('sendLoadDepartments')
     bus.$emit('sendLoadTeams')
 
     if (location.hostname == 'localhost' && params.isParam('host')) {
@@ -125,6 +126,10 @@ export default {
 
     bus.$on('loadTeams', (data) => {
       this.$store.dispatch('updateTeams', data)
+    })
+    
+    bus.$on('loadDepartments', (data) => {
+      this.$store.dispatch('updateDepartments', data)
     })
 
     bus.$on('loadQuestions', (data) => {

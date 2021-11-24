@@ -48,6 +48,8 @@ bus.$on('sendCheckSystem', (data) => { socket.emit('sendCheckSystem', data) })
 
 bus.$on('sendClearQuestions', (data) => { socket.emit('sendClearQuestions', data) })
 
+bus.$on('sendLoadDepartments', (data) => { socket.emit('sendLoadDepartments', data) })
+
 bus.$on('sendLoadTeams', (data) => { socket.emit('sendLoadTeams', data) })
 
 bus.$on('sendCreateAssessment', (data) => { socket.emit('sendCreateAssessment', data) })
@@ -80,9 +82,17 @@ bus.$on('sendRestart', () => { socket.emit('sendRestart') })
 
 bus.$on('sendUpdateServer', (data) => { socket.emit('sendUpdateServer', data) })
 
+bus.$on('sendAddDepartment', (data) => { socket.emit('sendAddDepartment', data) })
+
+bus.$on('sendUpdateDepartmentName', (data) => { socket.emit('sendUpdateDepartmentName', data) })
+
+bus.$on('sendDeleteDepartment', (data) => { socket.emit('sendDeleteDepartment', data) })
+
 bus.$on('sendAddTeam', (data) => { socket.emit('sendAddTeam', data) })
 
 bus.$on('sendUpdateTeamName', (data) => { socket.emit('sendUpdateTeamName', data) })
+
+bus.$on('sendUpdateTeamDepartment', (data) => { socket.emit('sendUpdateTeamDepartment', data) })
 
 bus.$on('sendDeleteTeam', (data) => { socket.emit('sendDeleteTeam', data) })
 
@@ -121,6 +131,8 @@ bus.$on('sendDeleteQuestion', (data) => { socket.emit('sendDeleteQuestion', data
 // Receive
 
 socket.on('loadServer', (data) => { bus.$emit('loadServer', data) })
+
+socket.on('loadDepartments', (data) => { bus.$emit('loadDepartments', data) })
 
 socket.on('loadTeams', (data) => { bus.$emit('loadTeams', data) })
 
