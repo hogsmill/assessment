@@ -30,7 +30,8 @@ function newDepartment(data) {
   return  {
     id: uuidv4(),
     name: data.name,
-    teams: []
+    teams: [],
+    members: []
   }
 }
 
@@ -200,11 +201,17 @@ function _resultsQuery(assessment, scope) {
         query.team = assessment.team
         query.member = assessment.member
         break
+      case 'department':
+        query.department = assessment.department
+        delete query.team
+        delete query.member
+        break
       case 'team':
         query.team = assessment.team
         delete query.member
         break
       case 'organisation':
+        delete query.department
         delete query.team
         delete query.member
         break
@@ -227,7 +234,8 @@ function assessmentDate(assessment) {
 
 function _assessmentsDone(db, io, data, debugOn) {
 
-  db.assessmentsCollection.find({'team.id': data.id}).toArray(function(err, res) {
+  const query = data.departmentId ? {'department.id': data.departmentId} : {'team.id': data.teamId}
+  db.assessmentsCollection.find(query).toArray(function(err, res) {
     if (err) throw err
     if (res.length) {
       const done = {
@@ -628,62 +636,115 @@ module.exports = {
     if (debugOn) { console.log('addMember', data) }
 
     const member = newMember(data)
-    db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
-      if (err) throw err
-      if (res) {
-        const members = res.members
-        members.push(member)
-        db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
-          if (err) throw err
-          _loadTeams(db, io)
-        })
-      }
-    })
+    if (data.departmentId) {
+      db.departmentsCollection.findOne({id: data.departmentId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = res.members ? res.members : []
+          members.push(member)
+          db.departmentsCollection.updateOne({id: data.departmentId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadDepartments(db, io)
+          })
+        }
+      })
+    } else {
+      db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = res.members ? res.members : []
+          members.push(member)
+          db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadTeams(db, io)
+          })
+        }
+      })
+    }
   },
 
   updateMemberDetails: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('updateMemberDetails', data) }
 
-    db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
-      if (err) throw err
-      if (res) {
-        const members = []
-        for (let i = 0; i < res.members.length; i++) {
-          const member = res.members[i]
-          if (member.id == data.id) {
-            member.name = data.name
-            member.email = data.email
+    if (data.departmentId) {
+      db.departmentsCollection.findOne({id: data.departmentId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = []
+          for (let i = 0; i < res.members.length; i++) {
+            const member = res.members[i]
+            if (member.id == data.id) {
+              member.name = data.name
+              member.email = data.email
+            }
+            members.push(res.members[i])
           }
-          members.push(res.members[i])
+          db.departmentsCollection.updateOne({id: data.departmentId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadDepartments(db, io)
+          })
         }
-        db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
-          if (err) throw err
-          _loadTeams(db, io)
-        })
-      }
-    })
+      })
+    } else {
+      db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = []
+          for (let i = 0; i < res.members.length; i++) {
+            const member = res.members[i]
+            if (member.id == data.id) {
+              member.name = data.name
+              member.email = data.email
+            }
+            members.push(res.members[i])
+          }
+          db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadTeams(db, io)
+          })
+        }
+      })
+    }
   },
 
   deleteMember: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('deleteMember', data) }
 
-    db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
-      if (err) throw err
-      if (res) {
-        const members = []
-        for (let i = 0; i < res.members.length; i++) {
-          if (res.members[i].id != data.id) {
-            members.push(res.members[i])
+    if (data.departmentId) {
+      db.departmentsCollection.findOne({id: data.departmentId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = []
+          for (let i = 0; i < res.members.length; i++) {
+            if (res.members[i].id != data.id) {
+              members.push(res.members[i])
+            }
           }
+          db.departmentsCollection.updateOne({id: data.departmentId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadDepartments(db, io)
+          })
         }
-        db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
-          if (err) throw err
-          _loadTeams(db, io)
-        })
-      }
-    })
+      })
+    } else {
+      db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = []
+          for (let i = 0; i < res.members.length; i++) {
+            if (res.members[i].id != data.id) {
+              members.push(res.members[i])
+            }
+          }
+          db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadTeams(db, io)
+          })
+        }
+      })
+    }
   },
 
   changeTeam: function(db, io, data, debugOn) {

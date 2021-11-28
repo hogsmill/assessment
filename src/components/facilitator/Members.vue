@@ -8,8 +8,13 @@
       </td>
     </tr>
     <tr v-if="showMembers && server.teamsInDepartments">
+      <td colspan="2">
+        <i>Select member to be in either a department (e.g. for head of department) or a team in a department</i>
+      </td>
+    </tr>
+    <tr v-if="showMembers && server.teamsInDepartments">
       <td>
-        Department: <select id="department-select" @change="setDepartment()">
+        Department: <select id="department-select" @change="setTeam('department')" :value="selectedDepartment">
           <option value="">
             -- Select --
           </option>
@@ -21,7 +26,7 @@
     </tr>
     <tr v-if="showMembers && server.multipleTeams">
       <td>
-        Team: <select id="team-select" @change="setTeam()">
+        Team: <select id="team-select" @change="setTeam('team')" :value="selectedTeam">
           <option value="">
             -- Select --
           </option>
@@ -34,7 +39,7 @@
     <tr v-if="showMembers">
       <td>
         <input type="text" id="new-member">
-        <button class="btn btn-sm btn-secondary smaller-font" :disabled="server.multipleTeams && !selectedTeam" @click="addMember()">
+        <button class="btn btn-sm btn-secondary smaller-font" :disabled="server.multipleTeams && !selectedTeam && !selectedDepartment" @click="addMember()">
           Add New
         </button>
       </td>
@@ -72,7 +77,15 @@
                   <i v-if="editingMember == member.id" class="fas fa-save" @click="saveMemberDetails()" />
                   <i class="fas fa-users" @click="showChangeTeam(member)" />
                   <div v-if="changingTeamMember == member.id">
-                    <select :id="'change-team-' + member.id" @change="changeTeam(member)">
+                    Dept.: <select :id="'change-department-' + member.id" @change="changeTeam('department', member)">
+                      <option value="">
+                        -- Select --
+                      </option>
+                      <option v-for="(d, dindex) in departments" :key="dindex" :value="d.id">
+                        {{ d.name }}
+                      </option>
+                    </select>
+                    Team: <select :id="'change-team-' + member.id" @change="changeTeam('team', member)">
                       <option value="">
                         -- Select --
                       </option>
@@ -114,6 +127,7 @@ export default {
     return {
       showMembers: false,
       members: [],
+      selectedDepartment: null,
       selectedTeam: null,
       editingMember: null,
       changingTeamMember: null,
@@ -140,7 +154,7 @@ export default {
   created() {
     bus.$on('loadTeams', (data) => {
       if (this.selectedTeam) {
-        this.setTeam(this.selectedTeam)
+        this.setTeam('team', this.selectedTeam)
       }
     })
 
@@ -176,35 +190,50 @@ export default {
         this.members = []
       }
     },
-    setTeam(teamId) {
+    setTeam(type, teamId) {
       if (teamId) {
         this.selectedTeam = teamId
+        this.selectedDepartment = null
       } else {
-        this.selectedTeam = document.getElementById('team-select').value
-      }
-      const team = this.teams.find((t) => {
-        return t.id == this.selectedTeam
-      })
-      this.members = team ? team.members : []
-      if (team) {
-        bus.$emit('sendAssessmentsDone', {id: team.id})
+        if (type == 'department') {
+          this.selectedDepartment = document.getElementById('department-select').value
+          this.selectedTeam = null
+          const department = this.departments.find((d) => {
+            return d.id == this.selectedDepartment
+          })
+          this.members = department && department.members ? department.members : []
+          if (department) {
+            bus.$emit('sendAssessmentsDone', {departmentId: department.id})
+          }
+        } else {
+          this.selectedDepartment = null
+          this.selectedTeam =  document.getElementById('team-select').value
+          const team = this.teams.find((t) => {
+            return t.id == this.selectedTeam
+          })
+          this.members = team ? team.members : []
+          if (team) {
+            bus.$emit('sendAssessmentsDone', {teamId: team.id})
+          }
+        }
       }
     },
     showChangeTeam(member) {
       this.changingTeamMember = member.id
     },
-    changeTeam(member) {
+    changeTeam(type, member) {
+      const departmentId = document.getElementById('change-department-' + member.id).value
       const teamId = document.getElementById('change-team-' + member.id).value
       bus.$emit('sendChangeTeam', {teamId: teamId, member: member})
       this.changingTeamMember = null
     },
     addMember() {
       const name = document.getElementById('new-member').value
-      bus.$emit('sendAddMember', {teamId: this.selectedTeam, name: name})
+      bus.$emit('sendAddMember', {departmentId: this.selectedDepartment, teamId: this.selectedTeam, name: name})
     },
     deleteMember(member) {
       if (confirm('Delete ' + member.name)) {
-        bus.$emit('sendDeleteMember', {teamId: this.selectedTeam, id: member.id})
+        bus.$emit('sendDeleteMember', {departmentId: this.selectedDepartment, teamId: this.selectedTeam, id: member.id})
       }
     },
     setEditingMember(member) {

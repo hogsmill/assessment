@@ -31,6 +31,15 @@
                 </span>
               </div>
             </td>
+            <td v-if="server.teamsInDepartments" >
+              <div :class="{ 'selected': scope.member == 'department' }">
+                <i v-if="server.teamsInDepartments" class="fas fa-sitemap" title="Department results" @click="setScope('member', 'department')" />
+                <br>
+                <span>
+                  My Dept
+                </span>
+              </div>
+            </td>
             <td>
               <div :class="{ 'selected': scope.member == 'team' }">
                 <i v-if="server.multipleTeams" class="fas fa-users" title="Team results" @click="setScope('member', 'team')" />

@@ -127,7 +127,7 @@ export default {
     bus.$on('loadTeams', (data) => {
       this.$store.dispatch('updateTeams', data)
     })
-    
+
     bus.$on('loadDepartments', (data) => {
       this.$store.dispatch('updateDepartments', data)
     })

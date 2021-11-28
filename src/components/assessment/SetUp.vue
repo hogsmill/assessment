@@ -1,6 +1,21 @@
 <template>
   <div class="setup">
     <table>
+      <tr v-if="server.teamsInDepartments">
+        <td>
+          Department
+        </td>
+        <td>
+          <select id="setup-select-department" @change="selectDepartment()">
+            <option value="">
+              -- Select --
+            </option>
+            <option v-for="(d, dindex) in departments" :key="dindex" :selected="assessment.department && d.id == assessment.department.id" :value="d.id">
+              {{ d.name }}
+            </option>
+          </select>
+        </td>
+      </tr>
       <tr v-if="server.multipleTeams">
         <td>
           Team
@@ -95,6 +110,9 @@ export default {
     server() {
       return this.$store.getters.getServer
     },
+    departments() {
+      return this.$store.getters.getDepartments
+    },
     teams() {
       return this.$store.getters.getTeams
     },
@@ -111,6 +129,13 @@ export default {
       assessment[key] = value
       //ls.storeAssessment(assessment, this.lsSuffix)
       this.$store.dispatch('updateAssessment', assessment)
+    },
+    selectDepartment() {
+      const departmentId = document.getElementById('setup-select-department').value
+      const department = this.departments.find((d) => {
+        return d.id == departmentId
+      })
+      this.updateAssessment('department', department)
     },
     selectTeam() {
       const teamId = team ? team : document.getElementById('setup-select-team').value
