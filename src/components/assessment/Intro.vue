@@ -74,6 +74,9 @@ export default {
         } else if (this.server.frequency == 'quarterly') {
           setUp = setUp && assessment.year && assessment.quarter
         }
+        if (this.server.teamsInDepartments) {
+          setUp = setUp && assessment.department.id
+        }
         if (this.server.multipleTeams) {
           setUp = setUp && assessment.team.id
         }
@@ -94,6 +97,7 @@ export default {
       //const assessment = JSON.parse(localStorage.getItem('assessment-' + this.lsSuffix))
       const team = this.getTeam()
       const member = document.getElementById('setup-select-myname').value
+      const department = this.server.teamsInDepartments ? document.getElementById('setup-select-department').value : null
       let month, quarter, year
       if (this.server.frequency == 'monthly') {
         month = document.getElementById('setup-select-month').value
@@ -107,6 +111,7 @@ export default {
       const assessment = {
         team: {id: team},
         member: {id: member},
+        department: department ? {id: department} : null,
         month: month,
         quarter: quarter,
         year: year
