@@ -194,6 +194,10 @@ export default {
       if (teamId) {
         this.selectedTeam = teamId
         this.selectedDepartment = null
+        const team = this.teams.find((t) => {
+          return t.id == this.selectedTeam
+        })
+        this.members = team ? team.members : []
       } else {
         if (type == 'department') {
           this.selectedDepartment = document.getElementById('department-select').value
