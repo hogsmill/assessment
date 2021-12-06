@@ -8,6 +8,11 @@
       </td>
     </tr>
     <tr v-if="showMembers && server.teamsInDepartments">
+      <td colspan="2" class="right">
+        Export Completed Assessments <i class="fas fa-file-export" aria-hidden="true" title="Export completed assessments" @click="loadAllAssessmentsDone()"/>
+      </td>
+    </tr>
+    <tr v-if="showMembers && server.teamsInDepartments">
       <td colspan="2">
         <i>Select member to be in either a department (e.g. for head of department) or a team in a department</i>
       </td>
@@ -131,6 +136,7 @@ export default {
       selectedTeam: null,
       editingMember: null,
       changingTeamMember: null,
+      allAssessmentsDone: null,
       assessmentsDone: {
         labels: [],
         done: {}
@@ -165,9 +171,53 @@ export default {
     bus.$on('loadAssessmentsDone', (data) => {
       this.assessmentsDone = data
     })
+
+    bus.$on('loadAllAssessmentsDone', (data) => {
+      this.allAssessmentsDone = data
+      this.exportAssessments()
+    })
+
     this.setNoTeam()
   },
   methods: {
+    loadAllAssessmentsDone() {
+      bus.$emit('sendLoadAllAssessmentsDone')
+    },
+    exportAssessments() {
+      const done = {}
+      for (let t = 0; t < this.teams.length; t++) {
+        const team = this.teams[t].name
+        done[team] = {}
+        for (let l = 0; l < this.allAssessmentsDone.labels.length; l++) {
+          const label = this.allAssessmentsDone.labels[l]
+          done[team][label] = {}
+          for (let m = 0; m < this.teams[t].members.length; m++) {
+            const mem = this.teams[t].members[m]
+            const member = this.allAssessmentsDone.done[mem.id]
+            done[team][label][mem.name] = {
+              done: !!(member && member.indexOf(label) > -1)
+            }
+          }
+        }
+      }
+      console.log(done)
+      const results = []
+      results.push('Team,Member,' + this.allAssessmentsDone.labels.join(','))
+      const teams = Object.keys(done)
+      for (let t = 0; t < teams.length; t++) {
+        const team = done[teams[t]]
+        const members = Object.keys(team[this.allAssessmentsDone.labels[0]])
+        const labels = Object.keys(team)
+        for (let m = 0; m < members.length; m++) {
+          const allDone = []
+          for (let l = 0; l < labels.length; l++) {
+            allDone.push(done[teams[t]][labels[l]][members[m]].done ? 'y' : '')
+          }
+          results.push(teams[t] + ',' + members[m] + ',' + allDone.join(','))
+        }
+      }
+      console.log(results.join('\n'))
+    },
     assessmentDone(id, label) {
       let done = false
       const member = this.assessmentsDone.done[id]
@@ -270,6 +320,10 @@ export default {
     td {
       &.center {
         text-align: center;
+      }
+
+      &.right {
+        text-align: right;
       }
 
       .actions {

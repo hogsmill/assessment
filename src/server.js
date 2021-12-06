@@ -121,6 +121,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
     socket.on('sendCheckSystem', (data) => { dbStore.checkSystem(db, io, data, debugOn) })
 
+    socket.on('sendLoadAllAssessmentsDone', (data) => { dbStore.allAssessmentsDone(db, io, data, debugOn) })
+
     socket.on('sendClearQuestions', (data) => { dbStore.clearQuestions(db, io, data, debugOn) })
 
     socket.on('sendLoadDepartments', () => { dbStore.loadDepartments(db, io, debugOn) })
@@ -160,7 +162,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendAddTeam', (data) => { dbStore.addTeam(db, io, data, debugOn) })
 
     socket.on('sendUpdateTeamName', (data) => { dbStore.updateTeamName(db, io, data, debugOn) })
-    
+
     socket.on('sendUpdateTeamDepartment', (data) => { dbStore.updateTeamDepartment(db, io, data, debugOn) })
 
     socket.on('sendDeleteTeam', (data) => { dbStore.deleteTeam(db, io, data, debugOn) })

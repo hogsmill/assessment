@@ -232,6 +232,32 @@ function assessmentDate(assessment) {
   return label
 }
 
+function _allAssessmentsDone(db, io, data, debugOn) {
+
+  db.assessmentsCollection.find().toArray(function(err, res) {
+    if (err) throw err
+    if (res.length) {
+      const done = {
+        labels: [],
+        done: {}
+      }
+      for (let i = 0; i < res.length; i++) {
+        const member = res[i].member
+        const memberDone = done.done[member.id] ? done.done[member.id] : []
+        const date = assessmentDate(res[i])
+        const labels = done.labels
+        if (labels.indexOf(date) < 0) {
+          labels.push(date)
+          done.labels = labels.sort()
+        }
+        memberDone.push(assessmentDate(res[i]))
+        done.done[member.id] = memberDone.sort()
+      }
+      io.emit('loadAllAssessmentsDone', done)
+    }
+  })
+}
+
 function _assessmentsDone(db, io, data, debugOn) {
 
   const query = data.departmentId ? {'department.id': data.departmentId} : {'team.id': data.teamId}
@@ -816,6 +842,13 @@ module.exports = {
     })
   },
 
+  allAssessmentsDone: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('allAssessmentsDone', data) }
+
+    _allAssessmentsDone(db, io, data, debugOn)
+  },
+  
   assessmentsDone: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('assessmentsDone', data) }

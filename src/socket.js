@@ -46,6 +46,8 @@ bus.$on('sendCheckServer', (data) => { socket.emit('sendCheckServer', data) })
 
 bus.$on('sendCheckSystem', (data) => { socket.emit('sendCheckSystem', data) })
 
+bus.$on('sendLoadAllAssessmentsDone', (data) => { socket.emit('sendLoadAllAssessmentsDone', data) })
+
 bus.$on('sendClearQuestions', (data) => { socket.emit('sendClearQuestions', data) })
 
 bus.$on('sendLoadDepartments', (data) => { socket.emit('sendLoadDepartments', data) })
@@ -137,6 +139,8 @@ socket.on('loadDepartments', (data) => { bus.$emit('loadDepartments', data) })
 socket.on('loadTeams', (data) => { bus.$emit('loadTeams', data) })
 
 socket.on('loadQuestions', (data) => { bus.$emit('loadQuestions', data) })
+
+socket.on('loadAllAssessmentsDone', (data) => { bus.$emit('loadAllAssessmentsDone', data) })
 
 socket.on('loadAssessment', (data) => { bus.$emit('loadAssessment', data) })
 
