@@ -242,16 +242,18 @@ function _allAssessmentsDone(db, io, data, debugOn) {
         done: {}
       }
       for (let i = 0; i < res.length; i++) {
-        const member = res[i].member
-        const memberDone = done.done[member.id] ? done.done[member.id] : []
-        const date = assessmentDate(res[i])
-        const labels = done.labels
-        if (labels.indexOf(date) < 0) {
-          labels.push(date)
-          done.labels = labels.sort()
+        if (res[i].member) {
+          const member = res[i].member
+          const memberDone = done.done[member.id] ? done.done[member.id] : []
+          const date = assessmentDate(res[i])
+          const labels = done.labels
+          if (labels.indexOf(date) < 0) {
+            labels.push(date)
+            done.labels = labels.sort()
+          }
+          memberDone.push(assessmentDate(res[i]))
+          done.done[member.id] = memberDone.sort()
         }
-        memberDone.push(assessmentDate(res[i]))
-        done.done[member.id] = memberDone.sort()
       }
       io.emit('loadAllAssessmentsDone', done)
     }
@@ -848,7 +850,7 @@ module.exports = {
 
     _allAssessmentsDone(db, io, data, debugOn)
   },
-  
+
   assessmentsDone: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('assessmentsDone', data) }
