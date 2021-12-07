@@ -74,11 +74,8 @@ export default {
         } else if (this.server.frequency == 'quarterly') {
           setUp = setUp && assessment.year && assessment.quarter
         }
-        if (this.server.teamsInDepartments) {
-          setUp = setUp && assessment.department.id
-        }
         if (this.server.multipleTeams) {
-          setUp = setUp && assessment.team.id
+          setUp = setUp && (assessment.team.id || assessment.department.id)
         }
         this.setUp = setUp
       }
