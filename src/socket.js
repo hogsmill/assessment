@@ -100,6 +100,8 @@ bus.$on('sendDeleteTeam', (data) => { socket.emit('sendDeleteTeam', data) })
 
 bus.$on('sendAddMember', (data) => { socket.emit('sendAddMember', data) })
 
+bus.$on('sendMakeMainContact', (data) => { socket.emit('sendMakeMainContact', data) })
+
 bus.$on('sendUpdateMemberDetails', (data) => { socket.emit('sendUpdateMemberDetails', data) })
 
 bus.$on('sendDeleteMember', (data) => { socket.emit('sendDeleteMember', data) })

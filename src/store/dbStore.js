@@ -736,6 +736,45 @@ module.exports = {
     }
   },
 
+  makeMainContact: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('makeMainContact', data) }
+
+    if (data.departmentId) {
+      db.departmentsCollection.findOne({id: data.departmentId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = []
+          for (let i = 0; i < res.members.length; i++) {
+            const member = res.members[i]
+            member.mainContact = member.id == data.id
+            members.push(res.members[i])
+          }
+          db.departmentsCollection.updateOne({id: data.departmentId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadDepartments(db, io)
+          })
+        }
+      })
+    } else {
+      db.teamsCollection.findOne({id: data.teamId}, function(err, res) {
+        if (err) throw err
+        if (res) {
+          const members = []
+          for (let i = 0; i < res.members.length; i++) {
+            const member = res.members[i]
+            member.mainContact = member.id == data.id
+            members.push(res.members[i])
+          }
+          db.teamsCollection.updateOne({id: data.teamId}, {$set: {members: members}}, function(err, res) {
+            if (err) throw err
+            _loadTeams(db, io)
+          })
+        }
+      })
+    }
+  },
+
   deleteMember: function(db, io, data, debugOn) {
 
     if (debugOn) { console.log('deleteMember', data) }

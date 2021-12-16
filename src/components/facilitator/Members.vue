@@ -60,6 +60,9 @@
               <th rowspan="2">
                 Member
               </th>
+              <th rowspan="2" title="Team lead, head of etc.">
+                Contact?
+              </th>
               <th rowspan="2">
                 Email
               </th>
@@ -106,6 +109,9 @@
                   <span v-if="editingMember != member.id">{{ member.name }}</span>
                   <input v-if="editingMember == member.id" type="text" :id="'member-name-editing-' + member.id" :value="member.name">
                 </div>
+              </td>
+              <td>
+                <input type="checkbox" :checked="member.mainContact" @click="makeMainContact(member)" />
               </td>
               <td>
                 <div class="member-email">
@@ -200,7 +206,6 @@ export default {
           }
         }
       }
-      console.log(done)
       const results = []
       results.push('Team,Member,' + this.allAssessmentsDone.labels.join(','))
       const teams = Object.keys(done)
@@ -284,6 +289,7 @@ export default {
     addMember() {
       const name = document.getElementById('new-member').value
       bus.$emit('sendAddMember', {departmentId: this.selectedDepartment, teamId: this.selectedTeam, name: name})
+      document.getElementById('new-member').value = ''
     },
     deleteMember(member) {
       if (confirm('Delete ' + member.name)) {
@@ -298,6 +304,9 @@ export default {
       const email = document.getElementById('member-email-editing-' + this.editingMember).value
       bus.$emit('sendUpdateMemberDetails', {teamId: this.selectedTeam, id: this.editingMember, name: name, email: email})
       this.editingMember = null
+    },
+    makeMainContact(member) {
+      bus.$emit('sendMakeMainContact', {teamId: this.selectedTeam, id: member.id})
     },
     deleteAssessment(member, label) {
       if (confirm('Delete assessment from ' + label + ' for ' + member.name)) {

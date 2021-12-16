@@ -168,6 +168,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendDeleteTeam', (data) => { dbStore.deleteTeam(db, io, data, debugOn) })
 
     socket.on('sendAddMember', (data) => { dbStore.addMember(db, io, data, debugOn) })
+    
+    socket.on('sendMakeMainContact', (data) => { dbStore.makeMainContact(db, io, data, debugOn) })
 
     socket.on('sendUpdateMemberDetails', (data) => { dbStore.updateMemberDetails(db, io, data, debugOn) })
 
