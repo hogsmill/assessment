@@ -188,7 +188,7 @@
         Comments for <br>
         {{ commentsTitle }}
       </h3>
-      <div class="mt-4">
+      <div class="mt-4 comments-list">
         <ul>
           <li v-for="(comment, index) in comments" :key="index">
             {{ comment.comment }}
@@ -502,6 +502,11 @@ export default {
   }
 
   #question-comments {
+  
+    .comments-list {
+      overflow-y: scroll;
+    }
+
     li {
       text-align: left;
     }
