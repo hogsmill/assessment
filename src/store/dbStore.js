@@ -371,7 +371,7 @@ module.exports = {
             data.question = questions[i]
             data.order = n
             data.protected = true
-            const question = newQuestion(data, server.allowComments)
+            const question = newQuestion(data, server.comments)
             db.questionCollection.insertOne(question, function(err, res) {
               if (err) throw err
               if (i == questions.length - 1) {
@@ -907,7 +907,7 @@ module.exports = {
         if (err) throw err
         if (res.length) {
           data.order = res.length + 1
-          const question = newQuestion(data, server.allowComments)
+          const question = newQuestion(data, server.comments)
           db.questionCollection.insertOne(question, function(err, res) {
             if (err) throw err
             _loadQuestions(db, io)
