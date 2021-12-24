@@ -50,7 +50,7 @@ ROUTES=(
   'eagile','EverydayAgile'
   'and','And'
   'richemont','Richemont'
-  'mattphillip', 'MattPhillip'
+  'mattphillip','MattPhillip'
 )
 
 git stash
