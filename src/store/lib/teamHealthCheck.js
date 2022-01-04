@@ -47,8 +47,8 @@ const questions = [
   },
   {
     title: 'Pawns or players',
-    good: 'We are in control of our destiny!',
-    bad: 'We decide what to build and how to build it. We are just pawns in a game of chess, with no influence over what we build or how we build it'
+    good: 'We are in control of our destiny! We decide what to build and how to build it.',
+    bad: 'We are just pawns in a game of chess, with no influence over what we build or how we build it'
   }
 ]
 
