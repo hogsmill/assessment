@@ -31,7 +31,7 @@
                 </span>
               </div>
             </td>
-            <td v-if="server.teamsInDepartments" >
+            <td v-if="server.teamsInDepartments">
               <div :class="{ 'selected': scope.member == 'department' }">
                 <i v-if="server.teamsInDepartments" class="fas fa-sitemap" title="Department results" @click="setScope('member', 'department')" />
                 <br>
@@ -502,7 +502,7 @@ export default {
   }
 
   #question-comments {
-  
+
     .comments-list {
       overflow-y: scroll;
     }

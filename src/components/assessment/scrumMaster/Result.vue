@@ -10,7 +10,8 @@
           {{ result.results[res].answer }}
           <i v-if="result.results[res].comments.length" class="far fa-comment"
              :title="'Comments for ' + result.question + ' from ' + res"
-             @click="showComments(result.results[res], result.question + ' from ' + res)" />
+             @click="showComments(result.results[res], result.question + ' from ' + res)"
+          />
         </div>
         <i v-if="index > 0" class="fas trend" :class="trendClass(index)" />
       </div>

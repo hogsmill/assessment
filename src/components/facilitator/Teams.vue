@@ -48,16 +48,16 @@
                 </div>
               </td>
               <td>
-                <div v-if="editingTeamDepartment != team.id" >
+                <div v-if="editingTeamDepartment != team.id">
                   <i class="fas fa-edit" @click="setEditingTeamDepartment(team)" />
                   {{ departmentName(team) }}
                 </div>
-                <div v-if="editingTeamDepartment == team.id" >
+                <div v-if="editingTeamDepartment == team.id">
                   <select :id="'team-department-editing-' + team.id" @change="saveTeamDepartment(team)">
                     <option value="">
                       -- Select --
                     </option>
-                    <option v-for="(d, index) in departments" :key="index" :value="d.id">
+                    <option v-for="(d, dindex) in departments" :key="dindex" :value="d.id">
                       {{ d.name }}
                     </option>
                   </select>

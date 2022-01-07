@@ -13,7 +13,8 @@ function newServer(appType) {
     scope: 'individual',
     multipleTeams: false,
     autoNextQuestion: false,
-    showTeamAnswers: false
+    showTeamAnswers: false,
+    language: 'uk-english'
   }
   switch(appType) {
     case '5 Dysfunctions':
@@ -358,7 +359,7 @@ module.exports = {
               questions = fiveDysfunctionsFuns.questions()
               break
             case 'Team Health Check':
-              questions = teamHealthCheckFuns.questions()
+              questions = teamHealthCheckFuns.questions(server.language)
               break
             case 'Agile Maturity':
               questions = agileMaturityFuns.questions()

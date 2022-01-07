@@ -17,6 +17,21 @@
         </button>
       </td>
     </tr>
+    <tr v-if="showServer">
+      <td>
+        Language
+      </td>
+      <td>
+        <select id="server-language-select" @change="setLanguage()">
+          <option value="uk-english" :selected="!server.language || server.language == 'uk-english'">
+            English (UK)
+          </option>
+          <option value="french" :selected="server.language == 'french'">
+            French
+          </option>
+        </select>
+      </td>
+    </tr>
     <tr v-if="showServer && allowComments">
       <td>
         Allow Comments on Questions
@@ -139,6 +154,10 @@ export default {
     },
     clearQuestions() {
       bus.$emit('sendClearQuestions')
+    },
+    setLanguage() {
+      const language = document.getElementById('server-language-select').value
+      bus.$emit('sendUpdateServer', {field: 'language', value: language})
     },
     setScope() {
       const scope = document.getElementById('server-scope-select').value

@@ -9,7 +9,7 @@
     </tr>
     <tr v-if="showMembers && server.teamsInDepartments">
       <td colspan="2" class="right">
-        Export Completed Assessments <i class="fas fa-file-export" aria-hidden="true" title="Export completed assessments" @click="loadAllAssessmentsDone()"/>
+        Export Completed Assessments <i class="fas fa-file-export" aria-hidden="true" title="Export completed assessments" @click="loadAllAssessmentsDone()" />
       </td>
     </tr>
     <tr v-if="showMembers && server.teamsInDepartments">
@@ -111,7 +111,7 @@
                 </div>
               </td>
               <td>
-                <input type="checkbox" :checked="member.mainContact" @click="makeMainContact(member)" />
+                <input type="checkbox" :checked="member.mainContact" @click="makeMainContact(member)">
               </td>
               <td>
                 <div class="member-email">
@@ -246,13 +246,14 @@ export default {
       }
     },
     setTeam(type, teamId) {
+      let members = []
       if (teamId) {
         this.selectedTeam = teamId
         this.selectedDepartment = null
         const team = this.teams.find((t) => {
           return t.id == this.selectedTeam
         })
-        this.members = team ? team.members : []
+        members = team ? team.members : []
       } else {
         if (type == 'department') {
           this.selectedDepartment = document.getElementById('department-select').value
@@ -260,7 +261,7 @@ export default {
           const department = this.departments.find((d) => {
             return d.id == this.selectedDepartment
           })
-          this.members = department && department.members ? department.members : []
+          members = department && department.members ? department.members : []
           if (department) {
             bus.$emit('sendAssessmentsDone', {departmentId: department.id})
           }
@@ -270,12 +271,31 @@ export default {
           const team = this.teams.find((t) => {
             return t.id == this.selectedTeam
           })
-          this.members = team ? team.members : []
+          members = team ? team.members : []
           if (team) {
             bus.$emit('sendAssessmentsDone', {teamId: team.id})
           }
         }
       }
+      this.members = this.memberSort(members)
+    },
+    memberSort(members) {
+      const mems = members.sort((a, b) => {
+        //return a.name < b.name
+        return a.name.localeCompare(b.name)
+      })
+      const ms = []
+      for (let i = 0; i < mems.length; i++) {
+        if (mems[i].mainContact) {
+          ms.push(mems[i])
+        }
+      }
+      for (let j = 0; j < mems.length; j++) {
+        if (!mems[j].mainContact) {
+          ms.push(mems[j])
+        }
+      }
+      return ms
     },
     showChangeTeam(member) {
       this.changingTeamMember = member.id
