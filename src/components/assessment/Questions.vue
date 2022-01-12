@@ -129,6 +129,9 @@ export default {
     setQuestion(data) {
       this.order = data.order
     },
+    prev() {
+      this.order = this.order - 1
+    },
     next() {
       this.order = this.order + 1
     },
