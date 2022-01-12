@@ -29,7 +29,7 @@ const questions = {
     },
     {
       title: 'Speed',
-      good: 'We get stuff done really quickly.No waiting, no delays',
+      good: 'We get stuff done really quickly. No waiting, no delays',
       bad: 'We never seem to get done with anything. We keep getting stuck or interrupted. Stories keep getting stuck on dependencies'
     },
     {

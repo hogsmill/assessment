@@ -9,21 +9,21 @@ const questions = {
     {
       title: 'Suitable process',
       good: 'Our way of working fits us perfectly',
-      bad: 'Our way of working sucks'
+      bad: 'Our way of working is awful'
     },
     {
-      title: 'Tech quality (code base health)',
-      good: 'We\'re proud of the quality of our code! It is clean, easy to read, and has great test coverage',
+      title: 'Tech quality',
+      good: 'We\'re proud of the quality of our code/product! It is clean, easy to read, and has great test coverage',
       bad: 'Our code is a pile of dung, and technical debt is raging out of control'
     },
     {
       title: 'Value',
       good: 'We deliver great stuff! We’re proud of it and our stakeholders are really happy',
-      bad: 'We deliver crap. We feel ashamed to deliver it. Our stakeholders hate us'
+      bad: 'We deliver rubbish. We feel ashamed to deliver it. Our stakeholders hate us'
     },
     {
       title: 'Speed',
-      good: 'We get stuff done really quickly.No waiting, no delays',
+      good: 'We get stuff done really quickly. No waiting, no delays',
       bad: 'We never seem to get done with anything. We keep getting stuck or interrupted. Stories keep getting stuck on dependencies'
     },
     {
@@ -39,7 +39,7 @@ const questions = {
     {
       title: 'Learning',
       good: 'We\'re learning lots of interesting stuff all the time!',
-      bad: 'We never have time to learn anything'
+      bad: 'We never have the opportunity to learn anything'
     },
     {
       title: 'Support',
