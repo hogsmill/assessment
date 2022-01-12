@@ -123,6 +123,7 @@ do
       git clone $REPO $DIR
     fi
     ENVFILE="$DIR/.env"
+    echo "VUE_APP_ROUTE=$ROUTE" > $ENVFILE
     echo "VUE_APP_PORT=$PORT" > $ENVFILE
     echo "VUE_APP_TYPE=$APPTYPE" >> $ENVFILE
     echo "VUE_APP_SERVER_COLLECTION=$SERVERCOLLECTION" >> $ENVFILE

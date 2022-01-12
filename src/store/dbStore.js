@@ -356,16 +356,16 @@ module.exports = {
           let questions = []
           switch(data.appType) {
             case '5 Dysfunctions':
-              questions = fiveDysfunctionsFuns.questions()
+              questions = fiveDysfunctionsFuns.questions(server.language, global.route)
               break
             case 'Team Health Check':
-              questions = teamHealthCheckFuns.questions(server.language)
+              questions = teamHealthCheckFuns.questions(server.language, global.route)
               break
             case 'Agile Maturity':
-              questions = agileMaturityFuns.questions()
+              questions = agileMaturityFuns.questions(server.language, global.route)
               break
             case 'Scrum Master':
-              questions = scrumMasterFuns.questions()
+              questions = scrumMasterFuns.questions(server.language, global.route)
               break
           }
           for (let i = 0, n = 1; i < questions.length; i++, n++) {

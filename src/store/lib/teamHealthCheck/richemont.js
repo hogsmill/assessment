@@ -1,10 +1,4 @@
 
-const richemont = require('./teamHealthCheck/richemont')
-
-const routes = {
-  richemont: richemont
-}
-
 const questions = {
   'uk-english': [
     {
@@ -114,9 +108,8 @@ const questions = {
 
 module.exports = {
 
-  questions: function(lang, route) {
-    const qs = route ? routes[route].questions(lang) : questions
-    return qs[lang] ? qs[lang] : qs['uk-english']
+  questions: function(lang) {
+    return questions[lang] ? questions[lang] : questions['uk-english']
   }
 
 }

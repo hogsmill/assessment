@@ -31,6 +31,7 @@ ON_DEATH(function(signal, err) {
 
 global.TextEncoder = require("util").TextEncoder
 global.TextDecoder = require("util").TextDecoder
+global.route = prod ? process.env.VUE_APP_ROUTE : ''
 
 let httpServer
 let io
@@ -168,7 +169,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendDeleteTeam', (data) => { dbStore.deleteTeam(db, io, data, debugOn) })
 
     socket.on('sendAddMember', (data) => { dbStore.addMember(db, io, data, debugOn) })
-    
+
     socket.on('sendMakeMainContact', (data) => { dbStore.makeMainContact(db, io, data, debugOn) })
 
     socket.on('sendUpdateMemberDetails', (data) => { dbStore.updateMemberDetails(db, io, data, debugOn) })
