@@ -115,7 +115,7 @@ const questions = {
 module.exports = {
 
   questions: function(lang, route) {
-    const qs = route ? routes[route].questions(lang) : questions
+    const qs = route ? routes[route].questions() : questions
     return qs[lang] ? qs[lang] : qs['uk-english']
   }
 
