@@ -22,6 +22,11 @@ const questions = {
       bad: 'We deliver rubbish. We feel ashamed to deliver it. Our stakeholders hate us'
     },
     {
+      title: 'Continuous Improvement',
+      good: 'We don\'t improve over time, we just live with the pain',
+      bad: 'We We are constantly looking for, and trying things to make us better'
+    },
+    {
       title: 'Speed',
       good: 'We get stuff done really quickly. No waiting, no delays',
       bad: 'We never seem to get done with anything. We keep getting stuck or interrupted. Stories keep getting stuck on dependencies'
