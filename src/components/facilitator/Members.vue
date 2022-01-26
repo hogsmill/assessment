@@ -58,7 +58,7 @@
                 Actions
               </th>
               <th rowspan="2">
-                Member
+                Members <span v-if="members.length">({{ members.length }})</span>
               </th>
               <th rowspan="2" title="Team lead, head of etc.">
                 Contact?
