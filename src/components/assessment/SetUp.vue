@@ -1,7 +1,15 @@
 <template>
   <div class="setup">
     <table>
-      <tr v-if="server.teamsInDepartments">
+      <tr v-if="server.useOrganisationModel">
+        <td>
+          Name
+        </td>
+        <td>
+          <NameSearch />
+        </td>
+      </tr>
+      <tr v-if="server.teamsInDepartments && !server.useOrganisationModel">
         <td>
           Department
         </td>
@@ -16,7 +24,7 @@
           </select>
         </td>
       </tr>
-      <tr v-if="server.multipleTeams">
+      <tr v-if="server.multipleTeams && !server.useOrganisationModel">
         <td>
           Team
         </td>
@@ -31,7 +39,7 @@
           </select>
         </td>
       </tr>
-      <tr>
+      <tr v-if="!server.useOrganisationModel">
         <td>
           Team Member
         </td>
@@ -96,7 +104,12 @@
 <script>
 import ls from '../../lib/localStorage'
 
+import NameSearch from './NameSearch.vue'
+
 export default {
+  components: {
+    NameSearch
+  },
   data() {
     return {
       lsData: {},
@@ -123,12 +136,17 @@ export default {
       return this.$store.getters.getAssessment
     },
   },
+  created() {
+  },
   methods: {
     updateAssessment(key, value) {
       const assessment = this.assessment
       assessment[key] = value
       //ls.storeAssessment(assessment, this.lsSuffix)
       this.$store.dispatch('updateAssessment', assessment)
+    },
+    getData(obj) {
+      console.log(obj)
     },
     selectDepartment() {
       const departmentId = document.getElementById('setup-select-department').value
@@ -179,6 +197,13 @@ export default {
     table {
       font-size: x-large;
       margin: 0 auto;
+
+      .search-results {
+        border: 1px solid;
+        position: absolute;
+        z-index: 10;
+        background-color: #fff;
+      }
     }
   }
 </style>

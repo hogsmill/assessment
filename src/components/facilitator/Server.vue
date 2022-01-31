@@ -32,6 +32,14 @@
         </select>
       </td>
     </tr>
+    <tr v-if="showServer">
+      <td>
+        Use Organisational Model?
+      </td>
+      <td>
+        <input type="checkbox" :checked="server.useOrganisationModel" @click="toggleUseOrganisationModel()">
+      </td>
+    </tr>
     <tr v-if="showServer && allowComments">
       <td>
         Allow Comments on Questions
@@ -162,6 +170,10 @@ export default {
     setScope() {
       const scope = document.getElementById('server-scope-select').value
       bus.$emit('sendUpdateServer', {field: 'scope', value: scope})
+    },
+    toggleUseOrganisationModel() {
+      const org = !this.server.useOrganisationModel
+      bus.$emit('sendUpdateServer', {field: 'useOrganisationModel', value: org})
     },
     toggleComments() {
       const comments = !this.server.comments

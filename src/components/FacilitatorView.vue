@@ -3,10 +3,10 @@
     <h2>{{ appType }} - Facilitator View</h2>
     <Connections />
     <Server />
-    <Departments v-if="server.teamsInDepartments" />
-    <Teams v-if="server.multipleTeams" />
-    <Team v-if="!server.multipleTeams" />
-    <Members />
+    <Departments v-if="server.teamsInDepartments && !server.useOrganisationModel" />
+    <Teams v-if="server.multipleTeams && !server.useOrganisationModel" />
+    <Team v-if="!server.multipleTeams && !server.useOrganisationModel" />
+    <Members v-if="!server.useOrganisationModel" />
     <FiveDysfunctions v-if="appType == '5 Dysfunctions'" />
     <TeamHealthCheck v-if="appType == 'Team Health Check'" />
     <AgileMaturity v-if="appType == 'Agile Maturity'" />

@@ -1,5 +1,5 @@
 <template>
   <div>
-    Agile Maturity
+    Agile Maturity Assessment
   </div>
 </template>

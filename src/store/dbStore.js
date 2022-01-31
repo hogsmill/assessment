@@ -11,6 +11,7 @@ function newServer(appType) {
   const server = {
     id: uuidv4(),
     scope: 'individual',
+    useOrganisationModel: 'false',
     multipleTeams: false,
     autoNextQuestion: false,
     showTeamAnswers: false,
@@ -382,6 +383,25 @@ module.exports = {
           }
         }
       })
+    })
+  },
+
+  getSearchResults: function(db, io, data, debugOn) {
+
+    if (debugOn) { console.log('getSearchResults', data) }
+
+    db.organisationCollection.find({isMember: true}).toArray(function(err, res) {
+      if (err) throw err
+      const results = []
+      for (let i = 0; i < res.length; i++) {
+        const query = data.query.toLowerCase()
+        const name = res[i].name.toLowerCase()
+        if (name.indexOf(query) > -1) {
+          results.push(res[i])
+        }
+      }
+      data.results = results
+      io.emit('updateSearchResults', data)
     })
   },
 

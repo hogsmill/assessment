@@ -14,6 +14,7 @@ const departmentsCollection =  prod ? process.env.VUE_APP_DEPARTMENTS_COLLECTION
 const teamsCollection =  prod ? process.env.VUE_APP_TEAMS_COLLECTION : 'fiveDysfunctionsTeams'
 const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysfunctionsQuestions'
 const assessmentsCollection =  prod ? process.env.VUE_APP_ASSESSMENTS_COLLECTION : 'fiveDysfunctionsAssessments'
+const organisationCollection =  prod ? process.env.VUE_APP_ORGANISATION_COLLECTION : 'organisationItems'
 
 ON_DEATH(function(signal, err) {
   let logStr = new Date()
@@ -91,12 +92,14 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
   db.createCollection(teamsCollection, function(error, collection) {})
   db.createCollection(questionCollection, function(error, collection) {})
   db.createCollection(assessmentsCollection, function(error, collection) {})
+  db.createCollection(organisationCollection, function(error, collection) {})
 
   db.serverCollection = db.collection(serverCollection)
   db.departmentsCollection = db.collection(departmentsCollection)
   db.teamsCollection = db.collection(teamsCollection)
   db.questionCollection = db.collection(questionCollection)
   db.assessmentsCollection = db.collection(assessmentsCollection)
+  db.organisationCollection = db.collection(organisationCollection)
 
   dbUpdate.run(db)
 
@@ -125,6 +128,8 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
     socket.on('sendLoadAllAssessmentsDone', (data) => { dbStore.allAssessmentsDone(db, io, data, debugOn) })
 
     socket.on('sendClearQuestions', (data) => { dbStore.clearQuestions(db, io, data, debugOn) })
+
+    socket.on('sendGetSearchResults', (data) => { dbStore.getSearchResults(db, io, data, debugOn) })
 
     socket.on('sendLoadDepartments', () => { dbStore.loadDepartments(db, io, debugOn) })
 
