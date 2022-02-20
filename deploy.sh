@@ -20,19 +20,15 @@ REPO="https://github.com/hogsmill/assessment.git"
 MAINAPP="assessment"
 
 FIVEDYSFUNCTIONSAPP="five-dysfunctions"
-FIVEDYSFUNCTIONSCOLLECTION="fiveDysfunctions"
 FIVEDYSFUNCTIONSGAME="5 Dysfunctions"
 
 TEAMHEALTHCHECKAPP="team-health-check"
-TEAMHEALTHCHECKCOLLECTION="healthCheck"
 TEAMHEALTHCHECKGAME="Team Health Check"
 
 AGILEMATURITYAPP="agile-maturity"
-AGILEMATURITYCOLLECTION="agileMaturity"
 AGILEMATURITYGAME="Agile Maturity"
 
 SCRUMMASTERAPP="scrum-master"
-SCRUMMASTERCOLLECTION="scrumMaster"
 SCRUMMASTERGAME="Scrum Master Assessment"
 
 GAMES=(

@@ -9,11 +9,11 @@ const os = require('os')
 const prod = os.hostname() == 'agilesimulations' ? true : false
 const logFile = prod ? process.argv[4] : 'server.log'
 const port = prod ? process.env.VUE_APP_PORT : 3038
-const serverCollection =  prod ? process.env.VUE_APP_SERVER_COLLECTION : 'fiveDysfunctionsServer'
-const departmentsCollection =  prod ? process.env.VUE_APP_DEPARTMENTS_COLLECTION : 'fiveDysfunctionsDepartments'
-const teamsCollection =  prod ? process.env.VUE_APP_TEAMS_COLLECTION : 'fiveDysfunctionsTeams'
-const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysfunctionsQuestions'
-const assessmentsCollection =  prod ? process.env.VUE_APP_ASSESSMENTS_COLLECTION : 'fiveDysfunctionsAssessments'
+const serverCollection =  prod ? process.env.VUE_APP_SERVER_COLLECTION : 'fiveDysFunctionsServer'
+const departmentsCollection =  prod ? process.env.VUE_APP_DEPARTMENTS_COLLECTION : 'fiveDysFunctionsDepartments'
+const teamsCollection =  prod ? process.env.VUE_APP_TEAMS_COLLECTION : 'fiveDysFunctionsTeams'
+const questionCollection =  prod ? process.env.VUE_APP_QUESTION_COLLECTION : 'fiveDysFunctionsQuestions'
+const assessmentsCollection =  prod ? process.env.VUE_APP_ASSESSMENTS_COLLECTION : 'fiveDysFunctionsAssessments'
 const organisationCollection =  prod ? process.env.VUE_APP_ORGANISATION_COLLECTION : 'organisationItems'
 
 ON_DEATH(function(signal, err) {
@@ -50,7 +50,7 @@ if (!prod) {
 } else {
   const options = {
     key: fs.readFileSync('/etc/ssl/private/agilesimulations.co.uk.key'),
-    cert: fs.readFileSync('/etc/ssl/certs/07DDA10F5A5AB75BD9E9508BC490D32C.cer')
+    cert: fs.readFileSync('/etc/ssl/certs/agilesimulations.cer')
   }
   httpServer = require('https').createServer(options)
   io = require('socket.io')(httpServer, {
