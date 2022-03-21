@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     answer(n) {
-      bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: n})
+      bus.emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: n})
     }
   }
 }

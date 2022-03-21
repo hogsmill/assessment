@@ -41,13 +41,13 @@ export default {
   },
   methods: {
     prev() {
-      bus.$emit('sendPrevQuestion', {assessment: this.assessment, question: this.question})
+      bus.emit('sendPrevQuestion', {assessment: this.assessment, question: this.question})
     },
     next() {
-      bus.$emit('sendNextQuestion', {assessment: this.assessment, question: this.question})
+      bus.emit('sendNextQuestion', {assessment: this.assessment, question: this.question})
     },
     goToResults() {
-      bus.$emit('sendGoToResults', {assessment: this.assessment})
+      bus.emit('sendGoToResults', {assessment: this.assessment})
     },
     members() {
       const team = this.teams.find((t) => {

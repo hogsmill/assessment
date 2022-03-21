@@ -90,7 +90,7 @@ export default {
     }
   },
   created() {
-    bus.$on('openEditPane', (data) => {
+    bus.on('openEditPane', (data) => {
       if (data != 'showFiveDysfunctions') {
         this.showFiveDysfunctions = false
       }
@@ -100,16 +100,16 @@ export default {
     setShowFiveDysfunctions(val) {
       this.showFiveDysfunctions = val
       if (val) {
-        bus.$emit('openEditPane', 'showFiveDysfunctions')
+        bus.emit('openEditPane', 'showFiveDysfunctions')
       }
     },
     addQuestion() {
       const question = document.getElementById('new-question').value
-      bus.$emit('sendAddQuestion', {question: question})
+      bus.emit('sendAddQuestion', {question: question})
     },
     deleteQuestion(question) {
       if (confirm('Delete question ' + question.order)) {
-        bus.$emit('sendDeleteQuestion', {id: question.id})
+        bus.emit('sendDeleteQuestion', {id: question.id})
       }
     },
     setEditingQuestion(question) {
@@ -118,8 +118,8 @@ export default {
     saveQuestion() {
       const question = document.getElementById('question-editing-' + this.editingQuestion).value
       const dysfunction = document.getElementById('dysfunction-' + this.editingQuestion).value
-      bus.$emit('sendUpdateQuestionQuestion', {id: this.editingQuestion, value: question})
-      bus.$emit('sendUpdateQuestionDysfunction', {id: this.editingQuestion, value: dysfunction})
+      bus.emit('sendUpdateQuestionQuestion', {id: this.editingQuestion, value: question})
+      bus.emit('sendUpdateQuestionDysfunction', {id: this.editingQuestion, value: dysfunction})
       this.editingQuestion = null
     }
   }

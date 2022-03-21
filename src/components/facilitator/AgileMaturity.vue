@@ -158,7 +158,7 @@ export default {
     }
   },
   created() {
-    bus.$on('openEditPane', (data) => {
+    bus.on('openEditPane', (data) => {
       if (data != 'showAgileMaturity') {
         this.showAgileMaturity = false
       }
@@ -168,7 +168,7 @@ export default {
     setShowAgileMaturity(val) {
       this.showAgileMaturity = val
       if (val) {
-        bus.$emit('openEditPane', 'showAgileMaturity')
+        bus.emit('openEditPane', 'showAgileMaturity')
       }
     },
     addQuestion() {
@@ -179,16 +179,16 @@ export default {
         area: area,
         levels: this.questionLevels
       }
-      bus.$emit('sendAddQuestion', {appType: 'Agile Maturity', question: question})
+      bus.emit('sendAddQuestion', {appType: 'Agile Maturity', question: question})
     },
     deleteQuestion(question) {
       if (confirm('Delete question ' + question.order)) {
-        bus.$emit('sendDeleteQuestion', {id: question.id})
+        bus.emit('sendDeleteQuestion', {id: question.id})
       }
     },
     toggleInclude(question) {
       const include = !question.include
-      bus.$emit('sendUpdateQuestionInclude', {id: question.id, include: include})
+      bus.emit('sendUpdateQuestionInclude', {id: question.id, include: include})
     },
     setEditingQuestionTitle(question) {
       this.editingQuestionTitle = question.id
@@ -201,12 +201,12 @@ export default {
     },
     saveQuestionTitle() {
       const title = document.getElementById('question-title-editing-' + this.editingQuestionTitle).value
-      bus.$emit('sendUpdateQuestionTitle', {id: this.editingQuestionTitle, value: title})
+      bus.emit('sendUpdateQuestionTitle', {id: this.editingQuestionTitle, value: title})
       this.editingQuestionTitle = null
     },
     saveQuestionLevel() {
       const level = document.getElementById('question-level-editing-' + this.editingQuestionLevel.question + '-' + this.editingQuestionLevel.level).value
-      bus.$emit('sendUpdateQuestionLevel', {id: this.editingQuestionLevel.question, level: this.editingQuestionLevel.level, value: level})
+      bus.emit('sendUpdateQuestionLevel', {id: this.editingQuestionLevel.question, level: this.editingQuestionLevel.level, value: level})
       this.editingQuestionLevel = {question: null, level: null}
     }
   }

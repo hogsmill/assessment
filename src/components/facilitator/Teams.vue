@@ -94,7 +94,7 @@ export default {
     }
   },
   created() {
-    bus.$on('openEditPane', (data) => {
+    bus.on('openEditPane', (data) => {
       if (data != 'showTeams') {
         this.showTeams = false
       }
@@ -104,7 +104,7 @@ export default {
     setShowTeams(val) {
       this.showTeams = val
       if (val) {
-        bus.$emit('openEditPane', 'showTeams')
+        bus.emit('openEditPane', 'showTeams')
       }
     },
     departmentName(team) {
@@ -119,11 +119,11 @@ export default {
     },
     addTeam() {
       const name = document.getElementById('new-team').value
-      bus.$emit('sendAddTeam', {name: name})
+      bus.emit('sendAddTeam', {name: name})
     },
     deleteTeam(team) {
       if (confirm('Delete ' + team.name)) {
-        bus.$emit('sendDeleteTeam', {id: team.id})
+        bus.emit('sendDeleteTeam', {id: team.id})
       }
     },
     setEditingTeam(team) {
@@ -134,12 +134,12 @@ export default {
     },
     saveTeamName() {
       const name = document.getElementById('team-name-editing-' + this.editingTeam).value
-      bus.$emit('sendUpdateTeamName', {id: this.editingTeam, name: name})
+      bus.emit('sendUpdateTeamName', {id: this.editingTeam, name: name})
       this.editingTeam = null
     },
     saveTeamDepartment() {
       const department = document.getElementById('team-department-editing-' + this.editingTeamDepartment).value
-      bus.$emit('sendUpdateTeamDepartment', {id: this.editingTeamDepartment, department: department})
+      bus.emit('sendUpdateTeamDepartment', {id: this.editingTeamDepartment, department: department})
       this.editingTeamDepartment = null
     }
   }

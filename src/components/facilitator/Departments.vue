@@ -67,7 +67,7 @@ export default {
     }
   },
   created() {
-    bus.$on('openEditPane', (data) => {
+    bus.on('openEditPane', (data) => {
       if (data != 'showDepartments') {
         this.showDepartments = false
       }
@@ -77,16 +77,16 @@ export default {
     setShowDepartments(val) {
       this.showDepartments = val
       if (val) {
-        bus.$emit('openEditPane', 'showDepartments')
+        bus.emit('openEditPane', 'showDepartments')
       }
     },
     addDepartment() {
       const name = document.getElementById('new-department').value
-      bus.$emit('sendAddDepartment', {name: name})
+      bus.emit('sendAddDepartment', {name: name})
     },
     deleteDepartment(department) {
       if (confirm('Delete ' + department.name)) {
-        bus.$emit('sendDeleteDepartment', {id: department.id})
+        bus.emit('sendDeleteDepartment', {id: department.id})
       }
     },
     setEditingDepartment(department) {
@@ -94,7 +94,7 @@ export default {
     },
     saveDepartmentName() {
       const name = document.getElementById('department-name-editing-' + this.editingDepartment).value
-      bus.$emit('sendUpdateDepartmentName', {id: this.editingDepartment, name: name})
+      bus.emit('sendUpdateDepartmentName', {id: this.editingDepartment, name: name})
       this.editingDepartment = null
     }
   }

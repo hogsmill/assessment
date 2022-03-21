@@ -177,28 +177,6 @@
         <LineChart />
       </div>
     </div>
-
-    <modal name="question-comments" id="question-comments" :height="500" :classes="['rounded']">
-      <div class="float-right mr-2 mt-1">
-        <button type="button" class="close" @click="hide" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <h3>
-        Comments for <br>
-        {{ commentsTitle }}
-      </h3>
-      <div class="mt-4 comments-list">
-        <ul>
-          <li v-for="(comment, index) in comments" :key="index">
-            {{ comment.comment }}
-            <span v-if="server.commentsBy">
-              ({{ comment.by }})
-            </span>
-          </li>
-        </ul>
-      </div>
-    </modal>
   </div>
 </template>
 
@@ -280,24 +258,24 @@ export default {
       this.getResults()
     }
 
-    bus.$on('loadTabularResults', (data) => {
+    bus.on('loadTabularResults', (data) => {
       this.$store.dispatch('updateTabularResults', data)
     })
 
-    bus.$on('loadExportResults', (data) => {
+    bus.on('loadExportResults', (data) => {
       console.log('export', data)
       this.scope.export = false
       //this.$store.dispatch('updateTabularResults', data)
     })
 
-    bus.$on('loadGraphResults', (data) => {
+    bus.on('loadGraphResults', (data) => {
       if (data.datasets) {
         this.$store.dispatch('updateGraphResults', data.datasets)
         this.setGraph(data)
       }
     })
 
-    bus.$on('showQuestionComments', (data) => {
+    bus.on('showQuestionComments', (data) => {
       this.showComments(data)
     })
   },
@@ -306,21 +284,18 @@ export default {
       this.tab = tab
     },
     getResults() {
-      bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
+      bus.emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
     setScope(scope, value) {
       this.scope[scope] = value
-      bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
+      bus.emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
     showComments(data) {
-      this.comments = data.comments
-      this.commentsTitle = data.title
-      this.$modal.show('question-comments')
-    },
-    hide() {
-      this.comments = []
-      this.commentsTitle = ''
-      this.$modal.hide('question-comments')
+      this.$store.dispatch('setModalData', {
+        comments: data.comments,
+        commentsTitle: data.title
+      })
+      this.$store.dispatch('showModal', 'questionComments')
     },
     graphOptions(results) {
       let options
@@ -349,11 +324,11 @@ export default {
     },
     setGraph(results) {
       const data = lineChartFuns.data(results)
-      bus.$emit('showGraph', {chartdata: data, options: this.graphOptions(results)})
+      bus.emit('showGraph', {chartdata: data, options: this.graphOptions(results)})
     },
     exportToFile() {
       this.scope.export = true
-      bus.$emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
+      bus.emit('sendGetResults', {appType: this.appType, scope: this.scope, assessment: this.assessment})
     },
     explanation() {
       return fiveDysfunctions.explanation()
@@ -384,7 +359,7 @@ export default {
             message = scrumMaster.emailContent(name, organisation, this.tabularResults.results)
             break
         }
-        bus.$emit('sendResultsMailled', {assessment: this.assessment, results: this.tabularResults.results})
+        bus.emit('sendResultsMailled', {assessment: this.assessment, results: this.tabularResults.results})
         mailFuns.send({
           email: email,
           subject: title,

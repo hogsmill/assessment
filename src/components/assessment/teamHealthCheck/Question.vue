@@ -76,7 +76,7 @@ export default {
     }
   },
   created() {
-    bus.$on('loadQuestionAnswers', (data) => {
+    bus.on('loadQuestionAnswers', (data) => {
       if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
         this.allAnswers = data.answers
       }
@@ -100,10 +100,10 @@ export default {
     },
     answer(answer) {
       const answerValue = this.answers[answer]
-      bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answerValue})
+      bus.emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answerValue})
     },
     showTeamAnswers() {
-      bus.$emit('sendGetQuestionAnswers', {assessment: this.assessment, questionId: this.question.id})
+      bus.emit('sendGetQuestionAnswers', {assessment: this.assessment, questionId: this.question.id})
       this.showAnswers = !this.showAnswers
     }
   }
@@ -179,6 +179,7 @@ export default {
 
     .buttons {
       margin: 24px;
+      position: relative;
 
       button {
         color: #fff;

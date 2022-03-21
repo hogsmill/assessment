@@ -22,7 +22,7 @@ export default {
     }
   },
   created() {
-    bus.$on('updateSearchResults', (data) => {
+    bus.on('updateSearchResults', (data) => {
       if (data.id == this.searchId) {
         this.results = data.results
       }
@@ -34,7 +34,7 @@ export default {
       this.searchId = uuidv4()
       const search = document.getElementById('search').value
       if (search.length > 1) {
-        bus.$emit('sendGetSearchResults', {id: this.searchId, query: search})
+        bus.emit('sendGetSearchResults', {id: this.searchId, query: search})
       }
     },
     selectName(name) {

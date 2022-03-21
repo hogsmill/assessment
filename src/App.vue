@@ -19,6 +19,7 @@
       <Results v-if="server.scope == 'individual' && state == 'results'" :summary="false" />
     </div>
     <Results v-if="currentTab == 'results'" :summary="true" />
+    <Modals />
   </div>
 </template>
 
@@ -31,11 +32,12 @@ import appTypeFuns from './lib/appType.js'
 import assessmentFuns from './lib/assessment.js'
 
 import Header from './components/Header.vue'
+import Modals from './components/Modals.vue'
+import WalkThrough from './components/WalkThrough.vue'
+
 import RateThisGame from './components/RateThisGame.vue'
 import ClearStorage from './components/ClearStorage.vue'
 import ConnectionError from './components/error/ConnectionError.vue'
-
-import WalkThrough from './components/about/WalkThrough.vue'
 
 import FacilitatorView from './components/FacilitatorView.vue'
 
@@ -54,7 +56,8 @@ export default {
     FacilitatorView,
     Intro,
     Questions,
-    Results
+    Results,
+    Modals
   },
   computed: {
     admin() {
@@ -83,10 +86,13 @@ export default {
     },
     team() {
       return this.$store.getters.getTeam
+    },
+    modals() {
+      return this.$store.getters.getModals
     }
   },
   created() {
-    bus.$on('connectionError', (data) => {
+    bus.on('connectionError', (data) => {
       this.$store.dispatch('updateConnectionError', data)
     })
 
@@ -95,54 +101,55 @@ export default {
     const appType = appTypeFuns.get('5 Dysfunctions')
     this.$store.dispatch('updateAppType', appType)
 
-    bus.$emit('sendCheckServer', {appType: appType})
-    bus.$emit('sendCheckSystem', {appType: appType})
+    bus.emit('sendCheckServer', {appType: appType})
+    bus.emit('sendCheckSystem', {appType: appType})
 
-    bus.$emit('sendLoadDepartments')
-    bus.$emit('sendLoadTeams')
+    bus.emit('sendLoadDepartments')
+    bus.emit('sendLoadTeams')
 
     if (location.hostname == 'localhost' && params.isParam('host')) {
       this.$store.dispatch('updateAdmin', true)
     }
 
-    if (params.getParam('walkThrough')) {
-      this.$store.dispatch('updateWalkThrough', true)
+    if (params.isParam('walkThrough')) {
+      this.$store.dispatch('showModal', 'walkThrough')
     }
 
     const assessment = ls.getAssessment(this.lsSuffix)
     if (assessment) {
       this.$store.dispatch('updateAssessment', assessment)
-      bus.$emit('sendLoadAssessment', assessment)
+      bus.emit('sendLoadAssessment', assessment)
     }
 
-    bus.$on('updateConnections', (data) => {
+    bus.on('updateConnections', (data) => {
       this.$store.dispatch('updateConnectionError', null)
       this.$store.dispatch('updateConnections', data)
     })
 
-    bus.$on('loadServer', (data) => {
+    bus.on('loadServer', (data) => {
       this.$store.dispatch('updateServer', data)
     })
 
-    bus.$on('loadTeams', (data) => {
+    bus.on('loadTeams', (data) => {
+      console.log('loadTeams', data)
       this.$store.dispatch('updateTeams', data)
     })
 
-    bus.$on('loadDepartments', (data) => {
+    bus.on('loadDepartments', (data) => {
       this.$store.dispatch('updateDepartments', data)
     })
 
-    bus.$on('loadQuestions', (data) => {
+    bus.on('loadQuestions', (data) => {
       this.$store.dispatch('updateQuestions', data)
     })
 
-    bus.$on('loadAssessment', (data) => {
+    bus.on('loadAssessment', (data) => {
       if (assessmentFuns.isThisAssessment(data, this.assessment)) {
         this.$store.dispatch('updateAssessment', data)
       }
     })
 
-    bus.$on('loadWhosAnswered', (data) => {
+    bus.on('loadWhosAnswered', (data) => {
       if (data.teamId == this.assessment.team.id) {
         this.$store.dispatch('updateWhosAnswered', data)
       }
@@ -151,7 +158,7 @@ export default {
   methods: {
     restart() {
       if (confirm('Restart this assessment')) {
-        bus.$emit('sendRestart')
+        bus.emit('sendRestart')
         this.$store.dispatch('updateState', 'intro')
       }
     }

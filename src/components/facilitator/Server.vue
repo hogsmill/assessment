@@ -161,59 +161,59 @@ export default {
       this.showServer = val
     },
     clearQuestions() {
-      bus.$emit('sendClearQuestions')
+      bus.emit('sendClearQuestions')
     },
     setLanguage() {
       const language = document.getElementById('server-language-select').value
-      bus.$emit('sendUpdateServer', {field: 'language', value: language})
+      bus.emit('sendUpdateServer', {field: 'language', value: language})
     },
     setScope() {
       const scope = document.getElementById('server-scope-select').value
-      bus.$emit('sendUpdateServer', {field: 'scope', value: scope})
+      bus.emit('sendUpdateServer', {field: 'scope', value: scope})
     },
     toggleUseOrganisationModel() {
       const org = !this.server.useOrganisationModel
-      bus.$emit('sendUpdateServer', {field: 'useOrganisationModel', value: org})
+      bus.emit('sendUpdateServer', {field: 'useOrganisationModel', value: org})
     },
     toggleComments() {
       const comments = !this.server.comments
-      bus.$emit('sendUpdateServer', {field: 'comments', value: comments})
+      bus.emit('sendUpdateServer', {field: 'comments', value: comments})
     },
     toggleCommentsBy() {
       const commentsBy = !this.server.commentsBy
-      bus.$emit('sendUpdateServer', {field: 'commentsBy', value: commentsBy})
+      bus.emit('sendUpdateServer', {field: 'commentsBy', value: commentsBy})
     },
     toggleShowTeamAnswers() {
       const showTeamAnswers = !this.server.showTeamAnswers
-      bus.$emit('sendUpdateServer', {field: 'showTeamAnswers', value: showTeamAnswers})
+      bus.emit('sendUpdateServer', {field: 'showTeamAnswers', value: showTeamAnswers})
     },
     toggleShowTeamAnswersBy() {
       const showTeamAnswersBy = !this.server.showTeamAnswersBy
-      bus.$emit('sendUpdateServer', {field: 'showTeamAnswersBy', value: showTeamAnswersBy})
+      bus.emit('sendUpdateServer', {field: 'showTeamAnswersBy', value: showTeamAnswersBy})
     },
     toggleAutoNextQuestion() {
       const auto = !this.server.autoNextQuestion
-      bus.$emit('sendUpdateServer', {field: 'autoNextQuestion', value: auto})
+      bus.emit('sendUpdateServer', {field: 'autoNextQuestion', value: auto})
     },
     toggleHostMovesSlides() {
       const hostMovesSlides = !this.server.hostMovesSlides
-      bus.$emit('sendUpdateServer', {field: 'hostMovesSlides', value: hostMovesSlides})
+      bus.emit('sendUpdateServer', {field: 'hostMovesSlides', value: hostMovesSlides})
     },
     toggleTeamsInDepartments() {
       const departments = !this.server.teamsInDepartments
-      bus.$emit('sendUpdateServer', {field: 'teamsInDepartments', value: departments})
+      bus.emit('sendUpdateServer', {field: 'teamsInDepartments', value: departments})
     },
     toggleMultipleTeams() {
       const multiple = !this.server.multipleTeams
-      bus.$emit('sendUpdateServer', {field: 'multipleTeams', value: multiple})
+      bus.emit('sendUpdateServer', {field: 'multipleTeams', value: multiple})
     },
     toggleNonAdminResults() {
       const nonAdmin = !this.server.nonAdminResults
-      bus.$emit('sendUpdateServer', {field: 'nonAdminResults', value: nonAdmin})
+      bus.emit('sendUpdateServer', {field: 'nonAdminResults', value: nonAdmin})
     },
     setFrequency() {
       const frequency = document.getElementById('server-frequency-select').value
-      bus.$emit('sendUpdateServer', {field: 'frequency', value: frequency})
+      bus.emit('sendUpdateServer', {field: 'frequency', value: frequency})
     }
   }
 }

@@ -1,17 +1,17 @@
 <script>
 import bus from '../../../../socket.js'
 
-import { Line } from 'vue-chartjs'
+//import { Line } from 'vue-chartjs'
 
 export default {
-  extends: Line,
+  // extends: Line,
   computed: {
     questions() {
       return this.$store.getters.getQuestionsInclude
     }
   },
   mounted() {
-    bus.$on('showGraph', (data) => {
+    bus.on('showGraph', (data) => {
       data.chartdata.datasets = this.setIncluded(data.chartdata.datasets)
       this.renderChart(data.chartdata, data.options)
     })

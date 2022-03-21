@@ -97,7 +97,7 @@ export default {
       return trend
     },
     showComments(question, title) {
-      bus.$emit('sendShowQuestionComments', {comments: question.comments, title: title})
+      bus.emit('sendShowQuestionComments', {comments: question.comments, title: title})
     },
     questionInclude(id) {
       const include = this.questionsInclude.find((q) => {

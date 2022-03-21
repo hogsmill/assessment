@@ -28,27 +28,7 @@
       </button>
     </div>
 
-    <modal name="comment" :height="350" :classes="['rounded', 'comment']">
-      <div class="float-right mr-2 mt-1">
-        <button type="button" class="close" @click="hide" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="mt-4">
-        <h4>
-          Comment on
-        </h4>
-        <p class="comment-p">
-          {{ questionText }}
-        </p>
-        <div class="comment-form">
-          <textarea id="comment" rows="6" class="form-control" placeholder="Your comment" />
-          <button class="btn btn-sm btn-secondary smaller-font" @click="saveComment()">
-            Save Comment
-          </button>
-        </div>
-      </div>
-    </modal>
+
   </div>
 </template>
 
@@ -93,19 +73,19 @@ export default {
     }
   },
   created() {
-    bus.$on('answerQuestion', (data) => {
+    bus.on('answerQuestion', (data) => {
       if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
         this.answer(data)
       }
     })
 
-    bus.$on('setQuestion', (data) => {
+    bus.on('setQuestion', (data) => {
       if (assessmentFuns.isThisAssessment(data.assessment, this.assessment, true)) {
         this.setQuestion(data)
       }
     })
 
-    bus.$on('goToResults', (data) => {
+    bus.on('goToResults', (data) => {
       if (assessmentFuns.isThisAssessment(data.assessment, this.assessment)) {
         this.goToResults()
       }
@@ -113,18 +93,11 @@ export default {
   },
   methods: {
     show(question) {
-      this.questionId = question.id
-      this.questionText = question.question.title ? question.question.title : question.question.question
-      this.$modal.show('comment')
-    },
-    hide() {
-      this.questionId = ''
-      this.$modal.hide('comment')
-    },
-    saveComment() {
-      const comment = document.getElementById('comment').value
-      bus.$emit('sendSaveComment', {assessment: this.assessment, questionId: this.questionId, comment: comment})
-      this.hide()
+      this.$store.dispatch('setModalData', {
+        questionId: question.id,
+        questionText: question.question.title ? question.question.title : question.question.question
+      })
+      this.$store.dispatch('showModal', 'comment')
     },
     setQuestion(data) {
       this.order = data.order
@@ -139,7 +112,7 @@ export default {
       return question.answer != null
     },
     answer(data) {
-      bus.$emit('sendSetAnswer', {assessment: this.assessment, questionId: data.questionId, answer: data.answer})
+      bus.emit('sendSetAnswer', {assessment: this.assessment, questionId: data.questionId, answer: data.answer})
       if (this.server.autoNextQuestion) {
         this.next()
       }

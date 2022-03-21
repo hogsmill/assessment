@@ -7,6 +7,8 @@ const agileMaturityFuns = require('./lib/agileMaturity.js')
 const scrumMasterFuns = require('./lib/scrumMaster.js')
 const resultsFuns = require('./lib/results.js')
 
+let serverScope = null
+
 function newServer(appType) {
   const server = {
     id: uuidv4(),
@@ -75,6 +77,7 @@ function newAssessment(query) {
 function _loadServer(db, io) {
   db.serverCollection.findOne({}, function(err, res) {
     if (err) throw err
+    serverScope = res.scope
     io.emit('loadServer', res)
   })
 }
@@ -114,25 +117,27 @@ function _loadAssessment(db, io, query) {
 }
 
 function _loadWhosAnswered(db, io, query) {
-  delete query.member
-  db.assessmentsCollection.find(query).toArray(function(err, res) {
-    if (err) throw err
-    if (res.length) {
-      const members = []
-      for (let i = 0; i < res.length; i++) {
-        const member = {
-          id: res[i].member.id,
-          questions: {}
+  if (serverScope != 'individual') {
+    delete query.member
+    db.assessmentsCollection.find(query).toArray(function(err, res) {
+      if (err) throw err
+      if (res.length) {
+        const members = []
+        for (let i = 0; i < res.length; i++) {
+          const member = {
+            id: res[i].member.id,
+            questions: {}
+          }
+          for (let j = 0; j < res[i].questions.length; j++) {
+            const question = res[i].questions[j]
+            member.questions[question.id] = typeof(question.answer) != 'undefined'
+          }
+          members.push(member)
         }
-        for (let j = 0; j < res[i].questions.length; j++) {
-          const question = res[i].questions[j]
-          member.questions[question.id] = typeof(question.answer) != 'undefined'
-        }
-        members.push(member)
+        io.emit('loadWhosAnswered', {teamId: query.team.id, members: members})
       }
-      io.emit('loadWhosAnswered', {teamId: query.team.id, members: members})
-    }
-  })
+    })
+  }
 }
 
 function _query(data) {

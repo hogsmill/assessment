@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     answer(answer) {
-      bus.$emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answer})
+      bus.emit('sendAnswerQuestion', {assessment: this.assessment, questionId: this.question.id, answer: answer})
     }
   }
 }
@@ -41,6 +41,7 @@ export default {
 
 <style lang="scss">
   .five-dysfunctions-question {
+    position: relative;
     margin: auto auto;
     width: 500px;
     display: inline-block;
@@ -53,6 +54,7 @@ export default {
 
     .buttons {
       margin: 24px;
+      position: relative;
 
       button {
         margin: 4px 8px;

@@ -1,13 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 
-Vue.use(Vuex)
+import { createStore } from 'vuex'
 
 function getContext(state, context) {
   return context == 'switching' ? state.switching : state.noSwitching
 }
 
-export const store = new Vuex.Store({
+export const store = createStore({
   state: {
     thisGame: '5 Dysfunctions',
     appType: '5 Dysfunctions',
@@ -17,8 +15,14 @@ export const store = new Vuex.Store({
     connections: 0,
     connectionError: null,
     localStorageStatus: true,
+    modals: {
+      feedback: false,
+      walkThrough: false,
+      comment: false,
+      questionComments: false
+    },
+    modalData: {},
     currentTab: 'game',
-    walkThrough: false,
     server: {},
     gameName: '',
     state: 'intro',
@@ -62,11 +66,14 @@ export const store = new Vuex.Store({
     appType: (state) => {
       return state.appType
     },
+    getModals: (state) => {
+      return state.modals
+    },
+    getModalData: (state) => {
+      return state.modalData
+    },
     getCurrentTab: (state) => {
       return state.currentTab
-    },
-    getWalkThrough: (state) => {
-      return state.walkThrough
     },
     getServer: (state) => {
       return state.server
@@ -174,6 +181,19 @@ export const store = new Vuex.Store({
     updateServer: (state, payload) => {
       state.server = payload
     },
+    showModal: (state, payload) => {
+      const modals = Object.keys(state.modals)
+      for (let i = 0; i < modals.length; i++) {
+        state.modals[modals[i]] = false
+      }
+      state.modals[payload] = true
+    },
+    hideModal: (state, payload) => {
+      state.modals[payload] = false
+    },
+    setModalData: (state, payload) => {
+      state.modalData = payload
+    },
     updateCurrentTab: (state, payload) => {
       state.currentTab = payload
     },
@@ -252,9 +272,6 @@ export const store = new Vuex.Store({
     updateWhosAnswered: (state, payload) => {
       state.whosAnswered = payload.members
     },
-    updateWalkThrough: (state, payload) => {
-      state.walkThrough = payload
-    },
     updateConnections: (state, payload) => {
       state.connections = payload
     },
@@ -268,6 +285,15 @@ export const store = new Vuex.Store({
   actions: {
     updateAppType: ({ commit }, payload) => {
       commit('updateAppType', payload)
+    },
+    showModal: ({ commit }, payload) => {
+      commit('showModal', payload)
+    },
+    hideModal: ({ commit }, payload) => {
+      commit('hideModal', payload)
+    },
+    setModalData: ({ commit }, payload) => {
+      commit('setModalData', payload)
     },
     updateLogin: ({ commit }, payload) => {
       commit('updateLogin', payload)
@@ -328,9 +354,6 @@ export const store = new Vuex.Store({
     },
     updateWhosAnswered: ({ commit }, payload) => {
       commit('updateWhosAnswered', payload)
-    },
-    updateWalkThrough: ({ commit }, payload) => {
-      commit('updateWalkThrough', payload)
     },
     updateConnections: ({ commit }, payload) => {
       commit('updateConnections', payload)

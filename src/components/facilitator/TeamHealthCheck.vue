@@ -149,7 +149,7 @@ export default {
     }
   },
   created() {
-    bus.$on('openEditPane', (data) => {
+    bus.on('openEditPane', (data) => {
       if (data != 'showTeamHealthCheck') {
         this.showTeamHealthCheck = false
       }
@@ -159,16 +159,16 @@ export default {
     setShowTeamHealthCheck(val) {
       this.showTeamHealthCheck = val
       if (val) {
-        bus.$emit('openEditPane', 'showTeamHealthCheck')
+        bus.emit('openEditPane', 'showTeamHealthCheck')
       }
     },
     addQuestion() {
       const question = document.getElementById('new-question').value
-      bus.$emit('sendAddQuestion', {question: question})
+      bus.emit('sendAddQuestion', {question: question})
     },
     deleteQuestion(question) {
       if (confirm('Delete question ' + question.order)) {
-        bus.$emit('sendDeleteQuestion', {id: question.id})
+        bus.emit('sendDeleteQuestion', {id: question.id})
       }
     },
     setEditingQuestionTitle(question) {
@@ -182,17 +182,17 @@ export default {
     },
     saveQuestionTitle() {
       const title = document.getElementById('question-title-editing-' + this.editingQuestionTitle).value
-      bus.$emit('sendUpdateQuestionTitle', {id: this.editingQuestionTitle, value: title})
+      bus.emit('sendUpdateQuestionTitle', {id: this.editingQuestionTitle, value: title})
       this.editingQuestionTitle = null
     },
     saveQuestionGood() {
       const good = document.getElementById('question-good-editing-' + this.editingQuestionGood).value
-      bus.$emit('sendUpdateQuestionGood', {id: this.editingQuestionGood, value: good})
+      bus.emit('sendUpdateQuestionGood', {id: this.editingQuestionGood, value: good})
       this.editingQuestionGood = null
     },
     saveQuestionBad() {
       const bad = document.getElementById('question-bad-editing-' + this.editingQuestionBad).value
-      bus.$emit('sendUpdateQuestionBad', {id: this.editingQuestionBad, value: bad})
+      bus.emit('sendUpdateQuestionBad', {id: this.editingQuestionBad, value: bad})
       this.editingQuestionBad = null
     }
   }

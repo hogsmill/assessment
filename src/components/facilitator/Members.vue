@@ -164,21 +164,21 @@ export default {
     }
   },
   created() {
-    bus.$on('loadTeams', (data) => {
+    bus.on('loadTeams', (data) => {
       if (this.selectedTeam) {
         this.setTeam('team', this.selectedTeam)
       }
     })
 
-    bus.$on('loadServer', (data) => {
+    bus.on('loadServer', (data) => {
       this.setNoTeam()
     })
 
-    bus.$on('loadAssessmentsDone', (data) => {
+    bus.on('loadAssessmentsDone', (data) => {
       this.assessmentsDone = data
     })
 
-    bus.$on('loadAllAssessmentsDone', (data) => {
+    bus.on('loadAllAssessmentsDone', (data) => {
       this.allAssessmentsDone = data
       this.exportAssessments()
     })
@@ -187,7 +187,7 @@ export default {
   },
   methods: {
     loadAllAssessmentsDone() {
-      bus.$emit('sendLoadAllAssessmentsDone')
+      bus.emit('sendLoadAllAssessmentsDone')
     },
     exportAssessments() {
       const done = {}
@@ -263,7 +263,7 @@ export default {
           })
           members = department && department.members ? department.members : []
           if (department) {
-            bus.$emit('sendAssessmentsDone', {departmentId: department.id})
+            bus.emit('sendAssessmentsDone', {departmentId: department.id})
           }
         } else {
           this.selectedDepartment = null
@@ -273,7 +273,7 @@ export default {
           })
           members = team ? team.members : []
           if (team) {
-            bus.$emit('sendAssessmentsDone', {teamId: team.id})
+            bus.emit('sendAssessmentsDone', {teamId: team.id})
           }
         }
       }
@@ -303,17 +303,17 @@ export default {
     changeTeam(type, member) {
       const departmentId = document.getElementById('change-department-' + member.id).value
       const teamId = document.getElementById('change-team-' + member.id).value
-      bus.$emit('sendChangeTeam', {teamId: teamId, member: member})
+      bus.emit('sendChangeTeam', {teamId: teamId, member: member})
       this.changingTeamMember = null
     },
     addMember() {
       const name = document.getElementById('new-member').value
-      bus.$emit('sendAddMember', {departmentId: this.selectedDepartment, teamId: this.selectedTeam, name: name})
+      bus.emit('sendAddMember', {departmentId: this.selectedDepartment, teamId: this.selectedTeam, name: name})
       document.getElementById('new-member').value = ''
     },
     deleteMember(member) {
       if (confirm('Delete ' + member.name)) {
-        bus.$emit('sendDeleteMember', {departmentId: this.selectedDepartment, teamId: this.selectedTeam, id: member.id})
+        bus.emit('sendDeleteMember', {departmentId: this.selectedDepartment, teamId: this.selectedTeam, id: member.id})
       }
     },
     setEditingMember(member) {
@@ -322,15 +322,15 @@ export default {
     saveMemberDetails() {
       const name = document.getElementById('member-name-editing-' + this.editingMember).value
       const email = document.getElementById('member-email-editing-' + this.editingMember).value
-      bus.$emit('sendUpdateMemberDetails', {teamId: this.selectedTeam, id: this.editingMember, name: name, email: email})
+      bus.emit('sendUpdateMemberDetails', {teamId: this.selectedTeam, id: this.editingMember, name: name, email: email})
       this.editingMember = null
     },
     makeMainContact(member) {
-      bus.$emit('sendMakeMainContact', {teamId: this.selectedTeam, id: member.id})
+      bus.emit('sendMakeMainContact', {teamId: this.selectedTeam, id: member.id})
     },
     deleteAssessment(member, label) {
       if (confirm('Delete assessment from ' + label + ' for ' + member.name)) {
-        bus.$emit('sendDeleteAssessment', {teamId: this.selectedTeam, memberId: member.id, label: label})
+        bus.emit('sendDeleteAssessment', {teamId: this.selectedTeam, memberId: member.id, label: label})
       }
     }
   }

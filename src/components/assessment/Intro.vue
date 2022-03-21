@@ -117,7 +117,7 @@ export default {
         alert('Please complete all fields')
       } else {
         this.$store.dispatch('updateAssessment', assessment)
-        bus.$emit('sendLoadAssessment', assessment)
+        bus.emit('sendLoadAssessment', assessment)
         this.$store.dispatch('updateState', 'questions')
       }
     },
@@ -135,7 +135,7 @@ export default {
       } else {
         ls.storeAssessment(assessment, this.lsSuffix)
         this.$store.dispatch('updateAssessment', assessment)
-        bus.$emit('sendLoadAssessment', assessment)
+        bus.emit('sendLoadAssessment', assessment)
         this.$store.dispatch('updateState', 'questions')
       }
     }

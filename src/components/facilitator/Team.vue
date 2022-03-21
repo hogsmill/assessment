@@ -41,7 +41,7 @@ export default {
     },
     saveTeam() {
       const name = document.getElementById('team-name').value
-      bus.$emit('sendUpdateTeam', {name: name})
+      bus.emit('sendUpdateTeam', {name: name})
     }
   }
 }
