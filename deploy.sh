@@ -65,9 +65,13 @@ fi
 npm install --legacy-peer-deps
 rm -rf node_modules/.cache
 
+LOG='/usr/apps/logs/install.log'
+rm $LOG
+
 PORT=$BASEPORT
 for ((s = 0; s < ${#SCOPES[@]}; s++))
 do
+  SCOPE="${SCOPES[$s]}"
   for ((g = 0; g < ${#GAMES[@]}; g++))
   do
     for ((i = 0; i < ${#ROUTES[@]}; i++))
@@ -133,6 +137,10 @@ do
       echo "------------------------------------------------"
       echo "Installing ${GAMES[$g]}:$APP ($SERVERCOLLECTION, $TEAMSCOLLECTION, $QUESTIONCOLLECTION, $ASSESSMENTSCOLLECTION, $PORT)"
       echo "------------------------------------------------"
+
+      echo "------------------------------------------------" >> $LOG
+      echo "Installing ${GAMES[$g]}:$APP ($SERVERCOLLECTION, $TEAMSCOLLECTION, $QUESTIONCOLLECTION, $ASSESSMENTSCOLLECTION, $PORT)" >> $LOG
+      echo "------------------------------------------------" >> $LOG
 
       DIR="/usr/apps/$APP"
       if [ ! -d $DIR ]; then
