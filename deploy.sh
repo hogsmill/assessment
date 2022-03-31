@@ -125,12 +125,13 @@ do
 
       let PORT=$PORT+1
 
+      if [ "$SCOPEROUTE" != "" ]; then
+        APP="${APP}-${SCOPEROUTE}"
+      fi
       if [ "$ROUTE" != "" ]; then
         APP="${APP}-${ROUTE}"
       fi
-      if [ "$SCOPEROUTE" != "" ]; then
-        APP="${APP}-${SCOPE}"
-      fi
+
       APPTYPE=${GAMES[$g]}
       APPNAME=${GAMES[$g]}
 
