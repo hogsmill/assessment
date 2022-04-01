@@ -179,7 +179,7 @@ do
       npm install
       npm run build
 
-      while [ ! -d "$DIR/dist"]
+      while [ ! -d "$DIR/dist" ]
       do
         sleep 10
       done
