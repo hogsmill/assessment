@@ -71,7 +71,6 @@ rm $LOG
 PORT=$BASEPORT
 for ((s = 0; s < ${#SCOPES[@]}; s++))
 do
-  SCOPE="${SCOPES[$s]}"
   for ((g = 0; g < ${#GAMES[@]}; g++))
   do
     for ((i = 0; i < ${#ROUTES[@]}; i++))
@@ -79,6 +78,8 @@ do
       REC="${ROUTES[$i]}"
       ROUTE=`echo $REC | cut -d, -f1`
       COLLECTIONSUFFIX=`echo $REC | cut -d, -f2`
+
+      SCOPE="${SCOPES[$s]}"
       SCOPEROUTE=`echo $SCOPE | cut -d, -f1`
       SCOPESUFFIX=`echo $SCOPE | cut -d, -f2`
 
@@ -140,6 +141,7 @@ do
       echo "------------------------------------------------"
 
       echo "------------------------------------------------" >> $LOG
+      echo `date +"%H:%M"` >> $LOG
       echo "Installing ${GAMES[$g]}:$APP ($SERVERCOLLECTION, $TEAMSCOLLECTION, $QUESTIONCOLLECTION, $ASSESSMENTSCOLLECTION, $PORT)" >> $LOG
       echo "------------------------------------------------" >> $LOG
 
@@ -174,8 +176,14 @@ do
         exit 0
       fi
 
-      npm install --legacy-peer-deps
+      npm install
       npm run build
+
+      while [ ! -d "$DIR/dist"]
+      do
+        sleep 10
+      done
+
       if [ ! -d /var/www/html/$APP/ ]; then
         mkdir /var/www/html/$APP
       fi
