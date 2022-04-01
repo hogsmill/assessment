@@ -32,9 +32,9 @@ SCRUMMASTERAPP="scrum-master"
 SCRUMMASTERGAME="Scrum Master Assessment"
 
 SCOPES=(
-  '','',
-  'individual','Individual',
-  'organisation','Organisation',
+  '',''
+  'individual','Individual'
+  'organisation','Organisation'
   'organisation-model','OrganisationModel'
 )
 
