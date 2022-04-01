@@ -9,6 +9,7 @@ const os = require('os')
 const prod = os.hostname() == 'agilesimulations' ? true : false
 const logFile = prod ? process.argv[4] : 'server.log'
 const port = prod ? process.env.VUE_APP_PORT : 3038
+const scope = prod ? process.env.VUE_APP_SCOPE : 'organisation'
 const serverCollection =  prod ? process.env.VUE_APP_SERVER_COLLECTION : 'fiveDysFunctionsServer'
 const departmentsCollection =  prod ? process.env.VUE_APP_DEPARTMENTS_COLLECTION : 'fiveDysFunctionsDepartments'
 const teamsCollection =  prod ? process.env.VUE_APP_TEAMS_COLLECTION : 'fiveDysFunctionsTeams'
@@ -103,6 +104,7 @@ MongoClient.connect(url, { useUnifiedTopology: true, maxIdleTimeMS: maxIdleTime 
 
   dbUpdate.run(db)
 
+  console.log('SCOPE: ', scope)
   io.on('connection', (socket) => {
     const connection = socket.handshake.headers.host
     connections[connection] = connections[connection] ? connections[connection] + 1 : 1

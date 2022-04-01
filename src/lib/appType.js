@@ -11,7 +11,17 @@ const AppType = {
       appType = params.getParam('appType')
     }
     return appType
-  }
+  },
+
+  scope: function(scope) {
+    if (process.env.VUE_APP_SCOPE) {
+      scope = process.env.VUE_APP_SCOPE
+    } else if (params.getParam('scope')) {
+      // To allow scope switching in dev
+      scope = params.getParam('scope')
+    }
+    return scope
+  },
 
 }
 

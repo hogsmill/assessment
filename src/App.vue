@@ -98,7 +98,11 @@ export default {
 
     this.$store.dispatch('localStorageStatus', ls.check())
 
+    const scope = appTypeFuns.scope('organisation')
     const appType = appTypeFuns.get('5 Dysfunctions')
+
+    console.log('SCOPE:', scope)
+    
     this.$store.dispatch('updateAppType', appType)
 
     bus.emit('sendCheckServer', {appType: appType})
